@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Real Flip Timer</title>
+  <style>
+    /* 全体のリセットと背景設定 */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
+    
+    body {
+      background-color: #000000;
+      color: #e0e0e0;
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      height: 100vh;
+      width: 100vw;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      cursor: pointer;
+      padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+    }
+
+    /* タイマーコンテナ */
+    .timer-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      gap: 3vw; 
+      transform: translateY(-3vh); 
+      transition: filter 0.5s ease, transform 0.5s ease;
+    }
+
+    body.settings-open .timer-container {
+      filter: blur(8px) brightness(0.5);
+      transform: translateY(-3vh) scale(0.95);
+    }
+
+    /* フリップユニット本体 */
+    .flip-unit {
+      position: relative;
+      aspect-ratio: 1 / 1; 
+      width: min(42vw, 75vh); 
+      height: auto;
+      perspective: 1200px;
+      border-radius: 3cqmin; 
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+      background-color: #000;
+      container-type: inline-size;
+      transition: width 0.3s ease;
+    }
+
+    @supports not (border-radius: 3cqmin) {
+      .flip-unit { border-radius: 12px; }
+      .top { border-radius: 12px 12px 0 0; }
+      .bottom { border-radius: 0 0 12px 12px; }
+    }
+
+    /* 中央の切れ目 */
+    .flip-unit::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 0;
+      width: 100%;
+      height: max(4px, 0.8cqmin); 
+      background-color: #000000;
+      transform: translateY(-50%);
+      z-index: 10;
+    }
+
+    /* 上半分と下半分の基本スタイル */
+    .top, .bottom {
+      position: absolute;
+      left: 0;
+      width: 100%;
+      height: 50%;
+      overflow: hidden;
+      background-color: #1a1a1a;
+      backface-visibility: hidden;
+      transform-style: preserve-3d;
+    }
+
+    .top {
+      top: 0;
+      border-radius: 3cqmin 3cqmin 0 0;
+      transform-origin: bottom;
+    }
+
+    .bottom {
+      bottom: 0;
+      border-radius: 0 0 3cqmin 3cqmin;
+      transform-origin: top;
+    }
+
+    /* 数字のテキスト設定 */
+    .top::after, .bottom::after {
+      content: attr(data-val);
+      position: absolute;
+      left: 0;
+      width: 100%;
+      height: 200%; 
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 78cqi; 
+      font-weight: 700;
+      letter-spacing: -2px; 
+      color: #f5f5f5;
+      transition: font-size 0.3s ease;
+    }
+
+    .flip-unit.three-digits .top::after, 
+    .flip-unit.three-digits .bottom::after {
+      font-size: 55cqi;
+      letter-spacing: -1px;
+    }
+
+    .top::after { top: 0; }
+    .bottom::after { bottom: 0; }
+
+    /* 立体感を出すためのグラデーションシャドウ */
+    .top::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0) 100%);
+      z-index: 1;
+    }
+
+    /* --- アニメーション用要素 --- */
+    .flip-top {
+      z-index: 5;
+      animation: flipDownTop 0.25s ease-in forwards;
+    }
+
+    .flip-bottom {
+      z-index: 5;
+      transform: rotateX(90deg);
+      animation: flipDownBottom 0.25s ease-out 0.25s forwards;
+    }
+
+    @keyframes flipDownTop {
+      0% { transform: rotateX(0); filter: brightness(1); }
+      100% { transform: rotateX(-90deg); filter: brightness(0.3); }
+    }
+
+    @keyframes flipDownBottom {
+      0% { transform: rotateX(90deg); filter: brightness(0.3); }
+      100% { transform: rotateX(0); filter: brightness(1); }
+    }
+
+    /* コロン */
+    .colon {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: min(20vw, 35vh); 
+      font-weight: 700;
+      padding-bottom: 2%; 
+      color: #1a1a1a;
+      text-shadow: 0 0 10px rgba(255,255,255,0.1);
+      animation: blink 1s infinite;
+    }
+
+    .paused .colon {
+      animation: none;
+      opacity: 1;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.1; }
+    }
+
+    /* --- 下部コントロールバー --- */
+    .bottom-bar {
+      position: absolute;
+      bottom: calc(env(safe-area-inset-bottom, 10px) + 5px);
+      width: 100%;
+      padding: 0 calc(env(safe-area-inset-right, 5vw) + 2vw) 0 calc(env(safe-area-inset-left, 5vw) + 2vw);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 20;
+      transition: opacity 0.5s ease;
+    }
+
+    body.settings-open .bottom-bar {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .left-controls, .center-controls, .right-controls {
+      flex: 1;
+      display: flex;
+      align-items: center;
+    }
+
+    .left-controls { justify-content: flex-start; }
+    .center-controls { justify-content: center; }
+    .right-controls { justify-content: flex-end; gap: 1vw; }
+
+    /* トグルボタン共通スタイル */
+    .ui-btn {
+      font-size: clamp(12px, 2vh, 18px);
+      font-weight: 300;
+      letter-spacing: 2px;
+      color: #333333;
+      transition: color 0.3s ease, opacity 0.3s ease;
+      padding: 8px 10px;
+      cursor: pointer;
+      min-width: 80px; 
+      text-align: center;
+    }
+
+    .ui-btn.flash {
+      color: #e0e0e0; 
+    }
+
+    /* 動作中のUIフェードアウト */
+    body.running .ui-btn.hide-on-run {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* =========================================
+       ✨ フワッと浮かび上がる設定オーバーレイ
+       ========================================= */
+    .settings-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      z-index: 50;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.5s ease;
+    }
+
+    body.settings-open .settings-overlay {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .preset-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 3vw;
+      margin-bottom: 5vh;
+    }
+
+    .preset-btn {
+      font-size: clamp(18px, 3.5vh, 32px);
+      font-weight: 300;
+      color: #555555;
+      padding: 15px 25px;
+      cursor: pointer;
+      text-align: center;
+      transition: color 0.3s ease, transform 0.1s ease;
+      letter-spacing: 1px;
+    }
+
+    .preset-btn:active {
+      color: #ffffff;
+      transform: scale(0.95);
+    }
+
+    .custom-input-group {
+      display: flex;
+      align-items: center;
+      gap: 2vw;
+    }
+
+    .custom-input {
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid #444;
+      color: #ffffff;
+      font-size: clamp(18px, 3vh, 28px);
+      font-family: inherit;
+      font-weight: 300;
+      width: 80px;
+      text-align: center;
+      padding: 5px;
+      outline: none;
+    }
+
+    .custom-input::-webkit-outer-spin-button,
+    .custom-input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    .custom-btn {
+      font-size: clamp(14px, 2vh, 20px);
+      font-weight: 300;
+      letter-spacing: 2px;
+      color: #555555;
+      cursor: pointer;
+      padding: 10px 20px;
+      transition: color 0.3s ease;
+    }
+    .custom-btn:active { color: #ffffff; }
+
+    /* =========================================
+       📱 スマホ縦画面（ポートレート）用の上書き設定
+       ========================================= */
+    @media (orientation: portrait) {
+      .timer-container {
+        flex-direction: column; 
+        gap: 2vh; 
+        transform: translateY(-4vh); 
+      }
+      body.settings-open .timer-container {
+        transform: translateY(-4vh) scale(0.95);
+      }
+      .flip-unit {
+        width: min(85vw, 38vh); 
+      }
+      .colon {
+        display: none; 
+      }
+      
+      /* メニューを横並び(1段)にして時計との被りを防ぐ */
+      .bottom-bar {
+        flex-direction: row;
+        justify-content: center;
+        gap: 12vw; /* RESETとTIMERの隙間 */
+        bottom: calc(env(safe-area-inset-bottom, 20px) + 6vh); /* 位置を少し高めに調整 */
+      }
+      
+      /* flex: 1 を解除し、自然な幅にする */
+      .left-controls, .center-controls {
+        flex: initial;
+        width: auto;
+        justify-content: center;
+      }
+      
+      .right-controls {
+        display: none; /* 縦画面時は設定系を隠す */
+      }
+      
+      .preset-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 5vw;
+      }
+    }
+  </style>
+</head>
+<body class="paused" id="body" onclick="toggleTimer(event)">
+
+  <div class="timer-container">
+    <div class="flip-unit" id="min-unit">
+      <div class="top" data-val="15"></div>
+      <div class="bottom" data-val="15"></div>
+    </div>
+    <div class="colon">:</div>
+    <div class="flip-unit" id="sec-unit">
+      <div class="top" data-val="00"></div>
+      <div class="bottom" data-val="00"></div>
+    </div>
+  </div>
+  
+  <div class="bottom-bar">
+    <div class="left-controls">
+      <div id="btn-reset" class="ui-btn hide-on-run" onclick="resetTimer(event)">RESET</div>
+    </div>
+    <div class="center-controls">
+      <div id="btn-timer" class="ui-btn hide-on-run" style="font-size: clamp(16px, 2.5vh, 22px); color:#888;" onclick="openSettings(event)">TIMER</div>
+    </div>
+    <div class="right-controls">
+      <div id="btn-sound" class="ui-btn" onclick="toggleSound(event)">SOUND</div>
+      <div id="btn-flip" class="ui-btn" onclick="toggleFlip(event)">FLIP</div>
+    </div>
+  </div>
+
+  <div id="settings-overlay" class="settings-overlay" onclick="closeSettings(event)">
+    <div onclick="event.stopPropagation()" style="display:flex; flex-direction:column; align-items:center;">
+      
+      <div class="preset-grid">
+        <div class="preset-btn" onclick="applyTime(1)">1</div>
+        <div class="preset-btn" onclick="applyTime(2)">2</div>
+        <div class="preset-btn" onclick="applyTime(3)">3</div>
+        <div class="preset-btn" onclick="applyTime(5)">5</div>
+        <div class="preset-btn" onclick="applyTime(10)">10</div>
+        <div class="preset-btn" onclick="applyTime(15)">15</div>
+        <div class="preset-btn" onclick="applyTime(20)">20</div>
+        <div class="preset-btn" onclick="applyTime(30)">30</div>
+        <div class="preset-btn" onclick="applyTime(45)">45</div>
+        <div class="preset-btn" onclick="applyTime(60)">60</div>
+        <div class="preset-btn" onclick="applyTime(90)">90</div>
+        <div class="preset-btn" onclick="applyTime(120)">120</div>
+      </div>
+
+      <div class="custom-input-group">
+        <input type="number" id="custom-min" class="custom-input" placeholder="---" min="1" max="999">
+        <div class="custom-btn" onclick="applyCustomTime()">SET</div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    // 初期設定
+    let setMinutes = 15; 
+    let timeLeft = setMinutes * 60;
+    let isRunning = false;
+    
+    let isFlipEnabled = true;  
+    let isSoundEnabled = false; 
+    
+    let timerInterval;
+    let audioCtx; 
+    let flipTimeoutId;
+    let soundTimeoutId;
+    let resetTimeoutId;
+
+    const bodyEl = document.getElementById('body');
+    const minUnitEl = document.getElementById('min-unit');
+    const btnFlip = document.getElementById('btn-flip');
+    const btnSound = document.getElementById('btn-sound');
+    const btnReset = document.getElementById('btn-reset');
+    const customInput = document.getElementById('custom-min');
+
+    function initAudio() {
+      if (!audioCtx) {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        audioCtx = new AudioContext();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+    }
+
+    function playElegantChime() {
+      if (!isSoundEnabled || !audioCtx) return;
+
+      const t = audioCtx.currentTime;
+      const osc1 = audioCtx.createOscillator();
+      const gain1 = audioCtx.createGain();
+      osc1.type = 'sine';
+      osc1.frequency.value = 880; 
+
+      const osc2 = audioCtx.createOscillator();
+      const gain2 = audioCtx.createGain();
+      osc2.type = 'sine';
+      osc2.frequency.value = 1760; 
+
+      gain1.gain.setValueAtTime(0, t);
+      gain1.gain.linearRampToValueAtTime(0.5, t + 0.05); 
+      gain1.gain.exponentialRampToValueAtTime(0.001, t + 3); 
+
+      gain2.gain.setValueAtTime(0, t);
+      gain2.gain.linearRampToValueAtTime(0.15, t + 0.05);
+      gain2.gain.exponentialRampToValueAtTime(0.001, t + 2);
+
+      osc1.connect(gain1);
+      gain1.connect(audioCtx.destination);
+      osc2.connect(gain2);
+      gain2.connect(audioCtx.destination);
+
+      osc1.start(t);
+      osc1.stop(t + 3);
+      osc2.start(t);
+      osc2.stop(t + 2);
+    }
+
+    function flip(unitId, newNumber) {
+      const unit = document.getElementById(unitId);
+      const top = unit.querySelector('.top:not(.flip-top)');
+      const bottom = unit.querySelector('.bottom:not(.flip-bottom)');
+      const currentNumber = top.getAttribute('data-val');
+      
+      if (currentNumber === newNumber) return;
+
+      unit.querySelectorAll('.flip-top, .flip-bottom').forEach(el => el.remove());
+
+      const flipTop = document.createElement('div');
+      flipTop.className = 'top flip-top';
+      flipTop.setAttribute('data-val', currentNumber);
+
+      const flipBottom = document.createElement('div');
+      flipBottom.className = 'bottom flip-bottom';
+      flipBottom.setAttribute('data-val', newNumber);
+
+      unit.appendChild(flipTop);
+      unit.appendChild(flipBottom);
+
+      top.setAttribute('data-val', newNumber);
+
+      flipTop.addEventListener('animationend', () => {
+        flipTop.remove();
+      });
+
+      flipBottom.addEventListener('animationend', () => {
+        bottom.setAttribute('data-val', newNumber);
+        flipBottom.remove();
+      });
+    }
+
+    function updateDisplay(forceUpdate = false) {
+      const m = Math.floor(timeLeft / 60).toString().padStart(2, '0');
+      const s = (timeLeft % 60).toString().padStart(2, '0');
+
+      if (m.length >= 3) {
+        minUnitEl.classList.add('three-digits');
+      } else {
+        minUnitEl.classList.remove('three-digits');
+      }
+
+      if (forceUpdate || !isFlipEnabled) {
+        ['min-unit', 'sec-unit'].forEach(id => {
+          const val = id === 'min-unit' ? m : s;
+          const unit = document.getElementById(id);
+          
+          unit.querySelectorAll('.flip-top, .flip-bottom').forEach(el => el.remove());
+          unit.querySelectorAll('.top, .bottom').forEach(el => el.setAttribute('data-val', val));
+        });
+      } else {
+        flip('min-unit', m);
+        flip('sec-unit', s);
+      }
+    }
+
+    function openSettings(event) {
+      if (event) event.stopPropagation();
+      if (isRunning) return;
+      bodyEl.classList.add('settings-open');
+      customInput.value = ''; 
+    }
+
+    function closeSettings(event) {
+      if (event) event.stopPropagation();
+      bodyEl.classList.remove('settings-open');
+      customInput.blur();
+    }
+
+    function applyTime(minutes) {
+      setMinutes = minutes;
+      timeLeft = setMinutes * 60;
+      updateDisplay(true);
+      closeSettings();
+    }
+
+    function applyCustomTime() {
+      const val = parseInt(customInput.value, 10);
+      if (!isNaN(val) && val > 0) {
+        applyTime(val);
+      } else {
+        closeSettings();
+      }
+    }
+
+    function resetTimer(event) {
+      if (event) event.stopPropagation();
+      if (isRunning) return;
+      
+      timeLeft = setMinutes * 60;
+      updateDisplay(true);
+
+      btnReset.textContent = "RESET";
+      btnReset.classList.add('flash');
+      clearTimeout(resetTimeoutId);
+      resetTimeoutId = setTimeout(() => {
+        btnReset.classList.remove('flash');
+      }, 300);
+    }
+
+    function toggleTimer(event) {
+      if (event && event.target !== bodyEl && 
+          !event.target.classList.contains('flip-unit') && 
+          !event.target.classList.contains('timer-container') && 
+          !event.target.classList.contains('colon')) {
+        return;
+      }
+      
+      if (bodyEl.classList.contains('settings-open')) {
+        closeSettings();
+        return;
+      }
+
+      initAudio();
+
+      if (isRunning) {
+        clearInterval(timerInterval);
+        isRunning = false;
+        bodyEl.classList.add('paused');
+        bodyEl.classList.remove('running');
+      } else {
+        if (timeLeft <= 0) return; 
+
+        isRunning = true;
+        bodyEl.classList.remove('paused');
+        bodyEl.classList.add('running'); 
+        
+        timerInterval = setInterval(() => {
+          timeLeft--;
+          updateDisplay();
+
+          if (timeLeft <= 0) {
+            clearInterval(timerInterval);
+            isRunning = false;
+            bodyEl.classList.add('paused');
+            bodyEl.classList.remove('running');
+            playElegantChime(); 
+          }
+        }, 1000);
+      }
+    }
+
+    function toggleFlip(event) {
+      if (event) event.stopPropagation();
+      isFlipEnabled = !isFlipEnabled;
+      
+      btnFlip.textContent = isFlipEnabled ? "FLIP: ON" : "FLIP: OFF";
+      btnFlip.classList.add('flash');
+      
+      clearTimeout(flipTimeoutId);
+      flipTimeoutId = setTimeout(() => {
+        btnFlip.classList.remove('flash');
+        btnFlip.textContent = "FLIP";
+      }, 1500);
+    }
+
+    function toggleSound(event) {
+      if (event) event.stopPropagation();
+      isSoundEnabled = !isSoundEnabled;
+      
+      btnSound.textContent = isSoundEnabled ? "SOUND: ON" : "SOUND: OFF";
+      btnSound.classList.add('flash');
+      
+      clearTimeout(soundTimeoutId);
+      soundTimeoutId = setTimeout(() => {
+        btnSound.classList.remove('flash');
+        btnSound.textContent = "SOUND";
+      }, 1500);
+      
+      if(isSoundEnabled) {
+        initAudio();
+        playElegantChime();
+      }
+    }
+
+    updateDisplay(true);
+  </script>
+</body>
+</html>
