@@ -184,7 +184,7 @@
       50% { opacity: 0.1; }
     }
 
-    /* --- 下部コントロールバー（中央にコンパクトに配置） --- */
+    /* --- 下部コントロールバー --- */
     .bottom-bar {
       position: absolute;
       bottom: calc(env(safe-area-inset-bottom, 10px) + 20px);
@@ -198,12 +198,13 @@
     }
 
     body.settings-open .bottom-bar,
-    body.option-open .bottom-bar {
+    body.option-open .bottom-bar,
+    body.running .bottom-bar {
       opacity: 0;
       pointer-events: none;
     }
 
-    /* トグルボタン共通スタイル（薄めの色で統一） */
+    /* トグルボタン共通スタイル */
     .ui-btn {
       font-size: clamp(13px, 2.2vh, 18px);
       font-weight: 300;
@@ -223,19 +224,13 @@
       color: #ffffff; 
     }
 
-    /* 動作中のUIフェードアウト */
-    body.running .ui-btn.hide-on-run {
-      opacity: 0;
-      pointer-events: none;
-    }
-
     /* =========================================
        ✨ フワッと浮かび上がるオーバーレイ共通
        ========================================= */
     .settings-overlay, .option-overlay {
       position: absolute;
       inset: 0;
-      background: rgba(0, 0, 0, 0.7);
+      background: rgba(0, 0, 0, 0.75);
       backdrop-filter: blur(15px);
       -webkit-backdrop-filter: blur(15px);
       z-index: 50;
@@ -258,7 +253,7 @@
       pointer-events: auto;
     }
 
-    /* プリセット選択グリッド */
+    /* プリセット選択グリッド（はっきりした白に変更） */
     .preset-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -267,9 +262,9 @@
     }
 
     .preset-btn {
-      font-size: clamp(18px, 3.5vh, 32px);
-      font-weight: 300;
-      color: #666666;
+      font-size: clamp(20px, 3.8vh, 34px);
+      font-weight: 400;
+      color: #f0f0f0; /* はっきりと見える明るい白 */
       padding: 15px 25px;
       cursor: pointer;
       text-align: center;
@@ -291,12 +286,12 @@
     .custom-input {
       background: transparent;
       border: none;
-      border-bottom: 1px solid #444;
+      border-bottom: 1px solid #666;
       color: #ffffff;
-      font-size: clamp(18px, 3vh, 28px);
+      font-size: clamp(20px, 3.2vh, 30px);
       font-family: inherit;
-      font-weight: 300;
-      width: 80px;
+      font-weight: 400;
+      width: 90px;
       text-align: center;
       padding: 5px;
       outline: none;
@@ -309,10 +304,10 @@
     }
 
     .custom-btn {
-      font-size: clamp(14px, 2vh, 20px);
-      font-weight: 300;
+      font-size: clamp(16px, 2.2vh, 22px);
+      font-weight: 400;
       letter-spacing: 2px;
-      color: #666666;
+      color: #f0f0f0; /* はっきりした白 */
       cursor: pointer;
       padding: 10px 20px;
       transition: color 0.3s ease;
@@ -385,8 +380,8 @@
   
   <!-- 下部コントロールバー（左から RESET, TIMER, OPTION） -->
   <div class="bottom-bar">
-    <div id="btn-reset" class="ui-btn hide-on-run" onclick="resetTimer(event)">RESET</div>
-    <div id="btn-timer" class="ui-btn hide-on-run" onclick="openSettings(event)">TIMER</div>
+    <div id="btn-reset" class="ui-btn" onclick="resetTimer(event)">RESET</div>
+    <div id="btn-timer" class="ui-btn" onclick="openSettings(event)">TIMER</div>
     <div id="btn-option" class="ui-btn" onclick="openOption(event)">OPTION</div>
   </div>
 
