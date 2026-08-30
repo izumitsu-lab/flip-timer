@@ -37,14 +37,14 @@
       justify-content: center;
       width: 100%;
       gap: 3vw; 
-      transform: translateY(-2vh); 
+      transform: translateY(0); 
       transition: filter 0.5s ease, transform 0.5s ease;
     }
 
     body.settings-open .timer-container,
     body.option-open .timer-container {
       filter: blur(8px) brightness(0.5);
-      transform: translateY(-2vh) scale(0.95);
+      transform: translateY(0) scale(0.95);
     }
 
     /* フリップユニット本体 */
@@ -344,11 +344,6 @@
       .timer-container {
         flex-direction: column; 
         gap: 1.5vh; 
-        transform: translateY(0); 
-      }
-      body.settings-open .timer-container,
-      body.option-open .timer-container {
-        transform: translateY(0) scale(0.95);
       }
       .flip-unit {
         width: min(75vw, 32vh); 
