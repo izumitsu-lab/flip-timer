@@ -41,7 +41,8 @@
       transition: filter 0.5s ease, transform 0.5s ease;
     }
 
-    body.settings-open .timer-container {
+    body.settings-open .timer-container,
+    body.option-open .timer-container {
       filter: blur(8px) brightness(0.5);
       transform: translateY(-2vh) scale(0.95);
     }
@@ -50,7 +51,7 @@
     .flip-unit {
       position: relative;
       aspect-ratio: 1 / 1; 
-      width: min(42vw, 68vh); /* 横表示時の巨大化を防ぐため少し調整 */
+      width: min(42vw, 68vh); 
       height: auto;
       perspective: 1200px;
       border-radius: 3cqmin; 
@@ -183,49 +184,43 @@
       50% { opacity: 0.1; }
     }
 
-    /* --- 下部コントロールバー --- */
+    /* --- 下部コントロールバー（中央にコンパクトに配置） --- */
     .bottom-bar {
       position: absolute;
       bottom: calc(env(safe-area-inset-bottom, 10px) + 20px);
       width: 100%;
-      padding: 0 calc(env(safe-area-inset-right, 5vw) + 3vw) 0 calc(env(safe-area-inset-left, 5vw) + 3vw);
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
       align-items: center;
+      gap: 5vw;
       z-index: 20;
       transition: opacity 0.5s ease;
     }
 
-    body.settings-open .bottom-bar {
+    body.settings-open .bottom-bar,
+    body.option-open .bottom-bar {
       opacity: 0;
       pointer-events: none;
     }
 
-    .left-controls, .center-controls, .right-controls {
-      flex: 1;
-      display: flex;
-      align-items: center;
-    }
-
-    .left-controls { justify-content: flex-start; }
-    .center-controls { justify-content: center; }
-    .right-controls { justify-content: flex-end; gap: 1.5vw; }
-
-    /* トグルボタン共通スタイル（横表示でも見やすいサイズに調整） */
+    /* トグルボタン共通スタイル（薄めの色で統一） */
     .ui-btn {
-      font-size: clamp(14px, 2.2vh, 20px);
-      font-weight: 400;
+      font-size: clamp(13px, 2.2vh, 18px);
+      font-weight: 300;
       letter-spacing: 2px;
-      color: #444444;
+      color: #666666;
       transition: color 0.3s ease, opacity 0.3s ease;
-      padding: 10px 14px;
+      padding: 8px 12px;
       cursor: pointer;
-      min-width: 90px; 
       text-align: center;
     }
 
+    .ui-btn:hover {
+      color: #aaaaaa;
+    }
+
     .ui-btn.flash {
-      color: #e0e0e0; 
+      color: #ffffff; 
     }
 
     /* 動作中のUIフェードアウト */
@@ -235,9 +230,9 @@
     }
 
     /* =========================================
-       ✨ フワッと浮かび上がる設定オーバーレイ
+       ✨ フワッと浮かび上がるオーバーレイ共通
        ========================================= */
-    .settings-overlay {
+    .settings-overlay, .option-overlay {
       position: absolute;
       inset: 0;
       background: rgba(0, 0, 0, 0.7);
@@ -258,6 +253,12 @@
       pointer-events: auto;
     }
 
+    body.option-open .option-overlay {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* プリセット選択グリッド */
     .preset-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -268,7 +269,7 @@
     .preset-btn {
       font-size: clamp(18px, 3.5vh, 32px);
       font-weight: 300;
-      color: #555555;
+      color: #666666;
       padding: 15px 25px;
       cursor: pointer;
       text-align: center;
@@ -311,12 +312,35 @@
       font-size: clamp(14px, 2vh, 20px);
       font-weight: 300;
       letter-spacing: 2px;
-      color: #555555;
+      color: #666666;
       cursor: pointer;
       padding: 10px 20px;
       transition: color 0.3s ease;
     }
     .custom-btn:active { color: #ffffff; }
+
+    /* オプションメニュー（FLIP / SOUND）用の内部スタイル */
+    .option-content {
+      display: flex;
+      flex-direction: column;
+      gap: 4vh;
+      align-items: center;
+    }
+
+    .option-item {
+      font-size: clamp(18px, 3.5vh, 28px);
+      font-weight: 300;
+      letter-spacing: 3px;
+      color: #777777;
+      cursor: pointer;
+      padding: 10px 20px;
+      transition: color 0.3s ease;
+      text-align: center;
+    }
+
+    .option-item.active {
+      color: #e0e0e0;
+    }
 
     /* =========================================
        📱 スマホ縦画面（ポートレート）用の上書き設定
@@ -327,7 +351,8 @@
         gap: 1.5vh; 
         transform: translateY(0); 
       }
-      body.settings-open .timer-container {
+      body.settings-open .timer-container,
+      body.option-open .timer-container {
         transform: translateY(0) scale(0.95);
       }
       .flip-unit {
@@ -335,26 +360,6 @@
       }
       .colon {
         display: none; 
-      }
-      
-      /* メニューを横並びにして下部に固定配置 */
-      .bottom-bar {
-        position: relative;
-        bottom: auto;
-        margin-top: 3vh;
-        flex-direction: row;
-        justify-content: center;
-        gap: 15vw; 
-      }
-      
-      .left-controls, .center-controls {
-        flex: initial;
-        width: auto;
-        justify-content: center;
-      }
-      
-      .right-controls {
-        display: none; /* 縦画面時は設定系を隠す */
       }
       
       .preset-grid {
@@ -378,19 +383,14 @@
     </div>
   </div>
   
+  <!-- 下部コントロールバー（左から RESET, TIMER, OPTION） -->
   <div class="bottom-bar">
-    <div class="left-controls">
-      <div id="btn-reset" class="ui-btn hide-on-run" onclick="resetTimer(event)">RESET</div>
-    </div>
-    <div class="center-controls">
-      <div id="btn-timer" class="ui-btn hide-on-run" style="font-size: clamp(16px, 2.5vh, 22px); color:#888;" onclick="openSettings(event)">TIMER</div>
-    </div>
-    <div class="right-controls">
-      <div id="btn-sound" class="ui-btn" onclick="toggleSound(event)">SOUND</div>
-      <div id="btn-flip" class="ui-btn" onclick="toggleFlip(event)">FLIP</div>
-    </div>
+    <div id="btn-reset" class="ui-btn hide-on-run" onclick="resetTimer(event)">RESET</div>
+    <div id="btn-timer" class="ui-btn hide-on-run" onclick="openSettings(event)">TIMER</div>
+    <div id="btn-option" class="ui-btn" onclick="openOption(event)">OPTION</div>
   </div>
 
+  <!-- TIMER設定オーバーレイ -->
   <div id="settings-overlay" class="settings-overlay" onclick="closeSettings(event)">
     <div onclick="event.stopPropagation()" style="display:flex; flex-direction:column; align-items:center;">
       
@@ -417,6 +417,14 @@
     </div>
   </div>
 
+  <!-- OPTION設定オーバーレイ（FLIP / SOUNDを収納） -->
+  <div id="option-overlay" class="option-overlay" onclick="closeOption(event)">
+    <div class="option-content" onclick="event.stopPropagation()">
+      <div id="btn-flip" class="option-item active" onclick="toggleFlip(event)">FLIP: ON</div>
+      <div id="btn-sound" class="option-item" onclick="toggleSound(event)">SOUND: OFF</div>
+    </div>
+  </div>
+
   <script>
     // 初期設定
     let setMinutes = 15; 
@@ -428,8 +436,6 @@
     
     let timerInterval;
     let audioCtx; 
-    let flipTimeoutId;
-    let soundTimeoutId;
     let resetTimeoutId;
 
     const bodyEl = document.getElementById('body');
@@ -539,6 +545,7 @@
       }
     }
 
+    // TIMER設定の開閉
     function openSettings(event) {
       if (event) event.stopPropagation();
       if (isRunning) return;
@@ -550,6 +557,17 @@
       if (event) event.stopPropagation();
       bodyEl.classList.remove('settings-open');
       customInput.blur();
+    }
+
+    // OPTION設定の開閉
+    function openOption(event) {
+      if (event) event.stopPropagation();
+      bodyEl.classList.add('option-open');
+    }
+
+    function closeOption(event) {
+      if (event) event.stopPropagation();
+      bodyEl.classList.remove('option-open');
     }
 
     function applyTime(minutes) {
@@ -584,16 +602,21 @@
     }
 
     function toggleTimer(event) {
-      // 設定オーバーレイが開いている最中に背景をクリックした場合は「閉じる」を優先
+      // いずれかのオーバーレイが開いている最中に背景をクリックした場合は「閉じる」を優先
       if (bodyEl.classList.contains('settings-open')) {
         closeSettings();
         return;
       }
+      if (bodyEl.classList.contains('option-open')) {
+        closeOption();
+        return;
+      }
 
-      // コントロールバーや設定ボタン、入力欄を直接タップしたときはタイマーのON/OFFを誤作動させないようにガード
+      // コントロールバーやオーバーレイ内を直接タップしたときはタイマーのON/OFFを誤作動させない
       if (event && (
           event.target.closest('.bottom-bar') || 
-          event.target.closest('.settings-overlay')
+          event.target.closest('.settings-overlay') ||
+          event.target.closest('.option-overlay')
       )) {
         return;
       }
@@ -632,13 +655,11 @@
       isFlipEnabled = !isFlipEnabled;
       
       btnFlip.textContent = isFlipEnabled ? "FLIP: ON" : "FLIP: OFF";
-      btnFlip.classList.add('flash');
-      
-      clearTimeout(flipTimeoutId);
-      flipTimeoutId = setTimeout(() => {
-        btnFlip.classList.remove('flash');
-        btnFlip.textContent = "FLIP";
-      }, 1500);
+      if (isFlipEnabled) {
+        btnFlip.classList.add('active');
+      } else {
+        btnFlip.classList.remove('active');
+      }
     }
 
     function toggleSound(event) {
@@ -646,17 +667,12 @@
       isSoundEnabled = !isSoundEnabled;
       
       btnSound.textContent = isSoundEnabled ? "SOUND: ON" : "SOUND: OFF";
-      btnSound.classList.add('flash');
-      
-      clearTimeout(soundTimeoutId);
-      soundTimeoutId = setTimeout(() => {
-        btnSound.classList.remove('flash');
-        btnSound.textContent = "SOUND";
-      }, 1500);
-      
-      if(isSoundEnabled) {
+      if (isSoundEnabled) {
+        btnSound.classList.add('active');
         initAudio();
         playElegantChime();
+      } else {
+        btnSound.classList.remove('active');
       }
     }
 
