@@ -50,7 +50,7 @@
     .flip-unit {
       position: relative;
       aspect-ratio: 1 / 1; 
-      width: min(42vw, 75vh); 
+      width: min(42vw, 68vh); /* 横表示時の巨大化を防ぐため少し調整 */
       height: auto;
       perspective: 1200px;
       border-radius: 3cqmin; 
@@ -186,9 +186,9 @@
     /* --- 下部コントロールバー --- */
     .bottom-bar {
       position: absolute;
-      bottom: calc(env(safe-area-inset-bottom, 10px) + 15px);
+      bottom: calc(env(safe-area-inset-bottom, 10px) + 20px);
       width: 100%;
-      padding: 0 calc(env(safe-area-inset-right, 5vw) + 2vw) 0 calc(env(safe-area-inset-left, 5vw) + 2vw);
+      padding: 0 calc(env(safe-area-inset-right, 5vw) + 3vw) 0 calc(env(safe-area-inset-left, 5vw) + 3vw);
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -209,18 +209,18 @@
 
     .left-controls { justify-content: flex-start; }
     .center-controls { justify-content: center; }
-    .right-controls { justify-content: flex-end; gap: 1vw; }
+    .right-controls { justify-content: flex-end; gap: 1.5vw; }
 
-    /* トグルボタン共通スタイル */
+    /* トグルボタン共通スタイル（横表示でも見やすいサイズに調整） */
     .ui-btn {
-      font-size: clamp(12px, 2vh, 18px);
-      font-weight: 300;
+      font-size: clamp(14px, 2.2vh, 20px);
+      font-weight: 400;
       letter-spacing: 2px;
-      color: #333333;
+      color: #444444;
       transition: color 0.3s ease, opacity 0.3s ease;
-      padding: 8px 10px;
+      padding: 10px 14px;
       cursor: pointer;
-      min-width: 80px; 
+      min-width: 90px; 
       text-align: center;
     }
 
@@ -331,7 +331,6 @@
         transform: translateY(0) scale(0.95);
       }
       .flip-unit {
-        /* 高さを控えめにして上下に余裕を持たせる */
         width: min(75vw, 32vh); 
       }
       .colon {
@@ -585,15 +584,17 @@
     }
 
     function toggleTimer(event) {
-      if (event && event.target !== bodyEl && 
-          !event.target.classList.contains('flip-unit') && 
-          !event.target.classList.contains('timer-container') && 
-          !event.target.classList.contains('colon')) {
-        return;
-      }
-      
+      // 設定オーバーレイが開いている最中に背景をクリックした場合は「閉じる」を優先
       if (bodyEl.classList.contains('settings-open')) {
         closeSettings();
+        return;
+      }
+
+      // コントロールバーや設定ボタン、入力欄を直接タップしたときはタイマーのON/OFFを誤作動させないようにガード
+      if (event && (
+          event.target.closest('.bottom-bar') || 
+          event.target.closest('.settings-overlay')
+      )) {
         return;
       }
 
