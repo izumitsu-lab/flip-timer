@@ -253,7 +253,7 @@
       pointer-events: auto;
     }
 
-    /* プリセット選択グリッド（はっきりした白に変更） */
+    /* プリセット選択グリッド */
     .preset-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -264,7 +264,7 @@
     .preset-btn {
       font-size: clamp(20px, 3.8vh, 34px);
       font-weight: 400;
-      color: #f0f0f0; /* はっきりと見える明るい白 */
+      color: #f0f0f0;
       padding: 15px 25px;
       cursor: pointer;
       text-align: center;
@@ -307,14 +307,14 @@
       font-size: clamp(16px, 2.2vh, 22px);
       font-weight: 400;
       letter-spacing: 2px;
-      color: #f0f0f0; /* はっきりした白 */
+      color: #f0f0f0;
       cursor: pointer;
       padding: 10px 20px;
       transition: color 0.3s ease;
     }
     .custom-btn:active { color: #ffffff; }
 
-    /* オプションメニュー（FLIP / SOUND）用の内部スタイル */
+    /* オプションメニュー用の内部スタイル */
     .option-content {
       display: flex;
       flex-direction: column;
@@ -378,7 +378,7 @@
     </div>
   </div>
   
-  <!-- 下部コントロールバー（左から RESET, TIMER, OPTION） -->
+  <!-- 下部コントロールバー -->
   <div class="bottom-bar">
     <div id="btn-reset" class="ui-btn" onclick="resetTimer(event)">RESET</div>
     <div id="btn-timer" class="ui-btn" onclick="openSettings(event)">TIMER</div>
@@ -397,11 +397,11 @@
         <div class="preset-btn" onclick="applyTime(10)">10</div>
         <div class="preset-btn" onclick="applyTime(15)">15</div>
         <div class="preset-btn" onclick="applyTime(20)">20</div>
+        <div class="preset-btn" onclick="applyTime(25)">25</div>
         <div class="preset-btn" onclick="applyTime(30)">30</div>
         <div class="preset-btn" onclick="applyTime(45)">45</div>
         <div class="preset-btn" onclick="applyTime(60)">60</div>
         <div class="preset-btn" onclick="applyTime(90)">90</div>
-        <div class="preset-btn" onclick="applyTime(120)">120</div>
       </div>
 
       <div class="custom-input-group">
@@ -412,7 +412,7 @@
     </div>
   </div>
 
-  <!-- OPTION設定オーバーレイ（FLIP / SOUNDを収納） -->
+  <!-- OPTION設定オーバーレイ -->
   <div id="option-overlay" class="option-overlay" onclick="closeOption(event)">
     <div class="option-content" onclick="event.stopPropagation()">
       <div id="btn-flip" class="option-item active" onclick="toggleFlip(event)">FLIP: ON</div>
@@ -597,7 +597,6 @@
     }
 
     function toggleTimer(event) {
-      // いずれかのオーバーレイが開いている最中に背景をクリックした場合は「閉じる」を優先
       if (bodyEl.classList.contains('settings-open')) {
         closeSettings();
         return;
@@ -607,7 +606,6 @@
         return;
       }
 
-      // コントロールバーやオーバーレイ内を直接タップしたときはタイマーのON/OFFを誤作動させない
       if (event && (
           event.target.closest('.bottom-bar') || 
           event.target.closest('.settings-overlay') ||
