@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>Real Flip Timer</title>
+  <title>Flip Timer</title>
   <style>
     /* 全体のリセットと背景設定 */
     * {
@@ -37,13 +37,13 @@
       justify-content: center;
       width: 100%;
       gap: 3vw; 
-      transform: translateY(-3vh); 
+      transform: translateY(-2vh); 
       transition: filter 0.5s ease, transform 0.5s ease;
     }
 
     body.settings-open .timer-container {
       filter: blur(8px) brightness(0.5);
-      transform: translateY(-3vh) scale(0.95);
+      transform: translateY(-2vh) scale(0.95);
     }
 
     /* フリップユニット本体 */
@@ -186,7 +186,7 @@
     /* --- 下部コントロールバー --- */
     .bottom-bar {
       position: absolute;
-      bottom: calc(env(safe-area-inset-bottom, 10px) + 5px);
+      bottom: calc(env(safe-area-inset-bottom, 10px) + 15px);
       width: 100%;
       padding: 0 calc(env(safe-area-inset-right, 5vw) + 2vw) 0 calc(env(safe-area-inset-left, 5vw) + 2vw);
       display: flex;
@@ -324,28 +324,30 @@
     @media (orientation: portrait) {
       .timer-container {
         flex-direction: column; 
-        gap: 2vh; 
-        transform: translateY(-4vh); 
+        gap: 1.5vh; 
+        transform: translateY(0); 
       }
       body.settings-open .timer-container {
-        transform: translateY(-4vh) scale(0.95);
+        transform: translateY(0) scale(0.95);
       }
       .flip-unit {
-        width: min(85vw, 38vh); 
+        /* 高さを控えめにして上下に余裕を持たせる */
+        width: min(75vw, 32vh); 
       }
       .colon {
         display: none; 
       }
       
-      /* メニューを横並び(1段)にして時計との被りを防ぐ */
+      /* メニューを横並びにして下部に固定配置 */
       .bottom-bar {
+        position: relative;
+        bottom: auto;
+        margin-top: 3vh;
         flex-direction: row;
         justify-content: center;
-        gap: 12vw; /* RESETとTIMERの隙間 */
-        bottom: calc(env(safe-area-inset-bottom, 20px) + 6vh); /* 位置を少し高めに調整 */
+        gap: 15vw; 
       }
       
-      /* flex: 1 を解除し、自然な幅にする */
       .left-controls, .center-controls {
         flex: initial;
         width: auto;
