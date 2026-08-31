@@ -414,20 +414,34 @@
       color: #cccccc;
     }
 
+    /* =========================================
+       ⚙️ 方針B：セクション分割レイアウト
+       ========================================= */
     .option-content {
       display: flex;
       flex-direction: column;
-      gap: 3vh;
+      gap: 2.5vh;
       align-items: center;
+      width: 100%;
+      max-width: 340px;
+      padding: 0 20px;
+    }
+
+    .option-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      gap: 1vh;
     }
 
     .option-item {
-      font-size: clamp(18px, 3.5vh, 28px);
+      font-size: clamp(15px, 2.8vh, 22px);
       font-weight: 300;
       letter-spacing: 3px;
       color: #777777;
       cursor: pointer;
-      padding: 10px 20px;
+      padding: 6px 16px;
       transition: color 0.3s ease;
       text-align: center;
     }
@@ -438,10 +452,10 @@
 
     .sound-select-group {
       display: none;
-      flex-direction: column;
-      gap: 1.5vh;
-      align-items: center;
-      margin-top: -1vh;
+      flex-direction: row;
+      justify-content: center;
+      gap: 2vw;
+      width: 100%;
     }
 
     body.sound-on .sound-select-group {
@@ -449,16 +463,16 @@
     }
 
     .sound-sub-item {
-      font-size: clamp(14px, 2.5vh, 20px);
+      font-size: clamp(11px, 2vh, 14px);
       font-weight: 300;
-      letter-spacing: 2px;
+      letter-spacing: 1px;
       color: #555555;
       cursor: pointer;
-      padding: 6px 16px;
+      padding: 4px 10px;
       transition: color 0.3s ease;
       text-align: center;
       border: 1px solid transparent;
-      border-radius: 20px;
+      border-radius: 12px;
     }
 
     .sound-sub-item:hover {
@@ -504,7 +518,7 @@
 </head>
 <body class="paused sound-on" id="body">
 
-  <!-- パタパタ時計部分を囲むコンテナをクリックした時だけタイマーが始動します -->
+  <!-- パタパタ時計部分を囲むコンテナをクリックした時だけスタート・ポーズ -->
   <div class="timer-container" onclick="toggleTimer(event)">
     <div class="flip-unit" id="min-unit">
       <div class="top" data-val="25"></div>
@@ -529,18 +543,18 @@
     <div onclick="event.stopPropagation()" style="display:flex; flex-direction:column; align-items:center;">
       
       <div class="preset-grid">
-        <div class="preset-btn" onclick="applyTime(1)">1</div>
-        <div class="preset-btn" onclick="applyTime(2)">2</div>
-        <div class="preset-btn" onclick="applyTime(3)">3</div>
-        <div class="preset-btn" onclick="applyTime(5)">5</div>
-        <div class="preset-btn" onclick="applyTime(10)">10</div>
-        <div class="preset-btn" onclick="applyTime(15)">15</div>
-        <div class="preset-btn" onclick="applyTime(20)">20</div>
-        <div class="preset-btn" onclick="applyTime(25)">25</div>
-        <div class="preset-btn" onclick="applyTime(30)">30</div>
-        <div class="preset-btn" onclick="applyTime(45)">45</div>
-        <div class="preset-btn" onclick="applyTime(60)">60</div>
-        <div class="preset-btn" onclick="applyTime(90)">90</div>
+        <div class="preset-btn" onclick="applyTimeAndMaybeStart(1)">1</div>
+        <div class="preset-btn" onclick="applyTimeAndMaybeStart(2)">2</div>
+        <div class="preset-btn" onclick="applyTimeAndMaybeStart(3)">3</div>
+        <div class="preset-btn" onclick="applyTimeAndMaybeStart(5)">5</div>
+        <div class="preset-btn" onclick="applyTimeAndMaybeStart(10)">10</div>
+        <div class="preset-btn" onclick="applyTimeAndMaybeStart(15)">15</div>
+        <div class="preset-btn" onclick="applyTimeAndMaybeStart(20)">20</div>
+        <div class="preset-btn" onclick="applyTimeAndMaybeStart(25)">25</div>
+        <div class="preset-btn" onclick="applyTimeAndMaybeStart(30)">30</div>
+        <div class="preset-btn" onclick="applyTimeAndMaybeStart(45)">45</div>
+        <div class="preset-btn" onclick="applyTimeAndMaybeStart(60)">60</div>
+        <div class="preset-btn" onclick="applyTimeAndMaybeStart(90)">90</div>
       </div>
 
       <div class="timer-menu-footer">
@@ -571,28 +585,39 @@
         <div class="key-btn action-key" onclick="deleteKey()">⌫</div>
       </div>
 
-      <div class="custom-set-btn" onclick="applyCustomTime()">SET</div>
+      <div class="custom-set-btn" onclick="applyCustomTimeAndMaybeStart()">SET</div>
       <div id="mode-toggle-link" class="mode-toggle-btn" onclick="toggleInputMode()">+ SWITCH TO MM:SS</div>
     </div>
   </div>
 
-  <!-- OPTION設定オーバーレイ -->
+  <!-- OPTION設定オーバーレイ（方針B：セクション分割レイアウト） -->
   <div id="option-overlay" class="option-overlay" onclick="closeOption(event)">
     <div class="option-content" onclick="event.stopPropagation()">
-      <div id="btn-flip" class="option-item active" onclick="toggleFlip(event)">FLIP: ON</div>
-      <div id="btn-sound" class="option-item active" onclick="toggleSound(event)">SOUND: ON</div>
       
-      <!-- サウンド選択用サブメニュー -->
-      <div class="sound-select-group">
-        <div id="sound-bell" class="sound-sub-item active" onclick="setSoundType('bell', event)">REAL BELL</div>
-        <div id="sound-chime" class="sound-sub-item" onclick="setSoundType('chime', event)">CHIME</div>
-        <div id="sound-beep" class="sound-sub-item" onclick="setSoundType('beep', event)">BEEP</div>
+      <!-- 表示・アニメーション系 -->
+      <div class="option-section">
+        <div id="btn-flip" class="option-item active" onclick="toggleFlip(event)">FLIP: ON</div>
       </div>
+
+      <!-- サウンド系（グループ化） -->
+      <div class="option-section">
+        <div id="btn-sound" class="option-item active" onclick="toggleSound(event)">SOUND: ON</div>
+        <div class="sound-select-group">
+          <div id="sound-bell" class="sound-sub-item active" onclick="setSoundType('bell', event)">BELL</div>
+          <div id="sound-chime" class="sound-sub-item" onclick="setSoundType('chime', event)">CHIME</div>
+          <div id="sound-beep" class="sound-sub-item" onclick="setSoundType('beep', event)">BEEP</div>
+        </div>
+      </div>
+
+      <!-- 挙動系 -->
+      <div class="option-section">
+        <div id="btn-start-mode" class="option-item" onclick="toggleStartMode(event)">START: TAP CLOCK</div>
+      </div>
+
     </div>
   </div>
 
   <script>
-    // iOSの回転時のレイアウト暴れを防ぐ高さ調整
     const setAppHeight = () => {
       document.documentElement.style.setProperty('--app-height', `${window.innerHeight}px`);
     };
@@ -602,29 +627,26 @@
     });
     setAppHeight();
 
-    // モード・時間設定
     let mode = 'timer'; 
     let setMinutes = 25; 
     let timeLeft = setMinutes * 60; 
     let chronoSeconds = 0;        
     let isRunning = false;
     
-    // タイムスタンプ管理用変数
     let targetTimestamp = 0;   
     let startEpoch = 0;        
     let elapsedBeforePause = 0; 
     
-    // 💡 設定値の初期状態を localStorage から復元（なければデフォルト値）
     let isFlipEnabled = localStorage.getItem('isFlipEnabled') !== null ? JSON.parse(localStorage.getItem('isFlipEnabled')) : true;  
     let isSoundEnabled = localStorage.getItem('isSoundEnabled') !== null ? JSON.parse(localStorage.getItem('isSoundEnabled')) : true; 
     let selectedSound = localStorage.getItem('selectedSound') || 'bell'; 
+    let startMode = localStorage.getItem('startMode') || 'tap'; 
     
     let timerInterval;
     let audioCtx; 
     let resetTimeoutId;
     let bellAudio = new Audio('bell3sec.wav');
 
-    // テンキー入力用変数
     let customInputBuffer = "";
     let customInputMode = localStorage.getItem('customInputMode') || 'minutes';
 
@@ -634,13 +656,12 @@
     const btnChrono = document.getElementById('btn-chrono');
     const btnFlip = document.getElementById('btn-flip');
     const btnSound = document.getElementById('btn-sound');
+    const btnStartMode = document.getElementById('btn-start-mode');
     const btnReset = document.getElementById('btn-reset');
     const customDisplayEl = document.getElementById('custom-display');
     const modeToggleLink = document.getElementById('mode-toggle-link');
 
-    // 💡 起動時に保存されたOPTION設定をDOMやクラスに反映させる初期化処理
     function applySavedOptionsToUI() {
-      // FLIPの反映
       if (isFlipEnabled) {
         btnFlip.textContent = "FLIP: ON";
         btnFlip.classList.add('active');
@@ -649,7 +670,6 @@
         btnFlip.classList.remove('active');
       }
 
-      // SOUNDの反映
       if (isSoundEnabled) {
         btnSound.textContent = "SOUND: ON";
         btnSound.classList.add('active');
@@ -660,7 +680,14 @@
         bodyEl.classList.remove('sound-on');
       }
 
-      // サウンドタイプの反映
+      if (startMode === 'instant') {
+        btnStartMode.textContent = "START: INSTANT";
+        btnStartMode.classList.add('active');
+      } else {
+        btnStartMode.textContent = "START: TAP CLOCK";
+        btnStartMode.classList.remove('active');
+      }
+
       document.querySelectorAll('.sound-sub-item').forEach(el => el.classList.remove('active'));
       const activeSoundEl = document.getElementById(`sound-${selectedSound}`);
       if (activeSoundEl) {
@@ -900,7 +927,6 @@
       }
       
       localStorage.setItem('customInputMode', customInputMode);
-
       customInputBuffer = "";
       updateCustomDisplay();
     }
@@ -949,9 +975,18 @@
       elapsedBeforePause = 0;
       updateDisplay(true);
       closeSettings();
+      closeCustomInput();
+
+      if (startMode === 'instant') {
+        startTimerInternal();
+      }
     }
 
-    function applyCustomTime() {
+    function applyTimeAndMaybeStart(minutes) {
+      applyTime(minutes, 0);
+    }
+
+    function applyCustomTimeAndMaybeStart() {
       if (customInputBuffer === "") {
         closeCustomInput();
         return;
@@ -961,6 +996,8 @@
         const val = parseInt(customInputBuffer, 10);
         if (!isNaN(val) && val > 0) {
           applyTime(val, 0);
+        } else {
+          closeCustomInput();
         }
       } else {
         let padded = customInputBuffer.padStart(4, '0');
@@ -969,9 +1006,10 @@
         let totalSeconds = (m * 60) + s;
         if (totalSeconds > 0) {
           applyTime(0, totalSeconds);
+        } else {
+          closeCustomInput();
         }
       }
-      closeCustomInput();
     }
 
     function resetTimer(event) {
@@ -1005,29 +1043,31 @@
       }
     }
 
+    function startTimerInternal() {
+      initAudio();
+      if (mode === 'timer' && timeLeft <= 0) return; 
+
+      isRunning = true;
+      bodyEl.classList.remove('paused');
+      bodyEl.classList.add('running'); 
+      
+      const now = Date.now();
+      if (mode === 'timer') {
+        targetTimestamp = now + (timeLeft * 1000);
+      } else {
+        startEpoch = now - (elapsedBeforePause * 1000);
+      }
+      
+      checkTimeAndTick();
+      timerInterval = setInterval(checkTimeAndTick, 250);
+    }
+
     function toggleTimer(event) {
       if (event) event.stopPropagation();
-
-      initAudio();
-
       if (isRunning) {
         stopTimer();
       } else {
-        if (mode === 'timer' && timeLeft <= 0) return; 
-
-        isRunning = true;
-        bodyEl.classList.remove('paused');
-        bodyEl.classList.add('running'); 
-        
-        const now = Date.now();
-        if (mode === 'timer') {
-          targetTimestamp = now + (timeLeft * 1000);
-        } else {
-          startEpoch = now - (elapsedBeforePause * 1000);
-        }
-        
-        checkTimeAndTick();
-        timerInterval = setInterval(checkTimeAndTick, 250);
+        startTimerInternal();
       }
     }
 
@@ -1037,7 +1077,6 @@
       }
     });
 
-    // 💡 FLIP設定切り替え＆localStorage保存
     function toggleFlip(event) {
       if (event) event.stopPropagation();
       isFlipEnabled = !isFlipEnabled;
@@ -1048,7 +1087,6 @@
       localStorage.setItem('isFlipEnabled', isFlipEnabled);
     }
 
-    // 💡 SOUND設定切り替え＆localStorage保存
     function toggleSound(event) {
       if (event) event.stopPropagation();
       isSoundEnabled = !isSoundEnabled;
@@ -1068,7 +1106,21 @@
       localStorage.setItem('isSoundEnabled', isSoundEnabled);
     }
 
-    // 💡 サウンド種類選択＆localStorage保存
+    function toggleStartMode(event) {
+      if (event) event.stopPropagation();
+      if (startMode === 'tap') {
+        startMode = 'instant';
+        btnStartMode.textContent = "START: INSTANT";
+        btnStartMode.classList.add('active');
+      } else {
+        startMode = 'tap';
+        btnStartMode.textContent = "START: TAP CLOCK";
+        btnStartMode.classList.remove('active');
+      }
+
+      localStorage.setItem('startMode', startMode);
+    }
+
     function setSoundType(type, event) {
       if (event) event.stopPropagation();
       selectedSound = type;
@@ -1082,7 +1134,6 @@
       playSelectedSound();
     }
 
-    // アプリ起動時に保存されたオプションを適用
     applySavedOptionsToUI();
     updateDisplay(true);
   </script>
