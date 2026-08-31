@@ -31,7 +31,7 @@
       background-color: #000000;
       color: #e0e0e0;
       font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-      height: var(--app-height); /* iOS回転時の揺れを防ぐためCSS変数で制御 */
+      height: var(--app-height);
       width: 100vw;
       display: flex;
       flex-direction: column;
@@ -54,7 +54,8 @@
     }
 
     body.settings-open .timer-container,
-    body.option-open .timer-container {
+    body.option-open .timer-container,
+    body.custom-open .timer-container {
       filter: blur(8px) brightness(0.5);
       transform: translateY(0) scale(0.95);
     }
@@ -142,7 +143,6 @@
     .top::after { top: 0; }
     .bottom::after { bottom: 0; }
 
-    /* 立体感を出すためのグラデーションシャドウ */
     .top::before {
       content: '';
       position: absolute;
@@ -196,53 +196,53 @@
       50% { opacity: 0.1; }
     }
 
-    /* --- 下部コントロールバー --- */
+    /* --- 下部コントロールバー（3つ配置：CHRONO / TIMER / OPTION） --- */
     .bottom-bar {
       position: absolute;
-      bottom: calc(env(safe-area-inset-bottom, 10px) + 20px);
+      bottom: calc(env(safe-area-inset-bottom, 10px) + 16px);
       width: 100%;
       display: flex;
       justify-content: center;
       align-items: center;
-      gap: 5vw;
+      gap: 8vw;
       z-index: 20;
       transition: opacity 0.5s ease;
     }
 
     body.settings-open .bottom-bar,
     body.option-open .bottom-bar,
+    body.custom-open .bottom-bar,
     body.running .bottom-bar {
       opacity: 0;
       pointer-events: none;
     }
 
-    /* トグルボタン共通スタイル */
     .ui-btn {
-      font-size: clamp(13px, 2.2vh, 18px);
-      font-weight: 300;
+      font-size: clamp(16px, 3.5vh, 24px);
+      font-weight: 400;
       letter-spacing: 2px;
-      color: #666666;
+      color: #777777;
       transition: color 0.3s ease, opacity 0.3s ease;
-      padding: 8px 12px;
+      padding: 10px 16px;
       cursor: pointer;
       text-align: center;
     }
 
     .ui-btn:hover {
-      color: #aaaaaa;
+      color: #bbbbbb;
     }
 
-    .ui-btn.flash {
-      color: #ffffff; 
+    .ui-btn.active-mode {
+      color: #e0e0e0;
     }
 
     /* =========================================
-       ✨ フワッと浮かび上がるオーバーレイ共通
+       ✨ 浮かび上がるオーバーレイ共通
        ========================================= */
-    .settings-overlay, .option-overlay {
+    .settings-overlay, .option-overlay, .custom-overlay {
       position: absolute;
       inset: 0;
-      background: rgba(0, 0, 0, 0.75);
+      background: rgba(0, 0, 0, 0.8);
       backdrop-filter: blur(15px);
       -webkit-backdrop-filter: blur(15px);
       z-index: 50;
@@ -265,19 +265,24 @@
       pointer-events: auto;
     }
 
-    /* プリセット選択グリッド */
+    body.custom-open .custom-overlay {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* プリセット選択グリッド（元の洗練された12個の数字） */
     .preset-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 3vw;
-      margin-bottom: 5vh;
+      margin-bottom: 3vh;
     }
 
     .preset-btn {
       font-size: clamp(20px, 3.8vh, 34px);
       font-weight: 400;
       color: #f0f0f0;
-      padding: 15px 25px;
+      padding: 12px 20px;
       cursor: pointer;
       text-align: center;
       transition: color 0.3s ease, transform 0.1s ease;
@@ -289,6 +294,32 @@
       transform: scale(0.95);
     }
 
+    /* TIMERメニュー内の補助ボタン行（RESET ＆ CUSTOM） */
+    .timer-menu-footer {
+      display: flex;
+      gap: 4vw;
+      margin-top: 1vh;
+    }
+
+    .sub-menu-btn {
+      font-size: clamp(14px, 2.2vh, 18px);
+      font-weight: 300;
+      letter-spacing: 2px;
+      color: #888888;
+      cursor: pointer;
+      padding: 8px 16px;
+      transition: color 0.3s ease;
+    }
+
+    .sub-menu-btn:hover {
+      color: #ffffff;
+    }
+
+    .sub-menu-btn.flash {
+      color: #ffffff;
+    }
+
+    /* 任意の数字を入力するふわっとメニュー */
     .custom-input-group {
       display: flex;
       align-items: center;
@@ -300,10 +331,10 @@
       border: none;
       border-bottom: 1px solid #666;
       color: #ffffff;
-      font-size: clamp(20px, 3.2vh, 30px);
+      font-size: clamp(24px, 4vh, 36px);
       font-family: inherit;
       font-weight: 400;
-      width: 90px;
+      width: 100px;
       text-align: center;
       padding: 5px;
       outline: none;
@@ -316,7 +347,7 @@
     }
 
     .custom-btn {
-      font-size: clamp(16px, 2.2vh, 22px);
+      font-size: clamp(16px, 2.5vh, 22px);
       font-weight: 400;
       letter-spacing: 2px;
       color: #f0f0f0;
@@ -349,7 +380,6 @@
       color: #e0e0e0;
     }
 
-    /* サウンド選択サブメニュー（初期状態で表示） */
     .sound-select-group {
       display: none;
       flex-direction: column;
@@ -391,14 +421,15 @@
     @media (orientation: portrait) {
       .timer-container {
         flex-direction: column; 
-        transform: translateY(-2vh); 
+        transform: translateY(-4vh); 
       }
       body.settings-open .timer-container,
-      body.option-open .timer-container {
-        transform: translateY(-2vh) scale(0.95);
+      body.option-open .timer-container,
+      body.custom-open .timer-container {
+        transform: translateY(-4vh) scale(0.95);
       }
       .flip-unit {
-        width: min(75vw, 32vh); 
+        width: min(72vw, 30vh); 
       }
       .colon {
         display: none; 
@@ -406,7 +437,12 @@
       
       .preset-grid {
         grid-template-columns: repeat(3, 1fr);
-        gap: 5vw;
+        gap: 4vw;
+      }
+      
+      .bottom-bar {
+        bottom: calc(env(safe-area-inset-bottom, 10px) + 24px);
+        gap: 10vw;
       }
     }
   </style>
@@ -425,14 +461,14 @@
     </div>
   </div>
   
-  <!-- 下部コントロールバー -->
+  <!-- 下部コントロールバー（CHRONO / TIMER / OPTION） -->
   <div class="bottom-bar">
-    <div id="btn-reset" class="ui-btn" onclick="resetTimer(event)">RESET</div>
-    <div id="btn-timer" class="ui-btn" onclick="openSettings(event)">TIMER</div>
+    <div id="btn-chrono" class="ui-btn" onclick="switchToChrono(event)">CHRONO</div>
+    <div id="btn-timer" class="ui-btn active-mode" onclick="handleTimerClick(event)">TIMER</div>
     <div id="btn-option" class="ui-btn" onclick="openOption(event)">OPTION</div>
   </div>
 
-  <!-- TIMER設定オーバーレイ -->
+  <!-- TIMER設定オーバーレイ（12個の元数字グリッド ＋ RESET ＆ CUSTOMボタン） -->
   <div id="settings-overlay" class="settings-overlay" onclick="closeSettings(event)">
     <div onclick="event.stopPropagation()" style="display:flex; flex-direction:column; align-items:center;">
       
@@ -451,11 +487,19 @@
         <div class="preset-btn" onclick="applyTime(90)">90</div>
       </div>
 
-      <div class="custom-input-group">
-        <input type="number" id="custom-min" class="custom-input" placeholder="---" min="1" max="999">
-        <div class="custom-btn" onclick="applyCustomTime()">SET</div>
+      <div class="timer-menu-footer">
+        <div id="btn-reset" class="sub-menu-btn" onclick="resetTimer(event)">RESET</div>
+        <div class="sub-menu-btn" onclick="openCustomInput(event)">CUSTOM</div>
       </div>
 
+    </div>
+  </div>
+
+  <!-- 任意の値入力を選ぶためのふわっとメニュー（CUSTOM） -->
+  <div id="custom-overlay" class="custom-overlay" onclick="closeCustomInput(event)">
+    <div class="custom-input-group" onclick="event.stopPropagation()">
+      <input type="number" id="custom-min" class="custom-input" placeholder="---" min="1" max="999">
+      <div class="custom-btn" onclick="applyCustomTime()">SET</div>
     </div>
   </div>
 
@@ -465,7 +509,7 @@
       <div id="btn-flip" class="option-item active" onclick="toggleFlip(event)">FLIP: ON</div>
       <div id="btn-sound" class="option-item active" onclick="toggleSound(event)">SOUND: ON</div>
       
-      <!-- サウンド選択用サブメニュー (初期から表示) -->
+      <!-- サウンド選択用サブメニュー -->
       <div class="sound-select-group">
         <div id="sound-bell" class="sound-sub-item active" onclick="setSoundType('bell', event)">REAL BELL</div>
         <div id="sound-chime" class="sound-sub-item" onclick="setSoundType('chime', event)">CHIME</div>
@@ -475,7 +519,7 @@
   </div>
 
   <script>
-    // iOSの回転時のレイアウト暴れ（ビヨビヨ）を防ぐための高さ再計算処理
+    // iOSの回転時のレイアウト暴れを防ぐ高さ調整
     const setAppHeight = () => {
       document.documentElement.style.setProperty('--app-height', `${window.innerHeight}px`);
     };
@@ -485,9 +529,11 @@
     });
     setAppHeight();
 
-    // 初期設定 (デフォルト時間を25分に変更)
+    // モード・時間設定
+    let mode = 'timer'; 
     let setMinutes = 25; 
-    let timeLeft = setMinutes * 60;
+    let timeLeft = setMinutes * 60; 
+    let chronoSeconds = 0;        
     let isRunning = false;
     
     let isFlipEnabled = true;  
@@ -501,6 +547,8 @@
 
     const bodyEl = document.getElementById('body');
     const minUnitEl = document.getElementById('min-unit');
+    const btnTimer = document.getElementById('btn-timer');
+    const btnChrono = document.getElementById('btn-chrono');
     const btnFlip = document.getElementById('btn-flip');
     const btnSound = document.getElementById('btn-sound');
     const btnReset = document.getElementById('btn-reset');
@@ -516,10 +564,8 @@
       }
     }
 
-    // 選択されたサウンドを実際に鳴らすテスト関数
     function playSelectedSound() {
       if (!isSoundEnabled) return;
-
       if (selectedSound === 'bell') {
         bellAudio.currentTime = 0;
         bellAudio.play().catch(e => console.log("Bell play error:", e));
@@ -532,7 +578,6 @@
       }
     }
 
-    // デフォルトの美しいチャイム音
     function playElegantChime() {
       if (!audioCtx) return;
       const t = audioCtx.currentTime;
@@ -565,7 +610,6 @@
       osc2.stop(t + 2);
     }
 
-    // シンプルな電子ビープ音
     function playBeepSound() {
       if (!audioCtx) return;
       const t = audioCtx.currentTime;
@@ -610,10 +654,7 @@
 
       top.setAttribute('data-val', newNumber);
 
-      flipTop.addEventListener('animationend', () => {
-        flipTop.remove();
-      });
-
+      flipTop.addEventListener('animationend', () => flipTop.remove());
       flipBottom.addEventListener('animationend', () => {
         bottom.setAttribute('data-val', newNumber);
         flipBottom.remove();
@@ -621,8 +662,10 @@
     }
 
     function updateDisplay(forceUpdate = false) {
-      const m = Math.floor(timeLeft / 60).toString().padStart(2, '0');
-      const s = (timeLeft % 60).toString().padStart(2, '0');
+      let currentSeconds = (mode === 'timer') ? timeLeft : chronoSeconds;
+
+      const m = Math.floor(currentSeconds / 60).toString().padStart(2, '0');
+      const s = (currentSeconds % 60).toString().padStart(2, '0');
 
       if (m.length >= 3) {
         minUnitEl.classList.add('three-digits');
@@ -644,21 +687,42 @@
       }
     }
 
-    // TIMER設定の開閉
-    function openSettings(event) {
+    function handleTimerClick(event) {
       if (event) event.stopPropagation();
       if (isRunning) return;
+
+      if (mode === 'chrono') {
+        mode = 'timer';
+        btnTimer.classList.add('active-mode');
+        btnChrono.classList.remove('active-mode');
+        updateDisplay(true);
+      } else {
+        openSettings(event);
+      }
+    }
+
+    function switchToChrono(event) {
+      if (event) event.stopPropagation();
+      if (isRunning) return;
+
+      mode = 'chrono';
+      chronoSeconds = 0;
+      btnChrono.classList.add('active-mode');
+      btnTimer.classList.remove('active-mode');
+      updateDisplay(true);
+    }
+
+    function openSettings(event) {
+      if (event) event.stopPropagation();
+      if (isRunning || mode === 'chrono') return;
       bodyEl.classList.add('settings-open');
-      customInput.value = ''; 
     }
 
     function closeSettings(event) {
       if (event) event.stopPropagation();
       bodyEl.classList.remove('settings-open');
-      customInput.blur();
     }
 
-    // OPTION設定の開閉
     function openOption(event) {
       if (event) event.stopPropagation();
       bodyEl.classList.add('option-open');
@@ -667,6 +731,21 @@
     function closeOption(event) {
       if (event) event.stopPropagation();
       bodyEl.classList.remove('option-open');
+    }
+
+    // カスタム入力オーバーレイの開閉
+    function openCustomInput(event) {
+      if (event) event.stopPropagation();
+      bodyEl.classList.remove('settings-open'); // 一旦TIMER設定を隠す
+      bodyEl.classList.add('custom-open');
+      customInput.value = '';
+      customInput.focus();
+    }
+
+    function closeCustomInput(event) {
+      if (event) event.stopPropagation();
+      bodyEl.classList.remove('custom-open');
+      customInput.blur();
     }
 
     function applyTime(minutes) {
@@ -680,8 +759,9 @@
       const val = parseInt(customInput.value, 10);
       if (!isNaN(val) && val > 0) {
         applyTime(val);
+        closeCustomInput();
       } else {
-        closeSettings();
+        closeCustomInput();
       }
     }
 
@@ -689,7 +769,11 @@
       if (event) event.stopPropagation();
       if (isRunning) return;
       
-      timeLeft = setMinutes * 60;
+      if (mode === 'timer') {
+        timeLeft = setMinutes * 60;
+      } else {
+        chronoSeconds = 0;
+      }
       updateDisplay(true);
 
       btnReset.textContent = "RESET";
@@ -698,6 +782,7 @@
       resetTimeoutId = setTimeout(() => {
         btnReset.classList.remove('flash');
       }, 300);
+      closeSettings(event);
     }
 
     function toggleTimer(event) {
@@ -709,11 +794,16 @@
         closeOption();
         return;
       }
+      if (bodyEl.classList.contains('custom-open')) {
+        closeCustomInput();
+        return;
+      }
 
       if (event && (
           event.target.closest('.bottom-bar') || 
           event.target.closest('.settings-overlay') ||
-          event.target.closest('.option-overlay')
+          event.target.closest('.option-overlay') ||
+          event.target.closest('.custom-overlay')
       )) {
         return;
       }
@@ -726,26 +816,31 @@
         bodyEl.classList.add('paused');
         bodyEl.classList.remove('running');
       } else {
-        if (timeLeft <= 0) return; 
+        if (mode === 'timer' && timeLeft <= 0) return; 
 
         isRunning = true;
         bodyEl.classList.remove('paused');
         bodyEl.classList.add('running'); 
         
         timerInterval = setInterval(() => {
-          timeLeft--;
-          updateDisplay();
+          if (mode === 'timer') {
+            timeLeft--;
+            updateDisplay();
 
-          if (timeLeft <= 0) {
-            clearInterval(timerInterval);
-            isRunning = false;
-            bodyEl.classList.add('paused');
-            bodyEl.classList.remove('running');
-            
-            // アラーム終了時のサウンド再生
-            if (isSoundEnabled) {
-              playSelectedSound();
+            if (timeLeft <= 0) {
+              clearInterval(timerInterval);
+              isRunning = false;
+              bodyEl.classList.add('paused');
+              bodyEl.classList.remove('running');
+              
+              if (isSoundEnabled) {
+                playSelectedSound();
+              }
             }
+          } else {
+            chronoSeconds++;
+            if (chronoSeconds > 5999) chronoSeconds = 5999;
+            updateDisplay();
           }
         }, 1000);
       }
@@ -754,13 +849,9 @@
     function toggleFlip(event) {
       if (event) event.stopPropagation();
       isFlipEnabled = !isFlipEnabled;
-      
       btnFlip.textContent = isFlipEnabled ? "FLIP: ON" : "FLIP: OFF";
-      if (isFlipEnabled) {
-        btnFlip.classList.add('active');
-      } else {
-        btnFlip.classList.remove('active');
-      }
+      if (isFlipEnabled) btnFlip.classList.add('active');
+      else btnFlip.classList.remove('active');
     }
 
     function toggleSound(event) {
