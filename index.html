@@ -13,6 +13,10 @@
 
   <title>Flip Timer</title>
   <style>
+    :root {
+      --app-height: 100vh;
+    }
+
     /* 全体のリセットと背景設定 */
     * {
       box-sizing: border-box;
@@ -27,7 +31,7 @@
       background-color: #000000;
       color: #e0e0e0;
       font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-      height: 100dvh; /* dvhに変更してアプリ起動時のズレを解消 */
+      height: var(--app-height); /* iOS回転時の揺れを防ぐためCSS変数で制御 */
       width: 100vw;
       display: flex;
       flex-direction: column;
@@ -351,7 +355,6 @@
     @media (orientation: portrait) {
       .timer-container {
         flex-direction: column; 
-        /* ホーム画面追加時の下部メニューとのバランスを取るために微調整 */
         transform: translateY(-2vh); 
       }
       body.settings-open .timer-container,
@@ -429,6 +432,17 @@
   </div>
 
   <script>
+    // iOSの回転時のレイアウト暴れ（ビヨビヨ）を防ぐための高さ再計算処理
+    const setAppHeight = () => {
+      document.documentElement.style.setProperty('--app-height', `${window.innerHeight}px`);
+    };
+    window.addEventListener('resize', setAppHeight);
+    window.addEventListener('orientationchange', () => {
+      // 回転アニメーションが落ち着いた後に高さを正確に再設定
+      setTimeout(setAppHeight, 150);
+    });
+    setAppHeight();
+
     // 初期設定
     let setMinutes = 15; 
     let timeLeft = setMinutes * 60;
