@@ -242,7 +242,7 @@
     .settings-overlay, .option-overlay, .custom-overlay {
       position: absolute;
       inset: 0;
-      background: rgba(0, 0, 0, 0.8);
+      background: rgba(0, 0, 0, 0.85);
       backdrop-filter: blur(15px);
       -webkit-backdrop-filter: blur(15px);
       z-index: 50;
@@ -252,7 +252,7 @@
       align-items: center;
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.5s ease;
+      transition: opacity 0.3s ease;
     }
 
     body.settings-open .settings-overlay {
@@ -319,42 +319,85 @@
       color: #ffffff;
     }
 
-    .custom-input-group {
+    /* =========================================
+       🔢 カスタムテンキー用のスタイル
+       ========================================= */
+    .custom-container {
       display: flex;
+      flex-direction: column;
       align-items: center;
-      gap: 2vw;
+      width: 100%;
+      max-width: 300px;
+      padding: 0 20px;
     }
 
-    .custom-input {
-      background: transparent;
-      border: none;
-      border-bottom: 1px solid #666;
+    .custom-display {
+      font-size: clamp(42px, 8vh, 64px);
+      font-weight: 700;
       color: #ffffff;
-      font-size: clamp(24px, 4vh, 36px);
-      font-family: inherit;
-      font-weight: 400;
-      width: 100px;
-      text-align: center;
-      padding: 5px;
-      outline: none;
-    }
-
-    .custom-input::-webkit-outer-spin-button,
-    .custom-input::-webkit-inner-spin-button {
-      -webkit-appearance: none;
-      margin: 0;
-    }
-
-    .custom-btn {
-      font-size: clamp(16px, 2.5vh, 22px);
-      font-weight: 400;
       letter-spacing: 2px;
-      color: #f0f0f0;
-      cursor: pointer;
-      padding: 10px 20px;
-      transition: color 0.3s ease;
+      margin-bottom: 3vh;
+      height: 1.2em;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-bottom: 2px solid #444444;
+      width: 100%;
+      padding-bottom: 1vh;
     }
-    .custom-btn:active { color: #ffffff; }
+
+    .keypad-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      width: 100%;
+      margin-bottom: 2.5vh;
+    }
+
+    .key-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      color: #ffffff;
+      font-size: clamp(22px, 4vh, 30px);
+      font-weight: 400;
+      aspect-ratio: 1.5 / 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      transition: background 0.2s ease, transform 0.1s ease;
+    }
+
+    .key-btn:active {
+      background: rgba(255, 255, 255, 0.2);
+      transform: scale(0.93);
+    }
+
+    .key-btn.action-key {
+      font-size: clamp(16px, 3vh, 20px);
+      color: #aaaaaa;
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .custom-set-btn {
+      width: 100%;
+      background: #e0e0e0;
+      color: #000000;
+      font-size: clamp(16px, 2.8vh, 22px);
+      font-weight: 700;
+      letter-spacing: 3px;
+      padding: 14px;
+      border-radius: 12px;
+      text-align: center;
+      cursor: pointer;
+      transition: opacity 0.2s ease, transform 0.1s ease;
+    }
+
+    .custom-set-btn:active {
+      opacity: 0.8;
+      transform: scale(0.97);
+    }
 
     .option-content {
       display: flex;
@@ -493,11 +536,27 @@
     </div>
   </div>
 
-  <!-- 任意の数字を入力するふわっとメニュー（CUSTOM） -->
+  <!-- ✨ オリジナルテンキー入力オーバーレイ -->
   <div id="custom-overlay" class="custom-overlay" onclick="closeCustomInput(event)">
-    <div class="custom-input-group" onclick="event.stopPropagation()">
-      <input type="number" id="custom-min" class="custom-input" placeholder="---" min="1" max="999">
-      <div class="custom-btn" onclick="applyCustomTime()">SET</div>
+    <div class="custom-container" onclick="event.stopPropagation()">
+      <div id="custom-display" class="custom-display">0</div>
+      
+      <div class="keypad-grid">
+        <div class="key-btn" onclick="appendKey('1')">1</div>
+        <div class="key-btn" onclick="appendKey('2')">2</div>
+        <div class="key-btn" onclick="appendKey('3')">3</div>
+        <div class="key-btn" onclick="appendKey('4')">4</div>
+        <div class="key-btn" onclick="appendKey('5')">5</div>
+        <div class="key-btn" onclick="appendKey('6')">6</div>
+        <div class="key-btn" onclick="appendKey('7')">7</div>
+        <div class="key-btn" onclick="appendKey('8')">8</div>
+        <div class="key-btn" onclick="appendKey('9')">9</div>
+        <div class="key-btn action-key" onclick="clearKeypad()">C</div>
+        <div class="key-btn" onclick="appendKey('0')">0</div>
+        <div class="key-btn action-key" onclick="deleteKey()">⌫</div>
+      </div>
+
+      <div class="custom-set-btn" onclick="applyCustomTime()">SET</div>
     </div>
   </div>
 
@@ -534,6 +593,11 @@
     let chronoSeconds = 0;        
     let isRunning = false;
     
+    // タイムスタンプ管理用変数
+    let targetTimestamp = 0;   
+    let startEpoch = 0;        
+    let elapsedBeforePause = 0; 
+    
     let isFlipEnabled = true;  
     let isSoundEnabled = true; 
     let selectedSound = 'bell'; 
@@ -543,6 +607,9 @@
     let resetTimeoutId;
     let bellAudio = new Audio('bell3sec.wav');
 
+    // テンキー入力用文字列バッファ
+    let customInputBuffer = "";
+
     const bodyEl = document.getElementById('body');
     const minUnitEl = document.getElementById('min-unit');
     const btnTimer = document.getElementById('btn-timer');
@@ -550,7 +617,7 @@
     const btnFlip = document.getElementById('btn-flip');
     const btnSound = document.getElementById('btn-sound');
     const btnReset = document.getElementById('btn-reset');
-    const customInput = document.getElementById('custom-min');
+    const customDisplayEl = document.getElementById('custom-display');
 
     function initAudio() {
       if (!audioCtx) {
@@ -685,6 +752,27 @@
       }
     }
 
+    function checkTimeAndTick() {
+      const now = Date.now();
+
+      if (mode === 'timer') {
+        const diffMs = targetTimestamp - now;
+        timeLeft = Math.max(0, Math.ceil(diffMs / 1000));
+        updateDisplay();
+
+        if (timeLeft <= 0) {
+          stopTimer();
+          if (isSoundEnabled) {
+            playSelectedSound();
+          }
+        }
+      } else {
+        const diffMs = now - startEpoch;
+        chronoSeconds = Math.min(5999, Math.floor(diffMs / 1000));
+        updateDisplay();
+      }
+    }
+
     function handleTimerClick(event) {
       if (event) event.stopPropagation();
       if (isRunning) return;
@@ -705,6 +793,7 @@
 
       mode = 'chrono';
       chronoSeconds = 0;
+      elapsedBeforePause = 0;
       btnChrono.classList.add('active-mode');
       btnTimer.classList.remove('active-mode');
       updateDisplay(true);
@@ -735,25 +824,49 @@
       if (event) event.stopPropagation();
       bodyEl.classList.remove('settings-open');
       bodyEl.classList.add('custom-open');
-      customInput.value = '';
-      customInput.focus();
+      customInputBuffer = "";
+      updateCustomDisplay();
     }
 
     function closeCustomInput(event) {
       if (event) event.stopPropagation();
       bodyEl.classList.remove('custom-open');
-      customInput.blur();
+    }
+
+    function appendKey(numStr) {
+      if (customInputBuffer.length >= 3) return; // 最大3桁
+      if (customInputBuffer === "0") {
+        customInputBuffer = numStr;
+      } else {
+        customInputBuffer += numStr;
+      }
+      updateCustomDisplay();
+    }
+
+    function clearKeypad() {
+      customInputBuffer = "";
+      updateCustomDisplay();
+    }
+
+    function deleteKey() {
+      customInputBuffer = customInputBuffer.slice(0, -1);
+      updateCustomDisplay();
+    }
+
+    function updateCustomDisplay() {
+      customDisplayEl.textContent = customInputBuffer === "" ? "0" : customInputBuffer;
     }
 
     function applyTime(minutes) {
       setMinutes = minutes;
       timeLeft = setMinutes * 60;
+      elapsedBeforePause = 0;
       updateDisplay(true);
       closeSettings();
     }
 
     function applyCustomTime() {
-      const val = parseInt(customInput.value, 10);
+      const val = parseInt(customInputBuffer, 10);
       if (!isNaN(val) && val > 0) {
         applyTime(val);
         closeCustomInput();
@@ -771,6 +884,7 @@
       } else {
         chronoSeconds = 0;
       }
+      elapsedBeforePause = 0;
       updateDisplay(true);
 
       btnReset.textContent = "RESET";
@@ -782,16 +896,23 @@
       closeSettings(event);
     }
 
+    function stopTimer() {
+      clearInterval(timerInterval);
+      isRunning = false;
+      bodyEl.classList.add('paused');
+      bodyEl.classList.remove('running');
+      if (mode === 'chrono') {
+        elapsedBeforePause = chronoSeconds;
+      }
+    }
+
     function toggleTimer(event) {
       if (event) event.stopPropagation();
 
       initAudio();
 
       if (isRunning) {
-        clearInterval(timerInterval);
-        isRunning = false;
-        bodyEl.classList.add('paused');
-        bodyEl.classList.remove('running');
+        stopTimer();
       } else {
         if (mode === 'timer' && timeLeft <= 0) return; 
 
@@ -799,29 +920,23 @@
         bodyEl.classList.remove('paused');
         bodyEl.classList.add('running'); 
         
-        timerInterval = setInterval(() => {
-          if (mode === 'timer') {
-            timeLeft--;
-            updateDisplay();
-
-            if (timeLeft <= 0) {
-              clearInterval(timerInterval);
-              isRunning = false;
-              bodyEl.classList.add('paused');
-              bodyEl.classList.remove('running');
-              
-              if (isSoundEnabled) {
-                playSelectedSound();
-              }
-            }
-          } else {
-            chronoSeconds++;
-            if (chronoSeconds > 5999) chronoSeconds = 5999;
-            updateDisplay();
-          }
-        }, 1000);
+        const now = Date.now();
+        if (mode === 'timer') {
+          targetTimestamp = now + (timeLeft * 1000);
+        } else {
+          startEpoch = now - (elapsedBeforePause * 1000);
+        }
+        
+        checkTimeAndTick();
+        timerInterval = setInterval(checkTimeAndTick, 250);
       }
     }
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible' && isRunning) {
+        checkTimeAndTick();
+      }
+    });
 
     function toggleFlip(event) {
       if (event) event.stopPropagation();
