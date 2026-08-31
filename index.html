@@ -3,17 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="Flip Timer">
-  
-  <!-- ファビコン・アイコン設定 -->
-  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-
-  <title>Flip Timer</title>
+  <title>EAT - Watermelon Visual Timer</title>
   <style>
-    /* 全体のリセットと背景設定 */
     * {
       box-sizing: border-box;
       margin: 0;
@@ -24,223 +15,200 @@
     }
     
     body {
-      background-color: #000000;
-      color: #e0e0e0;
-      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-      height: 100dvh; /* dvhに変更してアプリ起動時のズレを解消 */
+      background-color: #ffffff;
+      color: #1a1a1a;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Rounded", "Helvetica Neue", Arial, sans-serif;
+      height: 100vh;
       width: 100vw;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       overflow: hidden;
-      cursor: pointer;
+      position: relative;
       padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+      transition: background-color 0.5s ease;
+    }
+
+    /* 種が降るアニメーション用キャンバス */
+    #seed-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 40;
     }
 
     /* タイマーコンテナ */
     .timer-container {
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
       width: 100%;
-      gap: 3vw; 
-      transform: translateY(0); 
-      transition: filter 0.5s ease, transform 0.5s ease;
+      gap: 16px;
+      transform: translateY(-2vh); 
+      transition: filter 0.5s ease, transform 0.5s ease, opacity 0.5s ease;
     }
 
     body.settings-open .timer-container,
     body.option-open .timer-container {
-      filter: blur(8px) brightness(0.5);
-      transform: translateY(0) scale(0.95);
+      filter: blur(10px) brightness(0.6);
+      transform: translateY(-2vh) scale(0.96);
     }
 
-    /* フリップユニット本体 */
-    .flip-unit {
-      position: relative;
-      aspect-ratio: 1 / 1; 
-      width: min(42vw, 68vh); 
-      height: auto;
-      perspective: 1200px;
-      border-radius: 3cqmin; 
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
-      background-color: #000;
-      container-type: inline-size;
-      transition: width 0.3s ease;
-    }
-
-    @supports not (border-radius: 3cqmin) {
-      .flip-unit { border-radius: 12px; }
-      .top { border-radius: 12px 12px 0 0; }
-      .bottom { border-radius: 0 0 12px 12px; }
-    }
-
-    /* 中央の切れ目 */
-    .flip-unit::after {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 0;
-      width: 100%;
-      height: max(4px, 0.8cqmin); 
-      background-color: #000000;
-      transform: translateY(-50%);
-      z-index: 10;
-    }
-
-    /* 上半分と下半分の基本スタイル */
-    .top, .bottom {
-      position: absolute;
-      left: 0;
-      width: 100%;
-      height: 50%;
-      overflow: hidden;
-      background-color: #1a1a1a;
-      backface-visibility: hidden;
-      transform-style: preserve-3d;
-    }
-
-    .top {
-      top: 0;
-      border-radius: 3cqmin 3cqmin 0 0;
-      transform-origin: bottom;
-    }
-
-    .bottom {
-      bottom: 0;
-      border-radius: 0 0 3cqmin 3cqmin;
-      transform-origin: top;
-    }
-
-    /* 数字のテキスト設定 */
-    .top::after, .bottom::after {
-      content: attr(data-val);
-      position: absolute;
-      left: 0;
-      width: 100%;
-      height: 200%; 
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 78cqi; 
-      font-weight: 700;
-      letter-spacing: -2px; 
-      color: #f5f5f5;
-      transition: font-size 0.3s ease;
-    }
-
-    .flip-unit.three-digits .top::after, 
-    .flip-unit.three-digits .bottom::after {
-      font-size: 55cqi;
-      letter-spacing: -1px;
-    }
-
-    .top::after { top: 0; }
-    .bottom::after { bottom: 0; }
-
-    /* 立体感を出すためのグラデーションシャドウ */
-    .top::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0) 100%);
-      z-index: 1;
-    }
-
-    /* --- アニメーション用要素 --- */
-    .flip-top {
-      z-index: 5;
-      animation: flipDownTop 0.25s ease-in forwards;
-    }
-
-    .flip-bottom {
-      z-index: 5;
-      transform: rotateX(90deg);
-      animation: flipDownBottom 0.25s ease-out 0.25s forwards;
-    }
-
-    @keyframes flipDownTop {
-      0% { transform: rotateX(0); filter: brightness(1); }
-      100% { transform: rotateX(-90deg); filter: brightness(0.3); }
-    }
-
-    @keyframes flipDownBottom {
-      0% { transform: rotateX(90deg); filter: brightness(0.3); }
-      100% { transform: rotateX(0); filter: brightness(1); }
-    }
-
-    /* コロン */
-    .colon {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: min(20vw, 35vh); 
-      font-weight: 700;
-      padding-bottom: 2%; 
-      color: #1a1a1a;
-      text-shadow: 0 0 10px rgba(255,255,255,0.1);
-      animation: blink 1s infinite;
-    }
-
-    .paused .colon {
-      animation: none;
-      opacity: 1;
-    }
-
-    @keyframes blink {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.1; }
-    }
-
-    /* --- 下部コントロールバー --- */
-    .bottom-bar {
-      position: absolute;
-      bottom: calc(env(safe-area-inset-bottom, 10px) + 20px);
-      width: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 5vw;
-      z-index: 20;
-      transition: opacity 0.5s ease;
-    }
-
-    body.settings-open .bottom-bar,
-    body.option-open .bottom-bar,
-    body.running .bottom-bar {
+    /* タイマー終了時にスイカを隠すクラス */
+    body.finished .timer-face-wrapper {
       opacity: 0;
+      transform: scale(0.8);
+      pointer-events: none;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    .timer-face-wrapper {
+      position: relative;
+      width: min(84vw, 84vh);
+      height: min(84vw, 84vh);
+      max-width: 380px;
+      max-height: 380px;
+      filter: drop-shadow(0 15px 30px rgba(46, 125, 50, 0.1));
+      cursor: pointer;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    .timer-svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    /* 厚めにした緑の皮 */
+    .melon-rind {
+      fill: none;
+      stroke: #1b4332;
+      stroke-width: 22;
+    }
+
+    .face-bg {
+      fill: #ffffff;
+    }
+
+    /* タイマーが減る部分（スイカの果肉扇形） */
+    .timer-fill {
+      transition: fill 0.3s ease;
+    }
+
+    /* 目盛り線と数字 */
+    .tick {
+      stroke: #a3b899;
+      stroke-linecap: round;
+    }
+    .tick-major {
+      stroke: #1b4332;
+      stroke-width: 3;
+    }
+    .tick-minor {
+      stroke: #c8d6c1;
+      stroke-width: 1.5;
+    }
+
+    .time-label-text {
+      font-size: 13px;
+      font-weight: 800;
+      fill: #1b4332;
+      text-anchor: middle;
+      dominant-baseline: central;
+      letter-spacing: -0.5px;
+    }
+
+    /* ボタン共通スタイル */
+    .action-btn {
+      width: min(80vw, 300px);
+      font-size: clamp(13px, 2.3vh, 16px);
+      font-weight: 900;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 12px 20px;
+      border-radius: 30px;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.15s ease, background 0.15s ease, color 0.15s ease;
+      z-index: 45;
+    }
+
+    .action-btn:active {
+      transform: scale(0.96);
+    }
+
+    /* メインボタン：EAT WATERMELON（通常時） */
+    .eat-watermelon-btn {
+      background: #1b4332;
+      color: #ffd166;
+      box-shadow: 0 6px 20px rgba(27, 67, 50, 0.2);
+    }
+
+    .eat-watermelon-btn:hover {
+      background: #2d6a4f;
+    }
+
+    /* 心臓のようにゆっくり拡大縮小する心拍アニメーション */
+    @keyframes heartbeat {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.04); }
+      100% { transform: scale(1); }
+    }
+
+    /* タイマー作動中のボタン（色反転 ＆ 心拍アニメーション） */
+    body.running .eat-watermelon-btn {
+      background: #f1f3f5;
+      color: #1b4332;
+      border: 1.5px solid #d8f3dc;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+      animation: heartbeat 2.5s infinite ease-in-out;
+    }
+
+    /* タイマー作動中にふんわり非表示になるグループ */
+    .fade-group {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      width: 100%;
+      opacity: 1;
+      visibility: visible;
+      transition: opacity 0.4s ease, visibility 0.4s ease, transform 0.4s ease;
+    }
+
+    body.running .fade-group {
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
       pointer-events: none;
     }
 
-    /* トグルボタン共通スタイル */
-    .ui-btn {
-      font-size: clamp(13px, 2.2vh, 18px);
-      font-weight: 300;
-      letter-spacing: 2px;
-      color: #666666;
-      transition: color 0.3s ease, opacity 0.3s ease;
-      padding: 8px 12px;
-      cursor: pointer;
-      text-align: center;
+    /* サブボタン */
+    .inverted-btn {
+      background: #f1f3f5;
+      color: #1b4332;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+      border: 1.5px solid #d8f3dc;
     }
 
-    .ui-btn:hover {
-      color: #aaaaaa;
+    .inverted-btn:hover {
+      background: #e2e8f0;
+      color: #2d6a4f;
     }
 
-    .ui-btn.flash {
-      color: #ffffff; 
-    }
-
-    /* =========================================
-       ✨ フワッと浮かび上がるオーバーレイ共通
-       ========================================= */
+    /* オーバーレイ共通 */
     .settings-overlay, .option-overlay {
       position: absolute;
       inset: 0;
-      background: rgba(0, 0, 0, 0.75);
-      backdrop-filter: blur(15px);
-      -webkit-backdrop-filter: blur(15px);
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
       z-index: 50;
       display: flex;
       flex-direction: column;
@@ -248,57 +216,66 @@
       align-items: center;
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.5s ease;
+      transition: opacity 0.4s ease;
+      padding: 20px;
     }
 
-    body.settings-open .settings-overlay {
-      opacity: 1;
-      pointer-events: auto;
-    }
-
+    body.settings-open .settings-overlay,
     body.option-open .option-overlay {
       opacity: 1;
       pointer-events: auto;
     }
 
-    /* プリセット選択グリッド */
+    /* プリセット選択グリッド（はみ出し防止対応） */
     .preset-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 3vw;
-      margin-bottom: 5vh;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 20px;
+      width: 100%;
+      max-width: 320px;
+      max-height: 55vh;
+      overflow-y: auto;
+      padding: 4px;
     }
 
     .preset-btn {
-      font-size: clamp(20px, 3.8vh, 34px);
-      font-weight: 400;
-      color: #f0f0f0;
-      padding: 15px 25px;
+      font-size: clamp(14px, 2.2vh, 20px);
+      font-weight: 700;
+      color: #2e7d32;
+      padding: 10px 8px;
       cursor: pointer;
       text-align: center;
-      transition: color 0.3s ease, transform 0.1s ease;
+      background: #f8f9fa;
+      border-radius: 12px;
+      border: 1.5px solid #d8f3dc;
+      transition: color 0.2s ease, transform 0.1s ease, background 0.2s ease;
       letter-spacing: 1px;
     }
 
+    .preset-btn:hover {
+      color: #ff334b;
+      background: #e9ecef;
+    }
+
     .preset-btn:active {
-      color: #ffffff;
-      transform: scale(0.95);
+      transform: scale(0.94);
     }
 
     .custom-input-group {
       display: flex;
       align-items: center;
-      gap: 2vw;
+      gap: 12px;
     }
 
     .custom-input {
       background: transparent;
       border: none;
-      border-bottom: 1px solid #666;
-      color: #ffffff;
-      font-size: clamp(20px, 3.2vh, 30px);
+      border-bottom: 2px solid #2e7d32;
+      color: #1a1a1a;
+      font-size: clamp(18px, 3vh, 24px);
       font-family: inherit;
-      font-weight: 400;
+      font-weight: 700;
       width: 90px;
       text-align: center;
       padding: 5px;
@@ -312,108 +289,113 @@
     }
 
     .custom-btn {
-      font-size: clamp(16px, 2.2vh, 22px);
-      font-weight: 400;
+      font-size: clamp(14px, 2vh, 18px);
+      font-weight: 700;
       letter-spacing: 2px;
-      color: #f0f0f0;
+      color: #2e7d32;
       cursor: pointer;
-      padding: 10px 20px;
-      transition: color 0.3s ease;
+      padding: 10px 18px;
+      transition: color 0.2s ease;
     }
-    .custom-btn:active { color: #ffffff; }
+    .custom-btn:active { color: #ff334b; }
 
-    /* オプションメニュー用の内部スタイル */
+    /* オプションメニュー */
     .option-content {
       display: flex;
       flex-direction: column;
-      gap: 4vh;
+      gap: 2vh;
       align-items: center;
     }
 
     .option-item {
-      font-size: clamp(18px, 3.5vh, 28px);
-      font-weight: 300;
-      letter-spacing: 3px;
-      color: #777777;
+      font-size: clamp(13px, 2.2vh, 17px);
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: #2e7d32;
       cursor: pointer;
-      padding: 10px 20px;
-      transition: color 0.3s ease;
+      padding: 6px 16px;
+      transition: color 0.2s ease;
       text-align: center;
     }
 
-    .option-item.active {
-      color: #e0e0e0;
+    /* アラームTONE項目の表示・非表示アニメーション切り替え */
+    #btn-soundtype {
+      max-height: 0;
+      opacity: 0;
+      overflow: hidden;
+      padding: 0 16px;
+      transition: max-height 0.3s ease, opacity 0.3s ease, padding 0.3s ease;
     }
 
-    /* =========================================
-       📱 スマホ縦画面（ポートレート）用の上書き設定
-       ========================================= */
-    @media (orientation: portrait) {
-      .timer-container {
-        flex-direction: column; 
-        /* ホーム画面追加時の下部メニューとのバランスを取るために微調整 */
-        transform: translateY(-2vh); 
-      }
-      body.settings-open .timer-container,
-      body.option-open .timer-container {
-        transform: translateY(-2vh) scale(0.95);
-      }
-      .flip-unit {
-        width: min(75vw, 32vh); 
-      }
-      .colon {
-        display: none; 
-      }
-      
-      .preset-grid {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 5vw;
-      }
+    .option-content.sound-on #btn-soundtype {
+      max-height: 60px;
+      opacity: 1;
+      padding: 6px 16px;
     }
   </style>
 </head>
-<body class="paused" id="body" onclick="toggleTimer(event)">
+<body class="paused" id="body">
+
+  <!-- 種が降るアニメーション用Canvas -->
+  <canvas id="seed-canvas"></canvas>
 
   <div class="timer-container">
-    <div class="flip-unit" id="min-unit">
-      <div class="top" data-val="15"></div>
-      <div class="bottom" data-val="15"></div>
+    <div class="timer-face-wrapper" id="timer-visual" onclick="toggleTimer(event)">
+      <svg class="timer-svg" viewBox="0 0 200 200" id="timer-svg-el">
+        <!-- 白い文字盤ベース -->
+        <circle class="face-bg" cx="100" cy="100" r="98" />
+        
+        <!-- 残り時間に応じて時計回りに0に向かって減る果肉（扇形） -->
+        <path class="timer-fill" id="pie-slice" />
+        
+        <!-- スイカの緑の皮（外枠） -->
+        <circle class="melon-rind" cx="100" cy="100" r="89" />
+
+        <!-- 目盛りと数字 -->
+        <g id="face-dial"></g>
+      </svg>
     </div>
-    <div class="colon">:</div>
-    <div class="flip-unit" id="sec-unit">
-      <div class="top" data-val="00"></div>
-      <div class="bottom" data-val="00"></div>
+
+    <!-- 1番上：EAT WATERMELON ボタン -->
+    <button class="action-btn eat-watermelon-btn" onclick="toggleTimer(event)">
+      <span id="eat-btn-text">EAT WATERMELON</span>
+    </button>
+
+    <!-- タイマー作動中にふんわり非表示になるグループ -->
+    <div class="fade-group">
+      <!-- 2番目：MELON SIZE ボタン -->
+      <button class="action-btn inverted-btn" onclick="openSettings(event)">
+        <span>MELON SIZE</span>
+      </button>
+
+      <!-- 3番目：MELON FLAVOR ボタン -->
+      <button class="action-btn inverted-btn" onclick="openOption(event)">
+        <span>MELON FLAVOR</span>
+      </button>
     </div>
-  </div>
-  
-  <!-- 下部コントロールバー -->
-  <div class="bottom-bar">
-    <div id="btn-reset" class="ui-btn" onclick="resetTimer(event)">RESET</div>
-    <div id="btn-timer" class="ui-btn" onclick="openSettings(event)">TIMER</div>
-    <div id="btn-option" class="ui-btn" onclick="openOption(event)">OPTION</div>
   </div>
 
   <!-- TIMER設定オーバーレイ -->
   <div id="settings-overlay" class="settings-overlay" onclick="closeSettings(event)">
-    <div onclick="event.stopPropagation()" style="display:flex; flex-direction:column; align-items:center;">
+    <div onclick="event.stopPropagation()" style="display:flex; flex-direction:column; align-items:center; width: 100%; max-width: 320px;">
       
       <div class="preset-grid">
-        <div class="preset-btn" onclick="applyTime(1)">1</div>
-        <div class="preset-btn" onclick="applyTime(2)">2</div>
-        <div class="preset-btn" onclick="applyTime(3)">3</div>
-        <div class="preset-btn" onclick="applyTime(5)">5</div>
-        <div class="preset-btn" onclick="applyTime(10)">10</div>
-        <div class="preset-btn" onclick="applyTime(15)">15</div>
-        <div class="preset-btn" onclick="applyTime(20)">20</div>
-        <div class="preset-btn" onclick="applyTime(25)">25</div>
-        <div class="preset-btn" onclick="applyTime(30)">30</div>
-        <div class="preset-btn" onclick="applyTime(45)">45</div>
-        <div class="preset-btn" onclick="applyTime(60)">60</div>
-        <div class="preset-btn" onclick="applyTime(90)">90</div>
+        <div class="preset-btn" onclick="applyTime(1)">1m</div>
+        <div class="preset-btn" onclick="applyTime(3)">3m</div>
+        <div class="preset-btn" onclick="applyTime(5)">5m</div>
+        <div class="preset-btn" onclick="applyTime(10)">10m</div>
+        <div class="preset-btn" onclick="applyTime(15)">15m</div>
+        <div class="preset-btn" onclick="applyTime(20)">20m</div>
+        <div class="preset-btn" onclick="applyTime(25)">25m</div>
+        <div class="preset-btn" onclick="applyTime(30)">30m</div>
+        <div class="preset-btn" onclick="applyTime(40)">40m</div>
+        <div class="preset-btn" onclick="applyTime(45)">45m</div>
+        <div class="preset-btn" onclick="applyTime(50)">50m</div>
+        <div class="preset-btn" onclick="applyTime(60)">60m</div>
       </div>
 
       <div class="custom-input-group">
-        <input type="number" id="custom-min" class="custom-input" placeholder="---" min="1" max="999">
+        <input type="number" id="custom-min" class="custom-input" placeholder="MIN" min="1" max="120">
         <div class="custom-btn" onclick="applyCustomTime()">SET</div>
       </div>
 
@@ -422,31 +404,249 @@
 
   <!-- OPTION設定オーバーレイ -->
   <div id="option-overlay" class="option-overlay" onclick="closeOption(event)">
-    <div class="option-content" onclick="event.stopPropagation()">
-      <div id="btn-flip" class="option-item active" onclick="toggleFlip(event)">FLIP: ON</div>
-      <div id="btn-sound" class="option-item" onclick="toggleSound(event)">SOUND: OFF</div>
+    <div class="option-content" id="option-content-box" onclick="event.stopPropagation()">
+      <div id="btn-color" class="option-item" onclick="toggleMelonColor(event)" style="color: #fbc02d;">MELON COLOR: YELLOW</div>
+      <div id="btn-sound" class="option-item" onclick="toggleSound(event)">ALARM SOUND: OFF</div>
+      <div id="btn-soundtype" class="option-item" onclick="toggleSoundType(event)">TONE: REAL BELL</div>
+      <div id="btn-eatingsound" class="option-item" onclick="toggleEatingSound(event)" style="color: #2e7d32;">EATING SOUND: OFF</div>
+      <!-- 種の降るタイミング設定（END / REALTIME / OFF） -->
+      <div id="btn-seedmode" class="option-item" onclick="toggleSeedMode(event)" style="color: #ff334b;">SEED RAIN: END</div>
     </div>
   </div>
 
   <script>
-    // 初期設定
-    let setMinutes = 15; 
+    const maxMinutes = 60;
+    let setMinutes = 25; 
     let timeLeft = setMinutes * 60;
     let isRunning = false;
+    let hasStarted = false;
     
-    let isFlipEnabled = true;  
+    let melonColor = 'yellow'; 
     let isSoundEnabled = false; 
+    let soundType = 'realbell'; 
+    let isEatingSoundEnabled = false;
+    
+    // 種のモード: 'end'（最後どさっ）, 'realtime'（12秒に1個）, 'off'（なし）
+    let seedMode = 'end'; 
     
     let timerInterval;
+    let realTimeSeedTimer = null; 
     let audioCtx; 
-    let resetTimeoutId;
+
+    // 種アニメーション用変数
+    const canvas = document.getElementById('seed-canvas');
+    const ctx = canvas.getContext('2d');
+    let seeds = [];
+    let animationFrameId = null;
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    // 画面下部中央（MELON FLAVORより下）に中央寄りの山になる位置を計算する共通関数
+    function getCenteredLandY() {
+      const bottomBaseY = canvas.height - 70;
+      return bottomBaseY + (Math.random() - 0.5) * 20;
+    }
+
+    // 最後にどさっと一気に降る演出（ENDモード用）
+    function startSeedRain() {
+      if (seedMode === 'off' || seedMode === 'realtime') {
+        bodyEl.classList.add('finished');
+        return;
+      }
+
+      bodyEl.classList.add('finished');
+      seeds = [];
+      const totalSeeds = setMinutes * 5;
+      const centerX = canvas.width / 2;
+      const narrowSpread = 70; // 左右に広がらず中央に集まる幅
+
+      for (let i = 0; i < totalSeeds; i++) {
+        seeds.push({
+          x: centerX + (Math.random() - 0.5) * narrowSpread,
+          y: -50 - (i * 2) - Math.random() * 40,
+          vy: Math.random() * 4 + 12,            
+          vx: (Math.random() - 0.5) * 1.5,         
+          rotation: Math.random() * Math.PI * 2,
+          vRot: (Math.random() - 0.5) * 0.4,
+          scale: Math.random() * 0.4 + 0.8,
+          state: 'falling', 
+          landY: getCenteredLandY()
+        });
+      }
+
+      if (animationFrameId) cancelAnimationFrame(animationFrameId);
+      animateSeeds();
+    }
+
+    // リアルタイムモード用：12秒に1個中央に落とす
+    function dropRealtimeSeed() {
+      if (!isRunning) return;
+      const centerX = canvas.width / 2;
+      const narrowSpread = 70; 
+
+      seeds.push({
+        x: centerX + (Math.random() - 0.5) * narrowSpread,
+        y: -30,
+        vy: Math.random() * 4 + 10,
+        vx: (Math.random() - 0.5) * 1.5,
+        rotation: Math.random() * Math.PI * 2,
+        vRot: (Math.random() - 0.5) * 0.4,
+        scale: Math.random() * 0.4 + 0.8,
+        state: 'falling',
+        landY: getCenteredLandY()
+      });
+
+      if (!animationFrameId) {
+        animateSeeds();
+      }
+    }
+
+    function animateSeeds() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      let allLanded = true;
+
+      seeds.forEach(s => {
+        if (s.state !== 'landed') {
+          allLanded = false;
+          s.y += s.vy;
+          s.x += s.vx;
+          s.rotation += s.vRot;
+
+          if (s.state === 'falling') {
+            s.vy += 0.8; // 重力
+            if (s.y >= s.landY) {
+              s.y = s.landY;
+              s.vy = -5.5; // ポンと跳ねる
+              s.state = 'bouncing';
+            }
+          } else if (s.state === 'bouncing') {
+            s.vy += 0.9; 
+            if (s.y >= s.landY) {
+              s.y = s.landY;
+              s.state = 'landed';
+            }
+          }
+        }
+
+        // 種（黒っぽい茶色のしずく型）の描画
+        ctx.save();
+        ctx.translate(s.x, s.y);
+        ctx.rotate(s.rotation);
+        ctx.scale(s.scale, s.scale);
+
+        ctx.fillStyle = '#3d2817'; 
+        ctx.beginPath();
+        ctx.moveTo(0, -8);
+        ctx.bezierCurveTo(5, -3, 6, 4, 0, 8);
+        ctx.bezierCurveTo(-6, 4, -5, -3, 0, -8);
+        ctx.fill();
+
+        ctx.restore();
+      });
+
+      if (!allLanded || (seedMode === 'realtime' && isRunning)) {
+        animationFrameId = requestAnimationFrame(animateSeeds);
+      } else {
+        animationFrameId = null;
+      }
+    }
+
+    // 種アニメーションをクリア
+    function clearSeeds() {
+      if (animationFrameId) cancelAnimationFrame(animationFrameId);
+      if (realTimeSeedTimer) clearInterval(realTimeSeedTimer);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      seeds = [];
+      bodyEl.classList.remove('finished');
+    }
+
+    // 各種オーディオ要素の事前定義
+    const realBellAudio = new Audio('bell3sec.wav');
+    realBellAudio.preload = 'auto';
+
+    const eatingAudio = new Audio('eating-watermelon.m4a');
+    eatingAudio.preload = 'auto';
+    eatingAudio.loop = true;
 
     const bodyEl = document.getElementById('body');
-    const minUnitEl = document.getElementById('min-unit');
-    const btnFlip = document.getElementById('btn-flip');
+    const eatBtnText = document.getElementById('eat-btn-text');
+    const btnColor = document.getElementById('btn-color');
     const btnSound = document.getElementById('btn-sound');
-    const btnReset = document.getElementById('btn-reset');
+    const btnSoundType = document.getElementById('btn-soundtype');
+    const btnEatingSound = document.getElementById('btn-eatingsound');
+    const btnSeedMode = document.getElementById('btn-seedmode');
+    const optionContentBox = document.getElementById('option-content-box');
     const customInput = document.getElementById('custom-min');
+    const pieSlice = document.getElementById('pie-slice');
+    const dialGroup = document.getElementById('face-dial');
+
+    // 文字盤の目盛りと大きめの数字の生成
+    function generateDial() {
+      let dialHTML = '';
+      const cx = 100, cy = 100;
+      const rOuter = 78;
+      const rInnerMinor = 72;
+      const rInnerMajor = 67;
+      const rText = 55; 
+
+      for (let i = 0; i < 60; i++) {
+        const angle = (i / 60) * 2 * Math.PI;
+        const sin = Math.sin(angle);
+        const cos = Math.cos(angle);
+
+        const x1 = cx + rOuter * sin;
+        const y1 = cy - rOuter * cos;
+
+        if (i % 5 === 0) {
+          const x2 = cx + rInnerMajor * sin;
+          const y2 = cy - rInnerMajor * cos;
+          dialHTML += `<line class="tick tick-major" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" />`;
+
+          const tx = cx + rText * sin;
+          const ty = cy - rText * cos;
+          dialHTML += `<text class="time-label-text" x="${tx}" y="${ty}">${i}</text>`;
+        } else {
+          const x2 = cx + rInnerMinor * sin;
+          const y2 = cy - rInnerMinor * cos;
+          dialHTML += `<line class="tick tick-minor" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" />`;
+        }
+      }
+      dialGroup.innerHTML = dialHTML;
+    }
+
+    // 残り時間に応じて果肉の扇形が0に向かって縮小する計算
+    function updatePieChart() {
+      const totalMaxSeconds = maxMinutes * 60;
+      let currentSecs = Math.min(timeLeft, totalMaxSeconds);
+      const fraction = Math.max(0, Math.min(1, currentSecs / totalMaxSeconds));
+
+      const meatColorHex = melonColor === 'yellow' ? '#fbc02d' : '#ff334b';
+      pieSlice.setAttribute('fill', meatColorHex);
+
+      const r = 78; 
+      if (fraction === 0) {
+        pieSlice.setAttribute('d', '');
+        return;
+      }
+      if (fraction >= 0.9999) {
+        pieSlice.setAttribute('d', `M100,100 L100,${100 - r} A${r},${r} 0 1,1 99.99,${100 - r} Z`);
+        return;
+      }
+
+      const angle = fraction * 2 * Math.PI;
+      const x = 100 + r * Math.sin(angle);
+      const y = 100 - r * Math.cos(angle);
+      const largeArcFlag = fraction > 0.5 ? 1 : 0;
+
+      const pathData = `M100,100 L100,${100 - r} A${r},${r} 0 ${largeArcFlag},1 ${x},${y} Z`;
+      pieSlice.setAttribute('d', pathData);
+    }
 
     function initAudio() {
       if (!audioCtx) {
@@ -458,97 +658,68 @@
       }
     }
 
-    function playElegantChime() {
-      if (!isSoundEnabled || !audioCtx) return;
+    function playAlarmSound() {
+      if (!isSoundEnabled) return;
 
-      const t = audioCtx.currentTime;
-      const osc1 = audioCtx.createOscillator();
-      const gain1 = audioCtx.createGain();
-      osc1.type = 'sine';
-      osc1.frequency.value = 880; 
-
-      const osc2 = audioCtx.createOscillator();
-      const gain2 = audioCtx.createGain();
-      osc2.type = 'sine';
-      osc2.frequency.value = 1760; 
-
-      gain1.gain.setValueAtTime(0, t);
-      gain1.gain.linearRampToValueAtTime(0.5, t + 0.05); 
-      gain1.gain.exponentialRampToValueAtTime(0.001, t + 3); 
-
-      gain2.gain.setValueAtTime(0, t);
-      gain2.gain.linearRampToValueAtTime(0.15, t + 0.05);
-      gain2.gain.exponentialRampToValueAtTime(0.001, t + 2);
-
-      osc1.connect(gain1);
-      gain1.connect(audioCtx.destination);
-      osc2.connect(gain2);
-      gain2.connect(audioCtx.destination);
-
-      osc1.start(t);
-      osc1.stop(t + 3);
-      osc2.start(t);
-      osc2.stop(t + 2);
-    }
-
-    function flip(unitId, newNumber) {
-      const unit = document.getElementById(unitId);
-      const top = unit.querySelector('.top:not(.flip-top)');
-      const bottom = unit.querySelector('.bottom:not(.flip-bottom)');
-      const currentNumber = top.getAttribute('data-val');
-      
-      if (currentNumber === newNumber) return;
-
-      unit.querySelectorAll('.flip-top, .flip-bottom').forEach(el => el.remove());
-
-      const flipTop = document.createElement('div');
-      flipTop.className = 'top flip-top';
-      flipTop.setAttribute('data-val', currentNumber);
-
-      const flipBottom = document.createElement('div');
-      flipBottom.className = 'bottom flip-bottom';
-      flipBottom.setAttribute('data-val', newNumber);
-
-      unit.appendChild(flipTop);
-      unit.appendChild(flipBottom);
-
-      top.setAttribute('data-val', newNumber);
-
-      flipTop.addEventListener('animationend', () => {
-        flipTop.remove();
-      });
-
-      flipBottom.addEventListener('animationend', () => {
-        bottom.setAttribute('data-val', newNumber);
-        flipBottom.remove();
-      });
-    }
-
-    function updateDisplay(forceUpdate = false) {
-      const m = Math.floor(timeLeft / 60).toString().padStart(2, '0');
-      const s = (timeLeft % 60).toString().padStart(2, '0');
-
-      if (m.length >= 3) {
-        minUnitEl.classList.add('three-digits');
-      } else {
-        minUnitEl.classList.remove('three-digits');
-      }
-
-      if (forceUpdate || !isFlipEnabled) {
-        ['min-unit', 'sec-unit'].forEach(id => {
-          const val = id === 'min-unit' ? m : s;
-          const unit = document.getElementById(id);
-          
-          unit.querySelectorAll('.flip-top, .flip-bottom').forEach(el => el.remove());
-          unit.querySelectorAll('.top, .bottom').forEach(el => el.setAttribute('data-val', val));
+      if (soundType === 'realbell') {
+        realBellAudio.currentTime = 0;
+        realBellAudio.play().catch(e => {
+          console.log("Audio play error:", e);
         });
-      } else {
-        flip('min-unit', m);
-        flip('sec-unit', s);
+        return;
+      }
+
+      if (!audioCtx) return;
+      const t = audioCtx.currentTime;
+
+      if (soundType === 'chime') {
+        const osc1 = audioCtx.createOscillator();
+        const gain1 = audioCtx.createGain();
+        osc1.type = 'sine';
+        osc1.frequency.value = 880; 
+
+        const osc2 = audioCtx.createOscillator();
+        const gain2 = audioCtx.createGain();
+        osc2.type = 'sine';
+        osc2.frequency.value = 1760; 
+
+        gain1.gain.setValueAtTime(0, t);
+        gain1.gain.linearRampToValueAtTime(0.4, t + 0.05); 
+        gain1.gain.exponentialRampToValueAtTime(0.001, t + 3); 
+
+        gain2.gain.setValueAtTime(0, t);
+        gain2.gain.linearRampToValueAtTime(0.1, t + 0.05);
+        gain2.gain.exponentialRampToValueAtTime(0.001, t + 2);
+
+        osc1.connect(gain1);
+        gain1.connect(audioCtx.destination);
+        osc2.connect(gain2);
+        gain2.connect(audioCtx.destination);
+
+        osc1.start(t);
+        osc1.stop(t + 3);
+        osc2.start(t);
+        osc2.stop(t + 2);
+      } else if (soundType === 'beep') {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'square';
+        osc.frequency.value = 659.25; 
+
+        gain.gain.setValueAtTime(0.2, t);
+        gain.gain.exponentialRampToValueAtTime(0.001, t + 0.4);
+
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start(t);
+        osc.stop(t + 0.4);
       }
     }
 
-    // TIMER設定の開閉
+    function updateDisplay() {
+      updatePieChart();
+    }
+
     function openSettings(event) {
       if (event) event.stopPropagation();
       if (isRunning) return;
@@ -562,7 +733,6 @@
       customInput.blur();
     }
 
-    // OPTION設定の開閉
     function openOption(event) {
       if (event) event.stopPropagation();
       bodyEl.classList.add('option-open');
@@ -574,9 +744,17 @@
     }
 
     function applyTime(minutes) {
+      stopEatingSound();
+      clearSeeds();
+      
       setMinutes = minutes;
       timeLeft = setMinutes * 60;
-      updateDisplay(true);
+      isRunning = false;
+      hasStarted = false;
+      bodyEl.classList.add('paused');
+      bodyEl.classList.remove('running');
+      eatBtnText.textContent = "EAT WATERMELON";
+      updateDisplay();
       closeSettings();
     }
 
@@ -589,22 +767,23 @@
       }
     }
 
-    function resetTimer(event) {
-      if (event) event.stopPropagation();
-      if (isRunning) return;
-      
-      timeLeft = setMinutes * 60;
-      updateDisplay(true);
+    function startEatingSound() {
+      if (isEatingSoundEnabled) {
+        eatingAudio.currentTime = 0;
+        eatingAudio.play().catch(e => {
+          console.log("Eating sound play error:", e);
+        });
+      }
+    }
 
-      btnReset.textContent = "RESET";
-      btnReset.classList.add('flash');
-      clearTimeout(resetTimeoutId);
-      resetTimeoutId = setTimeout(() => {
-        btnReset.classList.remove('flash');
-      }, 300);
+    function stopEatingSound() {
+      eatingAudio.pause();
+      eatingAudio.currentTime = 0;
     }
 
     function toggleTimer(event) {
+      if (event) event.stopPropagation();
+
       if (bodyEl.classList.contains('settings-open')) {
         closeSettings();
         return;
@@ -614,11 +793,12 @@
         return;
       }
 
-      if (event && (
-          event.target.closest('.bottom-bar') || 
-          event.target.closest('.settings-overlay') ||
-          event.target.closest('.option-overlay')
-      )) {
+      // 食べ終わった後にボタンを押したらリセットしてもう一度遊べるようにする
+      if (bodyEl.classList.contains('finished')) {
+        clearSeeds();
+        timeLeft = setMinutes * 60;
+        updateDisplay();
+        eatBtnText.textContent = "EAT WATERMELON";
         return;
       }
 
@@ -626,58 +806,135 @@
 
       if (isRunning) {
         clearInterval(timerInterval);
+        if (realTimeSeedTimer) clearInterval(realTimeSeedTimer);
         isRunning = false;
         bodyEl.classList.add('paused');
         bodyEl.classList.remove('running');
+        eatBtnText.textContent = "RESUME EATING";
+        stopEatingSound();
       } else {
         if (timeLeft <= 0) return; 
 
         isRunning = true;
+        hasStarted = true;
         bodyEl.classList.remove('paused');
         bodyEl.classList.add('running'); 
+        eatBtnText.textContent = "FOCUS ON EATING";
         
+        startEatingSound();
+
+        // リアルタイムモードの場合は12秒に1個種を落とすタイマーを開始
+        if (seedMode === 'realtime') {
+          if (!animationFrameId) animateSeeds();
+          realTimeSeedTimer = setInterval(() => {
+            dropRealtimeSeed();
+          }, 12000); // 12000ミリ秒 = 12秒
+        }
+
         timerInterval = setInterval(() => {
           timeLeft--;
           updateDisplay();
 
           if (timeLeft <= 0) {
             clearInterval(timerInterval);
+            if (realTimeSeedTimer) clearInterval(realTimeSeedTimer);
             isRunning = false;
+            hasStarted = false;
             bodyEl.classList.add('paused');
             bodyEl.classList.remove('running');
-            playElegantChime(); 
+            eatBtnText.textContent = "EAT ANOTHER ONE";
+            stopEatingSound();
+            playAlarmSound();
+            
+            // 完食時の演出（ENDモードの場合のみどさっと降る）
+            startSeedRain();
           }
         }, 1000);
       }
     }
 
-    function toggleFlip(event) {
+    function toggleMelonColor(event) {
       if (event) event.stopPropagation();
-      isFlipEnabled = !isFlipEnabled;
-      
-      btnFlip.textContent = isFlipEnabled ? "FLIP: ON" : "FLIP: OFF";
-      if (isFlipEnabled) {
-        btnFlip.classList.add('active');
+      melonColor = melonColor === 'red' ? 'yellow' : 'red';
+      btnColor.textContent = `MELON COLOR: ${melonColor.toUpperCase()}`;
+      if (melonColor === 'yellow') {
+        btnColor.style.color = '#fbc02d';
       } else {
-        btnFlip.classList.remove('active');
+        btnColor.style.color = '#ff334b';
       }
+      updateDisplay();
     }
 
     function toggleSound(event) {
       if (event) event.stopPropagation();
       isSoundEnabled = !isSoundEnabled;
+      btnSound.textContent = isSoundEnabled ? "ALARM SOUND: ON" : "ALARM SOUND: OFF";
       
-      btnSound.textContent = isSoundEnabled ? "SOUND: ON" : "SOUND: OFF";
       if (isSoundEnabled) {
         btnSound.classList.add('active');
+        optionContentBox.classList.add('sound-on');
         initAudio();
-        playElegantChime();
+        playAlarmSound();
       } else {
         btnSound.classList.remove('active');
+        optionContentBox.classList.remove('sound-on');
       }
     }
 
-    updateDisplay(true);
+    function toggleSoundType(event) {
+      if (event) event.stopPropagation();
+      if (soundType === 'realbell') {
+        soundType = 'chime';
+      } else if (soundType === 'chime') {
+        soundType = 'beep';
+      } else {
+        soundType = 'realbell';
+      }
+      
+      let displayName = soundType.toUpperCase();
+      if (soundType === 'realbell') displayName = 'REAL BELL';
+      btnSoundType.textContent = `TONE: ${displayName}`;
+      
+      initAudio();
+      playAlarmSound();
+    }
+
+    function toggleEatingSound(event) {
+      if (event) event.stopPropagation();
+      isEatingSoundEnabled = !isEatingSoundEnabled;
+      btnEatingSound.textContent = isEatingSoundEnabled ? "EATING SOUND: ON" : "EATING SOUND: OFF";
+      
+      if (isEatingSoundEnabled) {
+        btnEatingSound.style.color = '#ff334b';
+        if (isRunning) {
+          startEatingSound();
+        }
+      } else {
+        btnEatingSound.style.color = '#2e7d32';
+        stopEatingSound();
+      }
+    }
+
+    // 種の演出モードの切り替え（END ➔ REALTIME ➔ OFF ➔ END）
+    function toggleSeedMode(event) {
+      if (event) event.stopPropagation();
+      if (seedMode === 'end') {
+        seedMode = 'realtime';
+        btnSeedMode.textContent = "SEED RAIN: REALTIME";
+        btnSeedMode.style.color = '#2e7d32';
+      } else if (seedMode === 'realtime') {
+        seedMode = 'off';
+        btnSeedMode.textContent = "SEED RAIN: OFF";
+        btnSeedMode.style.color = '#999999';
+      } else {
+        seedMode = 'end';
+        btnSeedMode.textContent = "SEED RAIN: END";
+        btnSeedMode.style.color = '#ff334b';
+      }
+    }
+
+    generateDial();
+    updateDisplay();
   </script>
 </body>
 </html>
