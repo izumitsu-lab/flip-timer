@@ -38,11 +38,10 @@
       justify-content: center;
       align-items: center;
       overflow: hidden;
-      cursor: pointer;
       padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
     }
 
-    /* タイマーコンテナ */
+    /* タイマーコンテナ（ここをクリックした時だけスタート・ポーズ） */
     .timer-container {
       display: flex;
       align-items: center;
@@ -51,6 +50,7 @@
       gap: 3vw; 
       transform: translateY(0); 
       transition: filter 0.5s ease, transform 0.5s ease;
+      cursor: pointer;
     }
 
     body.settings-open .timer-container,
@@ -196,7 +196,7 @@
       50% { opacity: 0.1; }
     }
 
-    /* --- 下部コントロールバー（中央寄せでコンパクトに統率） --- */
+    /* --- 下部コントロールバー --- */
     .bottom-bar {
       position: absolute;
       bottom: max(20px, env(safe-area-inset-bottom));
@@ -444,9 +444,10 @@
     }
   </style>
 </head>
-<body class="paused sound-on" id="body" onclick="toggleTimer(event)">
+<body class="paused sound-on" id="body">
 
-  <div class="timer-container">
+  <!-- パタパタ時計部分を囲むコンテナをクリックした時だけタイマーが始動します -->
+  <div class="timer-container" onclick="toggleTimer(event)">
     <div class="flip-unit" id="min-unit">
       <div class="top" data-val="25"></div>
       <div class="bottom" data-val="25"></div>
@@ -782,27 +783,7 @@
     }
 
     function toggleTimer(event) {
-      if (bodyEl.classList.contains('settings-open')) {
-        closeSettings();
-        return;
-      }
-      if (bodyEl.classList.contains('option-open')) {
-        closeOption();
-        return;
-      }
-      if (bodyEl.classList.contains('custom-open')) {
-        closeCustomInput();
-        return;
-      }
-
-      if (event && (
-          event.target.closest('.bottom-bar') || 
-          event.target.closest('.settings-overlay') ||
-          event.target.closest('.option-overlay') ||
-          event.target.closest('.custom-overlay')
-      )) {
-        return;
-      }
+      if (event) event.stopPropagation();
 
       initAudio();
 
