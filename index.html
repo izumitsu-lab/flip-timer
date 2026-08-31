@@ -332,11 +332,11 @@
     }
 
     .custom-display {
-      font-size: clamp(42px, 8vh, 64px);
+      font-size: clamp(36px, 7vh, 56px);
       font-weight: 700;
       color: #ffffff;
       letter-spacing: 2px;
-      margin-bottom: 3vh;
+      margin-bottom: 2vh;
       height: 1.2em;
       display: flex;
       justify-content: center;
@@ -351,7 +351,7 @@
       grid-template-columns: repeat(3, 1fr);
       gap: 12px;
       width: 100%;
-      margin-bottom: 2.5vh;
+      margin-bottom: 2vh;
     }
 
     .key-btn {
@@ -392,11 +392,26 @@
       text-align: center;
       cursor: pointer;
       transition: opacity 0.2s ease, transform 0.1s ease;
+      margin-bottom: 2vh;
     }
 
     .custom-set-btn:active {
       opacity: 0.8;
       transform: scale(0.97);
+    }
+
+    .mode-toggle-btn {
+      font-size: clamp(12px, 2vh, 15px);
+      font-weight: 300;
+      letter-spacing: 2px;
+      color: #777777;
+      cursor: pointer;
+      transition: color 0.3s ease;
+      text-align: center;
+    }
+
+    .mode-toggle-btn:hover {
+      color: #cccccc;
     }
 
     .option-content {
@@ -536,7 +551,7 @@
     </div>
   </div>
 
-  <!-- ✨ オリジナルテンキー入力オーバーレイ -->
+  <!-- カスタムテンキー入力オーバーレイ -->
   <div id="custom-overlay" class="custom-overlay" onclick="closeCustomInput(event)">
     <div class="custom-container" onclick="event.stopPropagation()">
       <div id="custom-display" class="custom-display">0</div>
@@ -557,6 +572,7 @@
       </div>
 
       <div class="custom-set-btn" onclick="applyCustomTime()">SET</div>
+      <div id="mode-toggle-link" class="mode-toggle-btn" onclick="toggleInputMode()">+ SWITCH TO MM:SS</div>
     </div>
   </div>
 
@@ -598,17 +614,19 @@
     let startEpoch = 0;        
     let elapsedBeforePause = 0; 
     
-    let isFlipEnabled = true;  
-    let isSoundEnabled = true; 
-    let selectedSound = 'bell'; 
+    // 💡 設定値の初期状態を localStorage から復元（なければデフォルト値）
+    let isFlipEnabled = localStorage.getItem('isFlipEnabled') !== null ? JSON.parse(localStorage.getItem('isFlipEnabled')) : true;  
+    let isSoundEnabled = localStorage.getItem('isSoundEnabled') !== null ? JSON.parse(localStorage.getItem('isSoundEnabled')) : true; 
+    let selectedSound = localStorage.getItem('selectedSound') || 'bell'; 
     
     let timerInterval;
     let audioCtx; 
     let resetTimeoutId;
     let bellAudio = new Audio('bell3sec.wav');
 
-    // テンキー入力用文字列バッファ
+    // テンキー入力用変数
     let customInputBuffer = "";
+    let customInputMode = localStorage.getItem('customInputMode') || 'minutes';
 
     const bodyEl = document.getElementById('body');
     const minUnitEl = document.getElementById('min-unit');
@@ -618,6 +636,37 @@
     const btnSound = document.getElementById('btn-sound');
     const btnReset = document.getElementById('btn-reset');
     const customDisplayEl = document.getElementById('custom-display');
+    const modeToggleLink = document.getElementById('mode-toggle-link');
+
+    // 💡 起動時に保存されたOPTION設定をDOMやクラスに反映させる初期化処理
+    function applySavedOptionsToUI() {
+      // FLIPの反映
+      if (isFlipEnabled) {
+        btnFlip.textContent = "FLIP: ON";
+        btnFlip.classList.add('active');
+      } else {
+        btnFlip.textContent = "FLIP: OFF";
+        btnFlip.classList.remove('active');
+      }
+
+      // SOUNDの反映
+      if (isSoundEnabled) {
+        btnSound.textContent = "SOUND: ON";
+        btnSound.classList.add('active');
+        bodyEl.classList.add('sound-on');
+      } else {
+        btnSound.textContent = "SOUND: OFF";
+        btnSound.classList.remove('active');
+        bodyEl.classList.remove('sound-on');
+      }
+
+      // サウンドタイプの反映
+      document.querySelectorAll('.sound-sub-item').forEach(el => el.classList.remove('active'));
+      const activeSoundEl = document.getElementById(`sound-${selectedSound}`);
+      if (activeSoundEl) {
+        activeSoundEl.classList.add('active');
+      }
+    }
 
     function initAudio() {
       if (!audioCtx) {
@@ -825,6 +874,14 @@
       bodyEl.classList.remove('settings-open');
       bodyEl.classList.add('custom-open');
       customInputBuffer = "";
+      
+      customInputMode = localStorage.getItem('customInputMode') || 'minutes';
+      if (customInputMode === 'mmss') {
+        modeToggleLink.textContent = "- SWITCH TO MINUTES";
+      } else {
+        modeToggleLink.textContent = "+ SWITCH TO MM:SS";
+      }
+
       updateCustomDisplay();
     }
 
@@ -833,8 +890,25 @@
       bodyEl.classList.remove('custom-open');
     }
 
+    function toggleInputMode() {
+      if (customInputMode === 'minutes') {
+        customInputMode = 'mmss';
+        modeToggleLink.textContent = "- SWITCH TO MINUTES";
+      } else {
+        customInputMode = 'minutes';
+        modeToggleLink.textContent = "+ SWITCH TO MM:SS";
+      }
+      
+      localStorage.setItem('customInputMode', customInputMode);
+
+      customInputBuffer = "";
+      updateCustomDisplay();
+    }
+
     function appendKey(numStr) {
-      if (customInputBuffer.length >= 3) return; // 最大3桁
+      const limit = customInputMode === 'minutes' ? 3 : 4; 
+      if (customInputBuffer.length >= limit) return;
+      
       if (customInputBuffer === "0") {
         customInputBuffer = numStr;
       } else {
@@ -854,25 +928,50 @@
     }
 
     function updateCustomDisplay() {
-      customDisplayEl.textContent = customInputBuffer === "" ? "0" : customInputBuffer;
+      if (customInputBuffer === "") {
+        customDisplayEl.textContent = customInputMode === 'minutes' ? "0" : "00:00";
+        return;
+      }
+
+      if (customInputMode === 'minutes') {
+        customDisplayEl.textContent = customInputBuffer;
+      } else {
+        let padded = customInputBuffer.padStart(4, '0');
+        let m = padded.slice(0, 2);
+        let s = padded.slice(2, 4);
+        customDisplayEl.textContent = `${m}:${s}`;
+      }
     }
 
-    function applyTime(minutes) {
+    function applyTime(minutes, seconds = 0) {
       setMinutes = minutes;
-      timeLeft = setMinutes * 60;
+      timeLeft = (minutes * 60) + seconds;
       elapsedBeforePause = 0;
       updateDisplay(true);
       closeSettings();
     }
 
     function applyCustomTime() {
-      const val = parseInt(customInputBuffer, 10);
-      if (!isNaN(val) && val > 0) {
-        applyTime(val);
+      if (customInputBuffer === "") {
         closeCustomInput();
-      } else {
-        closeCustomInput();
+        return;
       }
+
+      if (customInputMode === 'minutes') {
+        const val = parseInt(customInputBuffer, 10);
+        if (!isNaN(val) && val > 0) {
+          applyTime(val, 0);
+        }
+      } else {
+        let padded = customInputBuffer.padStart(4, '0');
+        let m = parseInt(padded.slice(0, 2), 10);
+        let s = parseInt(padded.slice(2, 4), 10);
+        let totalSeconds = (m * 60) + s;
+        if (totalSeconds > 0) {
+          applyTime(0, totalSeconds);
+        }
+      }
+      closeCustomInput();
     }
 
     function resetTimer(event) {
@@ -938,14 +1037,18 @@
       }
     });
 
+    // 💡 FLIP設定切り替え＆localStorage保存
     function toggleFlip(event) {
       if (event) event.stopPropagation();
       isFlipEnabled = !isFlipEnabled;
       btnFlip.textContent = isFlipEnabled ? "FLIP: ON" : "FLIP: OFF";
       if (isFlipEnabled) btnFlip.classList.add('active');
       else btnFlip.classList.remove('active');
+
+      localStorage.setItem('isFlipEnabled', isFlipEnabled);
     }
 
+    // 💡 SOUND設定切り替え＆localStorage保存
     function toggleSound(event) {
       if (event) event.stopPropagation();
       isSoundEnabled = !isSoundEnabled;
@@ -961,8 +1064,11 @@
         btnSound.classList.remove('active');
         bodyEl.classList.remove('sound-on');
       }
+
+      localStorage.setItem('isSoundEnabled', isSoundEnabled);
     }
 
+    // 💡 サウンド種類選択＆localStorage保存
     function setSoundType(type, event) {
       if (event) event.stopPropagation();
       selectedSound = type;
@@ -970,10 +1076,14 @@
       document.querySelectorAll('.sound-sub-item').forEach(el => el.classList.remove('active'));
       document.getElementById(`sound-${type}`).classList.add('active');
 
+      localStorage.setItem('selectedSound', selectedSound);
+
       initAudio();
       playSelectedSound();
     }
 
+    // アプリ起動時に保存されたオプションを適用
+    applySavedOptionsToUI();
     updateDisplay(true);
   </script>
 </body>
