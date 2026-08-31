@@ -349,7 +349,7 @@
       color: #e0e0e0;
     }
 
-    /* サウンド選択サブメニュー（SOUND: ON の時だけ展開） */
+    /* サウンド選択サブメニュー（初期状態で表示） */
     .sound-select-group {
       display: none;
       flex-direction: column;
@@ -411,12 +411,12 @@
     }
   </style>
 </head>
-<body class="paused" id="body" onclick="toggleTimer(event)">
+<body class="paused sound-on" id="body" onclick="toggleTimer(event)">
 
   <div class="timer-container">
     <div class="flip-unit" id="min-unit">
-      <div class="top" data-val="15"></div>
-      <div class="bottom" data-val="15"></div>
+      <div class="top" data-val="25"></div>
+      <div class="bottom" data-val="25"></div>
     </div>
     <div class="colon">:</div>
     <div class="flip-unit" id="sec-unit">
@@ -463,9 +463,9 @@
   <div id="option-overlay" class="option-overlay" onclick="closeOption(event)">
     <div class="option-content" onclick="event.stopPropagation()">
       <div id="btn-flip" class="option-item active" onclick="toggleFlip(event)">FLIP: ON</div>
-      <div id="btn-sound" class="option-item" onclick="toggleSound(event)">SOUND: OFF</div>
+      <div id="btn-sound" class="option-item active" onclick="toggleSound(event)">SOUND: ON</div>
       
-      <!-- サウンド選択用サブメニュー (SOUND: ONのときに出現) -->
+      <!-- サウンド選択用サブメニュー (初期から表示) -->
       <div class="sound-select-group">
         <div id="sound-bell" class="sound-sub-item active" onclick="setSoundType('bell', event)">REAL BELL</div>
         <div id="sound-chime" class="sound-sub-item" onclick="setSoundType('chime', event)">CHIME</div>
@@ -485,19 +485,19 @@
     });
     setAppHeight();
 
-    // 初期設定
-    let setMinutes = 15; 
+    // 初期設定 (デフォルト時間を25分に変更)
+    let setMinutes = 25; 
     let timeLeft = setMinutes * 60;
     let isRunning = false;
     
     let isFlipEnabled = true;  
-    let isSoundEnabled = false; 
-    let selectedSound = 'bell'; // 'bell', 'chime', 'beep'
+    let isSoundEnabled = true; 
+    let selectedSound = 'bell'; 
     
     let timerInterval;
     let audioCtx; 
     let resetTimeoutId;
-    let bellAudio = new Audio('bell3sec.wav'); // bell3sec.wavの事前読み込み
+    let bellAudio = new Audio('bell3sec.wav');
 
     const bodyEl = document.getElementById('body');
     const minUnitEl = document.getElementById('min-unit');
@@ -573,7 +573,7 @@
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
         osc.type = 'square';
-        osc.frequency.value = 659.25; // E5
+        osc.frequency.value = 659.25; 
         
         const startTime = t + i * 0.25;
         gain.gain.setValueAtTime(0.1, startTime);
@@ -770,13 +770,13 @@
       if (isSoundEnabled) {
         btnSound.textContent = "SOUND: ON";
         btnSound.classList.add('active');
-        bodyEl.classList.add('sound-on'); // サウンド選択メニューを表示
+        bodyEl.classList.add('sound-on');
         initAudio();
-        playSelectedSound(); // ONにした瞬間にテスト再生
+        playSelectedSound();
       } else {
         btnSound.textContent = "SOUND: OFF";
         btnSound.classList.remove('active');
-        bodyEl.classList.remove('sound-on'); // サウンド選択メニューを非表示
+        bodyEl.classList.remove('sound-on');
       }
     }
 
@@ -784,12 +784,11 @@
       if (event) event.stopPropagation();
       selectedSound = type;
 
-      // アクティブ表示の切り替え
       document.querySelectorAll('.sound-sub-item').forEach(el => el.classList.remove('active'));
       document.getElementById(`sound-${type}`).classList.add('active');
 
       initAudio();
-      playSelectedSound(); // 変更して選んだ瞬間にテスト再生
+      playSelectedSound();
     }
 
     updateDisplay(true);
