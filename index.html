@@ -23,36 +23,50 @@
       --ui-color: #777777;
       --ui-hover: #bbbbbb;
       --ui-active: #e0e0e0;
-      --overlay-bg: rgba(0, 0, 0, 0.88);
+      --overlay-bg: rgba(0, 0, 0, 0.90);
       --keypad-bg: rgba(255, 255, 255, 0.05);
       --keypad-border: rgba(255, 255, 255, 0.1);
       --display-border: #444444;
       --set-btn-bg: #e0e0e0;
       --set-btn-text: #000000;
+      --flip-shadow: linear-gradient(to bottom, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0) 100%);
     }
 
-    /* 40種類のカラーテーマ定義 */
-    body.theme-dark { --bg-color: #000000; --text-color: #e0e0e0; --flip-bg: #1a1a1a; --flip-text: #f5f5f5; --colon-color: #1a1a1a; --ui-color: #777777; --ui-hover: #bbbbbb; --ui-active: #e0e0e0; --overlay-bg: rgba(0, 0, 0, 0.88); --keypad-bg: rgba(255, 255, 255, 0.05); --keypad-border: rgba(255, 255, 255, 0.1); --display-border: #444444; --set-btn-bg: #e0e0e0; --set-btn-text: #000000; }
-    body.theme-midnight { --bg-color: #0b0f19; --text-color: #cbd5e1; --flip-bg: #1e293b; --flip-text: #f8fafc; --colon-color: #1e293b; --ui-color: #64748b; --ui-hover: #94a3b8; --ui-active: #f8fafc; --overlay-bg: rgba(11, 15, 25, 0.88); --keypad-bg: rgba(255, 255, 255, 0.04); --keypad-border: rgba(255, 255, 255, 0.08); --display-border: #334155; --set-btn-bg: #38bdf8; --set-btn-text: #0f172a; }
-    body.theme-charcoal { --bg-color: #121212; --text-color: #d4d4d4; --flip-bg: #222222; --flip-text: #ffffff; --colon-color: #222222; --ui-color: #737373; --ui-hover: #a3a3a3; --ui-active: #ffffff; --overlay-bg: rgba(18, 18, 18, 0.88); --keypad-bg: rgba(255, 255, 255, 0.05); --keypad-border: rgba(255, 255, 255, 0.1); --display-border: #404040; --set-btn-bg: #a3a3a3; --set-btn-text: #121212; }
-    body.theme-sepia { --bg-color: #161412; --text-color: #dcd6cd; --flip-bg: #26221e; --flip-text: #f3efe6; --colon-color: #26221e; --ui-color: #8c8275; --ui-hover: #c2b8a8; --ui-active: #f3efe6; --overlay-bg: rgba(22, 20, 18, 0.88); --keypad-bg: rgba(255, 255, 255, 0.04); --keypad-border: rgba(255, 255, 255, 0.08); --display-border: #4a4238; --set-btn-bg: #d4b595; --set-btn-text: #161412; }
-    body.theme-cyberpunk { --bg-color: #05050a; --text-color: #00ffcc; --flip-bg: #120d26; --flip-text: #ff007f; --colon-color: #120d26; --ui-color: #7b2cbf; --ui-hover: #00ffcc; --ui-active: #ff007f; --overlay-bg: rgba(5, 5, 10, 0.92); --keypad-bg: rgba(0, 255, 204, 0.05); --keypad-border: rgba(255, 0, 127, 0.2); --display-border: #7b2cbf; --set-btn-bg: #00ffcc; --set-btn-text: #05050a; }
-    body.theme-matcha { --bg-color: #131713; --text-color: #c8d6c8; --flip-bg: #222b22; --flip-text: #eaf0ea; --colon-color: #222b22; --ui-color: #6b826b; --ui-hover: #a2bca2; --ui-active: #eaf0ea; --overlay-bg: rgba(19, 23, 19, 0.88); --keypad-bg: rgba(255, 255, 255, 0.04); --keypad-border: rgba(255, 255, 255, 0.08); --display-border: #3b4d3b; --set-btn-bg: #8fb38f; --set-btn-text: #131713; }
-    body.theme-lavender { --bg-color: #110e16; --text-color: #d8b4fe; --flip-bg: #221a2d; --flip-text: #f3e8ff; --colon-color: #221a2d; --ui-color: #8b5cf6; --ui-hover: #c4b5fd; --ui-active: #f3e8ff; --overlay-bg: rgba(17, 14, 22, 0.88); --keypad-bg: rgba(216, 180, 254, 0.04); --keypad-border: rgba(216, 180, 254, 0.1); --display-border: #4c1d95; --set-btn-bg: #c084fc; --set-btn-text: #110e16; }
-    body.theme-terracotta { --bg-color: #1a120b; --text-color: #e6ccb2; --flip-bg: #2d1f14; --flip-text: #ede0d4; --colon-color: #2d1f14; --ui-color: #9c6644; --ui-hover: #dda15e; --ui-active: #ede0d4; --overlay-bg: rgba(26, 18, 11, 0.88); --keypad-bg: rgba(255, 255, 255, 0.04); --keypad-border: rgba(255, 255, 255, 0.08); --display-border: #b08968; --set-btn-bg: #dda15e; --set-btn-text: #1a120b; }
-    body.theme-nordic { --bg-color: #0f172a; --text-color: #94a3b8; --flip-bg: #1e293b; --flip-text: #e2e8f0; --colon-color: #1e293b; --ui-color: #475569; --ui-hover: #cbd5e1; --ui-active: #ffffff; --overlay-bg: rgba(15, 23, 42, 0.88); --keypad-bg: rgba(255, 255, 255, 0.04); --keypad-border: rgba(255, 255, 255, 0.08); --display-border: #334155; --set-btn-bg: #94a3b8; --set-btn-text: #0f172a; }
-    body.theme-tokyo_night { --bg-color: #1a1b26; --text-color: #a9b1d6; --flip-bg: #24283b; --flip-text: #7aa2f7; --colon-color: #24283b; --ui-color: #565f89; --ui-hover: #bb9af7; --ui-active: #7aa2f7; --overlay-bg: rgba(26, 27, 38, 0.88); --keypad-bg: rgba(255, 255, 255, 0.04); --keypad-border: rgba(255, 255, 255, 0.08); --display-border: #414868; --set-btn-bg: #bb9af7; --set-btn-text: #1a1b26; }
-    body.theme-emerald { --bg-color: #061a14; --text-color: #a7f3d0; --flip-bg: #0d3b2c; --flip-text: #ecfdf5; --colon-color: #0d3b2c; --ui-color: #059669; --ui-hover: #34d399; --ui-active: #ecfdf5; --overlay-bg: rgba(6, 26, 20, 0.88); --keypad-bg: rgba(52, 211, 153, 0.04); --keypad-border: rgba(52, 211, 153, 0.1); --display-border: #047857; --set-btn-bg: #10b981; --set-btn-text: #061a14; }
-    body.theme-rose_gold { --bg-color: #1c1415; --text-color: #e7bcba; --flip-bg: #2e2122; --flip-text: #fbebee; --colon-color: #2e2122; --ui-color: #9e6b69; --ui-hover: #e0a9a7; --ui-active: #fbebee; --overlay-bg: rgba(28, 20, 21, 0.88); --keypad-bg: rgba(255, 255, 255, 0.04); --keypad-border: rgba(255, 255, 255, 0.08); --display-border: #52393a; --set-btn-bg: #d49391; --set-btn-text: #1c1415; }
-    body.theme-sunset { --bg-color: #1f0e14; --text-color: #fbcfe8; --flip-bg: #381523; --flip-text: #fff1f2; --colon-color: #381523; --ui-color: #be185d; --ui-hover: #f472b6; --ui-active: #fff1f2; --overlay-bg: rgba(31, 14, 20, 0.88); --keypad-bg: rgba(255, 255, 255, 0.04); --keypad-border: rgba(255, 255, 255, 0.08); --display-border: #831843; --set-btn-bg: #fb7185; --set-btn-text: #1f0e14; }
-    body.theme-forest { --bg-color: #0c1410; --text-color: #a3e635; --flip-bg: #16251b; --flip-text: #ecfccb; --colon-color: #16251b; --ui-color: #4d7c0f; --ui-hover: #bef264; --ui-active: #ecfccb; --overlay-bg: rgba(12, 20, 16, 0.88); --keypad-bg: rgba(255, 255, 255, 0.04); --keypad-border: rgba(255, 255, 255, 0.08); --display-border: #3f6212; --set-btn-bg: #a3e635; --set-btn-text: #0c1410; }
-    body.theme-mocha { --bg-color: #191412; --text-color: #d7ccc8; --flip-bg: #2d2421; --flip-text: #efebe9; --colon-color: #2d2421; --ui-color: #8d6e63; --ui-hover: #bcaaa4; --ui-active: #efebe9; --overlay-bg: rgba(25, 20, 18, 0.88); --keypad-bg: rgba(255, 255, 255, 0.04); --keypad-border: rgba(255, 255, 255, 0.08); --display-border: #5d4037; --set-btn-bg: #d7ccc8; --set-btn-text: #191412; }
-    body.theme-steel_blue { --bg-color: #101722; --text-color: #93c5fd; --flip-bg: #1d2c40; --flip-text: #eff6ff; --colon-color: #1d2c40; --ui-color: #3b82f6; --ui-hover: #60a5fa; --ui-active: #eff6ff; --overlay-bg: rgba(16, 23, 34, 0.88); --keypad-bg: rgba(255, 255, 255, 0.04); --keypad-border: rgba(255, 255, 255, 0.08); --display-border: #1e40af; --set-btn-bg: #60a5fa; --set-btn-text: #101722; }
-    body.theme-burgundy { --bg-color: #18090c; --text-color: #fca5a5; --flip-bg: #2d141b; --flip-text: #fef2f2; --colon-color: #2d141b; --ui-color: #991b1b; --ui-hover: #f87171; --ui-active: #fef2f2; --overlay-bg: rgba(24, 9, 12, 0.88); --keypad-bg: rgba(255, 255, 255, 0.04); --keypad-border: rgba(255, 255, 255, 0.08); --display-border: #7f1d1d; --set-btn-bg: #f87171; --set-btn-text: #18090c; }
-    body.theme-arctic { --bg-color: #08121a; --text-color: #a5f3fc; --flip-bg: #132a38; --flip-text: #ecfeff; --colon-color: #132a38; --ui-color: #0891b2; --ui-hover: #22d3ee; --ui-active: #ecfeff; --overlay-bg: rgba(8, 18, 26, 0.88); --keypad-bg: rgba(255, 255, 255, 0.04); --keypad-border: rgba(255, 255, 255, 0.08); --display-border: #0e7490; --set-btn-bg: #38bdf8; --set-btn-text: #08121a; }
-    body.theme-cherry_blossom { --bg-color: #1a0f14; --text-color: #fbcfe8; --flip-bg: #301a24; --flip-text: #fff1f2; --colon-color: #301a24; --ui-color: #db2777; --ui-hover: #f472b6; --ui-active: #fff1f2; --overlay-bg: rgba(26, 15, 20, 0.88); --keypad-bg: rgba(255, 255, 255, 0.04); --keypad-border: rgba(255, 255, 255, 0.08); --display-border: #9d174d; --set-btn-bg: #f472b6; --set-btn-text: #1a0f14; }
+    /* 💡 LIGHT & POP系のみ影をほとんどゼロにしてクリーンに保つ */
+    body.is-light-theme {
+      --flip-shadow: linear-gradient(to bottom, rgba(0,0,0,0.01) 0%, rgba(0,0,0,0) 100%);
+    }
 
-    /* 明るい・斬新なライト＆ポップ系テーマ (20種) */
+    /* 52種類のカラーテーマ定義 */
+    body.theme-dark { --bg-color: #000000; --text-color: #e0e0e0; --flip-bg: #1a1a1a; --flip-text: #f5f5f5; --colon-color: #1a1a1a; --ui-color: #777777; --ui-hover: #bbbbbb; --ui-active: #e0e0e0; --overlay-bg: rgba(0, 0, 0, 0.90); --keypad-bg: rgba(255, 255, 255, 0.05); --keypad-border: rgba(255, 255, 255, 0.1); --display-border: #444444; --set-btn-bg: #e0e0e0; --set-btn-text: #000000; }
+    body.theme-midnight { --bg-color: #0b0f19; --text-color: #cbd5e1; --flip-bg: #1e293b; --flip-text: #f8fafc; --colon-color: #1e293b; --ui-color: #64748b; --ui-hover: #94a3b8; --ui-active: #f8fafc; --overlay-bg: rgba(11, 15, 25, 0.90); --keypad-bg: rgba(255, 255, 255, 0.04); --keypad-border: rgba(255, 255, 255, 0.08); --display-border: #334155; --set-btn-bg: #38bdf8; --set-btn-text: #0f172a; }
+    body.theme-charcoal { --bg-color: #121212; --text-color: #d4d4d4; --flip-bg: #222222; --flip-text: #ffffff; --colon-color: #222222; --ui-color: #737373; --ui-hover: #a3a3a3; --ui-active: #ffffff; --overlay-bg: rgba(18, 18, 18, 0.90); --keypad-bg: rgba(255, 255, 255, 0.05); --keypad-border: rgba(255, 255, 255, 0.1); --display-border: #404040; --set-btn-bg: #a3a3a3; --set-btn-text: #121212; }
+    body.theme-sepia { --bg-color: #161412; --text-color: #dcd6cd; --flip-bg: #26221e; --flip-text: #f3efe6; --colon-color: #26221e; --ui-color: #8c8275; --ui-hover: #c2b8a8; --ui-active: #f3efe6; --overlay-bg: rgba(22, 20, 18, 0.90); --keypad-bg: rgba(255, 255, 255, 0.04); --keypad-border: rgba(255, 255, 255, 0.08); --display-border: #4a4238; --set-btn-bg: #d4b595; --set-btn-text: #161412; }
+    body.theme-nordic { --bg-color: #0f172a; --text-color: #94a3b8; --flip-bg: #1e293b; --flip-text: #e2e8f0; --colon-color: #1e293b; --ui-color: #475569; --ui-hover: #cbd5e1; --ui-active: #ffffff; --overlay-bg: rgba(15, 23, 42, 0.90); --keypad-bg: rgba(255, 255, 255, 0.04); --keypad-border: rgba(255, 255, 255, 0.08); --display-border: #334155; --set-btn-bg: #94a3b8; --set-btn-text: #0f172a; }
+    body.theme-emerald { --bg-color: #061a14; --text-color: #a7f3d0; --flip-bg: #0d3b2c; --flip-text: #ecfdf5; --colon-color: #0d3b2c; --ui-color: #059669; --ui-hover: #34d399; --ui-active: #ecfdf5; --overlay-bg: rgba(6, 26, 20, 0.90); --keypad-bg: rgba(52, 211, 153, 0.04); --keypad-border: rgba(52, 211, 153, 0.1); --display-border: #047857; --set-btn-bg: #10b981; --set-btn-text: #061a14; }
+    body.theme-forest { --bg-color: #0c1410; --text-color: #a3e635; --flip-bg: #16251b; --flip-text: #ecfccb; --colon-color: #16251b; --ui-color: #4d7c0f; --ui-hover: #bef264; --ui-active: #ecfccb; --overlay-bg: rgba(12, 20, 16, 0.90); --keypad-bg: rgba(255, 255, 255, 0.04); --keypad-border: rgba(255, 255, 255, 0.08); --display-border: #3f6212; --set-btn-bg: #a3e635; --set-btn-text: #0c1410; }
+    body.theme-mocha { --bg-color: #191412; --text-color: #d7ccc8; --flip-bg: #2d2421; --flip-text: #efebe9; --colon-color: #2d2421; --ui-color: #8d6e63; --ui-hover: #bcaaa4; --ui-active: #efebe9; --overlay-bg: rgba(25, 20, 18, 0.90); --keypad-bg: rgba(255, 255, 255, 0.04); --keypad-border: rgba(255, 255, 255, 0.08); --display-border: #5d4037; --set-btn-bg: #d7ccc8; --set-btn-text: #191412; }
+    body.theme-steel_blue { --bg-color: #101722; --text-color: #93c5fd; --flip-bg: #1d2c40; --flip-text: #eff6ff; --colon-color: #1d2c40; --ui-color: #3b82f6; --ui-hover: #60a5fa; --ui-active: #eff6ff; --overlay-bg: rgba(16, 23, 34, 0.90); --keypad-bg: rgba(255, 255, 255, 0.04); --keypad-border: rgba(255, 255, 255, 0.08); --display-border: #1e40af; --set-btn-bg: #60a5fa; --set-btn-text: #101722; }
+    body.theme-arctic { --bg-color: #08121a; --text-color: #a5f3fc; --flip-bg: #132a38; --flip-text: #ecfeff; --colon-color: #132a38; --ui-color: #0891b2; --ui-hover: #22d3ee; --ui-active: #ecfeff; --overlay-bg: rgba(8, 18, 26, 0.90); --keypad-bg: rgba(255, 255, 255, 0.04); --keypad-border: rgba(255, 255, 255, 0.08); --display-border: #0e7490; --set-btn-bg: #38bdf8; --set-btn-text: #08121a; }
+    body.theme-deep_space { --bg-color: #030712; --text-color: #e2e8f0; --flip-bg: #111827; --flip-text: #ffffff; --colon-color: #1f2937; --ui-color: #6b7280; --ui-hover: #38bdf8; --ui-active: #ffffff; --overlay-bg: rgba(3, 7, 18, 0.92); --keypad-bg: rgba(255, 255, 255, 0.04); --keypad-border: rgba(255, 255, 255, 0.1); --display-border: #374151; --set-btn-bg: #38bdf8; --set-btn-text: #030712; }
+
+    /* DARK & POP（背景黒め × ポップなフリップ ＆ 影あり） */
+    body.theme-dp_clean { --bg-color: #080808; --text-color: #888888; --flip-bg: #ffffff; --flip-text: #111111; --colon-color: #1c1c1c; --ui-color: #666666; --ui-hover: #ffffff; --ui-active: #ffffff; --overlay-bg: rgba(8, 8, 8, 0.92); --keypad-bg: rgba(255, 255, 255, 0.05); --keypad-border: rgba(255, 255, 255, 0.1); --display-border: #333333; --set-btn-bg: #ffffff; --set-btn-text: #080808; }
+    body.theme-dp_mint { --bg-color: #04120a; --text-color: #4ade80; --flip-bg: #dcfce7; --flip-text: #14532d; --colon-color: #0a2614; --ui-color: #22c55e; --ui-hover: #86efac; --ui-active: #86efac; --overlay-bg: rgba(4, 18, 10, 0.92); --keypad-bg: rgba(74, 222, 128, 0.05); --keypad-border: rgba(74, 222, 128, 0.1); --display-border: #14532d; --set-btn-bg: #4ade80; --set-btn-text: #04120a; }
+    body.theme-dp_sunny { --bg-color: #141004; --text-color: #fde047; --flip-bg: #fef9c3; --flip-text: #713f12; --colon-color: #261f08; --ui-color: #eab308; --ui-hover: #fef08a; --ui-active: #fef08a; --overlay-bg: rgba(20, 16, 4, 0.92); --keypad-bg: rgba(253, 224, 71, 0.05); --keypad-border: rgba(253, 224, 71, 0.1); --display-border: #713f12; --set-btn-bg: #fde047; --set-btn-text: #141004; }
+    body.theme-dp_peach { --bg-color: #160c04; --text-color: #fb923c; --flip-bg: #ffedd5; --flip-text: #7c2d12; --colon-color: #2c1809; --ui-color: #f97316; --ui-hover: #fed7aa; --ui-active: #fed7aa; --overlay-bg: rgba(22, 12, 4, 0.92); --keypad-bg: rgba(251, 146, 60, 0.05); --keypad-border: rgba(251, 146, 60, 0.1); --display-border: #7c2d12; --set-btn-bg: #fb923c; --set-btn-text: #160c04; }
+    body.theme-dp_sky { --bg-color: #04101a; --text-color: #38bdf8; --flip-bg: #e0f2fe; --flip-text: #075985; --colon-color: #0a2233; --ui-color: #0ea5e9; --ui-hover: #7dd3fc; --ui-active: #7dd3fc; --overlay-bg: rgba(4, 16, 26, 0.92); --keypad-bg: rgba(56, 189, 248, 0.05); --keypad-border: rgba(56, 189, 248, 0.1); --display-border: #075985; --set-btn-bg: #38bdf8; --set-btn-text: #04101a; }
+    body.theme-dp_lilac { --bg-color: #10061c; --text-color: #c084fc; --flip-bg: #f3e8ff; --flip-text: #581c87; --colon-color: #201036; --ui-color: #a855f7; --ui-hover: #d8b4fe; --ui-active: #d8b4fe; --overlay-bg: rgba(16, 6, 28, 0.92); --keypad-bg: rgba(192, 132, 252, 0.05); --keypad-border: rgba(192, 132, 252, 0.1); --display-border: #581c87; --set-btn-bg: #c084fc; --set-btn-text: #10061c; }
+    body.theme-dp_rose { --bg-color: #1c060c; --text-color: #fb7185; --flip-bg: #ffe4e6; --flip-text: #881337; --colon-color: #330f19; --ui-color: #f43f5e; --ui-hover: #fda4af; --ui-active: #fda4af; --overlay-bg: rgba(28, 6, 12, 0.92); --keypad-bg: rgba(251, 113, 133, 0.05); --keypad-border: rgba(251, 113, 133, 0.1); --display-border: #881337; --set-btn-bg: #fb7185; --set-btn-text: #1c060c; }
+
+    /* CYBER & NEON */
+    body.theme-cyberpunk { --bg-color: #05050a; --text-color: #00ffcc; --flip-bg: #120d26; --flip-text: #ff007f; --colon-color: #120d26; --ui-color: #7b2cbf; --ui-hover: #00ffcc; --ui-active: #ff007f; --overlay-bg: rgba(5, 5, 10, 0.92); --keypad-bg: rgba(0, 255, 204, 0.05); --keypad-border: rgba(255, 0, 127, 0.2); --display-border: #7b2cbf; --set-btn-bg: #00ffcc; --set-btn-text: #05050a; }
+    body.theme-neon_lime { --bg-color: #0f172a; --text-color: #ccff00; --flip-bg: #1e293b; --flip-text: #ccff00; --colon-color: #334155; --ui-color: #64748b; --ui-hover: #ccff00; --ui-active: #ccff00; --overlay-bg: rgba(15, 23, 42, 0.92); --keypad-bg: rgba(204, 255, 0, 0.05); --keypad-border: rgba(204, 255, 0, 0.2); --display-border: #ccff00; --set-btn-bg: #ccff00; --set-btn-text: #0f172a; }
+    body.theme-laser_purple { --bg-color: #2e0854; --text-color: #f3e8ff; --flip-bg: #4c1d95; --flip-text: #ff00ff; --colon-color: #4c1d95; --ui-color: #c084fc; --ui-hover: #ffffff; --ui-active: #ff00ff; --overlay-bg: rgba(46, 8, 84, 0.92); --keypad-bg: rgba(255, 255, 255, 0.05); --keypad-border: rgba(255, 0, 255, 0.2); --display-border: #d8b4fe; --set-btn-bg: #ff00ff; --set-btn-text: #2e0854; }
+    body.theme-electric_blue { --bg-color: #020617; --text-color: #38bdf8; --flip-bg: #0f172a; --flip-text: #00ffff; --colon-color: #0f172a; --ui-color: #0284c7; --ui-hover: #38bdf8; --ui-active: #00ffff; --overlay-bg: rgba(2, 6, 23, 0.92); --keypad-bg: rgba(56, 189, 248, 0.05); --keypad-border: rgba(0, 255, 255, 0.2); --display-border: #0284c7; --set-btn-bg: #00ffff; --set-btn-text: #020617; }
+    body.theme-matrix { --bg-color: #02230a; --text-color: #4ade80; --flip-bg: #052e16; --flip-text: #22c55e; --colon-color: #052e16; --ui-color: #15803d; --ui-hover: #4ade80; --ui-active: #22c55e; --overlay-bg: rgba(2, 35, 10, 0.92); --keypad-bg: rgba(74, 222, 128, 0.05); --keypad-border: rgba(74, 222, 128, 0.2); --display-border: #166534; --set-btn-bg: #4ade80; --set-btn-text: #02230a; }
+
+    /* LIGHT & POP (影なし・クリーン) */
     body.theme-clean_white { --bg-color: #ffffff; --text-color: #111111; --flip-bg: #f1f1f1; --flip-text: #111111; --colon-color: #e5e5e5; --ui-color: #777777; --ui-hover: #111111; --ui-active: #111111; --overlay-bg: rgba(255, 255, 255, 0.92); --keypad-bg: rgba(0, 0, 0, 0.04); --keypad-border: rgba(0, 0, 0, 0.08); --display-border: #cccccc; --set-btn-bg: #111111; --set-btn-text: #ffffff; }
     body.theme-cream { --bg-color: #fcfbf7; --text-color: #4a453f; --flip-bg: #f3efe6; --flip-text: #2c2824; --colon-color: #e6dfd1; --ui-color: #9e9589; --ui-hover: #4a453f; --ui-active: #2c2824; --overlay-bg: rgba(252, 251, 247, 0.92); --keypad-bg: rgba(0, 0, 0, 0.03); --keypad-border: rgba(0, 0, 0, 0.06); --display-border: #dcd4c5; --set-btn-bg: #4a453f; --set-btn-text: #fcfbf7; }
     body.theme-soft_mint { --bg-color: #f0fdf4; --text-color: #166534; --flip-bg: #dcfce7; --flip-text: #14532d; --colon-color: #bbf7d0; --ui-color: #22c55e; --ui-hover: #166534; --ui-active: #14532d; --overlay-bg: rgba(240, 253, 244, 0.92); --keypad-bg: rgba(22, 101, 52, 0.04); --keypad-border: rgba(22, 101, 52, 0.08); --display-border: #86efac; --set-btn-bg: #166534; --set-btn-text: #f0fdf4; }
@@ -63,16 +77,8 @@
     body.theme-rose_quartz { --bg-color: #fff1f2; --text-color: #9f1239; --flip-bg: #ffe4e6; --flip-text: #881337; --colon-color: #fecdd3; --ui-color: #f43f5e; --ui-hover: #9f1239; --ui-active: #881337; --overlay-bg: rgba(255, 241, 242, 0.92); --keypad-bg: rgba(159, 18, 57, 0.04); --keypad-border: rgba(159, 18, 57, 0.08); --display-border: #fda4af; --set-btn-bg: #9f1239; --set-btn-text: #fff1f2; }
     body.theme-cyber_light { --bg-color: #f8fafc; --text-color: #0f172a; --flip-bg: #e2e8f0; --flip-text: #0f172a; --colon-color: #cbd5e1; --ui-color: #64748b; --ui-hover: #0f172a; --ui-active: #0f172a; --overlay-bg: rgba(248, 250, 252, 0.92); --keypad-bg: rgba(15, 23, 42, 0.04); --keypad-border: rgba(15, 23, 42, 0.08); --display-border: #94a3b8; --set-btn-bg: #0f172a; --set-btn-text: #ffffff; }
     body.theme-retro_orange { --bg-color: #fff7ed; --text-color: #c2410c; --flip-bg: #ffedd5; --flip-text: #9a3412; --colon-color: #fed7aa; --ui-color: #ea580c; --ui-hover: #c2410c; --ui-active: #9a3412; --overlay-bg: rgba(255, 247, 237, 0.92); --keypad-bg: rgba(194, 65, 12, 0.04); --keypad-border: rgba(194, 65, 12, 0.08); --display-border: #fdba74; --set-btn-bg: #c2410c; --set-btn-text: #fff7ed; }
-    body.theme-neon_lime { --bg-color: #0f172a; --text-color: #ccff00; --flip-bg: #1e293b; --flip-text: #ccff00; --colon-color: #334155; --ui-color: #64748b; --ui-hover: #ccff00; --ui-active: #ccff00; --overlay-bg: rgba(15, 23, 42, 0.92); --keypad-bg: rgba(204, 255, 0, 0.05); --keypad-border: rgba(204, 255, 0, 0.2); --display-border: #ccff00; --set-btn-bg: #ccff00; --set-btn-text: #0f172a; }
-    body.theme-laser_purple { --bg-color: #2e0854; --text-color: #f3e8ff; --flip-bg: #4c1d95; --flip-text: #ff00ff; --colon-color: #4c1d95; --ui-color: #c084fc; --ui-hover: #ffffff; --ui-active: #ff00ff; --overlay-bg: rgba(46, 8, 84, 0.92); --keypad-bg: rgba(255, 255, 255, 0.05); --keypad-border: rgba(255, 0, 255, 0.2); --display-border: #d8b4fe; --set-btn-bg: #ff00ff; --set-btn-text: #2e0854; }
-    body.theme-electric_blue { --bg-color: #020617; --text-color: #38bdf8; --flip-bg: #0f172a; --flip-text: #00ffff; --colon-color: #0f172a; --ui-color: #0284c7; --ui-hover: #38bdf8; --ui-active: #00ffff; --overlay-bg: rgba(2, 6, 23, 0.92); --keypad-bg: rgba(56, 189, 248, 0.05); --keypad-border: rgba(0, 255, 255, 0.2); --display-border: #0284c7; --set-btn-bg: #00ffff; --set-btn-text: #020617; }
-    body.theme-sunset_glow { --bg-color: #2b110e; --text-color: #ffedd5; --flip-bg: #431407; --flip-text: #fb923c; --colon-color: #431407; --ui-color: #ea580c; --ui-hover: #ffedd5; --ui-active: #fb923c; --overlay-bg: rgba(43, 17, 14, 0.92); --keypad-bg: rgba(255, 255, 255, 0.04); --keypad-border: rgba(251, 146, 60, 0.2); --display-border: #9a3412; --set-btn-bg: #fb923c; --set-btn-text: #2b110e; }
-    body.theme-matrix { --bg-color: #02230a; --text-color: #4ade80; --flip-bg: #052e16; --flip-text: #22c55e; --colon-color: #052e16; --ui-color: #15803d; --ui-hover: #4ade80; --ui-active: #22c55e; --overlay-bg: rgba(2, 35, 10, 0.92); --keypad-bg: rgba(74, 222, 128, 0.05); --keypad-border: rgba(74, 222, 128, 0.2); --display-border: #166534; --set-btn-bg: #4ade80; --set-btn-text: #02230a; }
-    body.theme-bubblegum { --bg-color: #4a044e; --text-color: #f472b6; --flip-bg: #701a75; --flip-text: #fef08a; --colon-color: #701a75; --ui-color: #e879f9; --ui-hover: #ffffff; --ui-active: #fef08a; --overlay-bg: rgba(74, 4, 78, 0.92); --keypad-bg: rgba(255, 255, 255, 0.05); --keypad-border: rgba(232, 121, 249, 0.2); --display-border: #a21caf; --set-btn-bg: #fef08a; --set-btn-text: #4a044e; }
     body.theme-coffee_latte { --bg-color: #fdf8f6; --text-color: #78350f; --flip-bg: #fef3c7; --flip-text: #451a03; --colon-color: #fde68a; --ui-color: #d97706; --ui-hover: #78350f; --ui-active: #451a03; --overlay-bg: rgba(253, 248, 246, 0.92); --keypad-bg: rgba(120, 53, 15, 0.04); --keypad-border: rgba(120, 53, 15, 0.08); --display-border: #fcd34d; --set-btn-bg: #78350f; --set-btn-text: #fdf8f6; }
-    body.theme-deep_space { --bg-color: #030712; --text-color: #e2e8f0; --flip-bg: #111827; --flip-text: #ffffff; --colon-color: #1f2937; --ui-color: #6b7280; --ui-hover: #38bdf8; --ui-active: #ffffff; --overlay-bg: rgba(3, 7, 18, 0.92); --keypad-bg: rgba(255, 255, 255, 0.04); --keypad-border: rgba(255, 255, 255, 0.1); --display-border: #374151; --set-btn-bg: #38bdf8; --set-btn-text: #030712; }
     body.theme-paper_mono { --bg-color: #f5f5f5; --text-color: #262626; --flip-bg: #e5e5e5; --flip-text: #171717; --colon-color: #d4d4d4; --ui-color: #737373; --ui-hover: #171717; --ui-active: #171717; --overlay-bg: rgba(245, 245, 245, 0.92); --keypad-bg: rgba(0, 0, 0, 0.04); --keypad-border: rgba(0, 0, 0, 0.08); --display-border: #d4d4d4; --set-btn-bg: #171717; --set-btn-text: #f5f5f5; }
-    body.theme-gold_rush { --bg-color: #1c1917; --text-color: #fde047; --flip-bg: #292524; --flip-text: #fef08a; --colon-color: #292524; --ui-color: #a8a29e; --ui-hover: #fde047; --ui-active: #fef08a; --overlay-bg: rgba(28, 25, 23, 0.92); --keypad-bg: rgba(253, 224, 71, 0.04); --keypad-border: rgba(253, 224, 71, 0.15); --display-border: #78716c; --set-btn-bg: #fde047; --set-btn-text: #1c1917; }
 
     /* 全体のリセットと背景設定 */
     * {
@@ -207,8 +213,9 @@
       content: '';
       position: absolute;
       top: 0; left: 0; width: 100%; height: 100%;
-      background: linear-gradient(to bottom, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0) 100%);
+      background: var(--flip-shadow);
       z-index: 1;
+      transition: background 0.3s ease;
     }
 
     /* --- アニメーション用要素 --- */
@@ -472,42 +479,80 @@
     }
 
     /* =========================================
-       ⚙️ オプション画面＆テーマ選択サブ画面
+       ⚙️ オプション画面（左寄せモダンレイアウト）
        ========================================= */
     .option-content {
       display: flex;
       flex-direction: column;
-      gap: 2.5vh;
-      align-items: center;
+      gap: 3vh;
+      align-items: flex-start;
       width: 100%;
-      max-width: 360px;
+      max-width: 320px;
       padding: 0 20px;
     }
 
     .option-section {
       display: flex;
       flex-direction: column;
-      align-items: center;
+      align-items: flex-start;
       width: 100%;
-      gap: 0.6vh;
+      gap: 1vh;
     }
 
     .option-item {
-      font-size: clamp(14px, 2.5vh, 20px);
-      font-weight: 300;
-      letter-spacing: 3px;
+      font-size: clamp(15px, 2.6vh, 20px);
+      font-weight: 400;
+      letter-spacing: 2px;
       color: var(--ui-color);
       cursor: pointer;
-      padding: 6px 16px;
+      padding: 4px 0;
       transition: color 0.3s ease;
-      text-align: center;
+      text-align: left;
     }
 
     .option-item.active {
       color: var(--ui-active);
     }
 
-    /* 💡 テーマ選択専用サブビュー（背景タップで戻る仕様） */
+    .sound-select-group {
+      display: none;
+      flex-direction: row;
+      justify-content: flex-start;
+      gap: 15px;
+      width: 100%;
+      padding-left: 10px;
+      margin-top: 0.5vh;
+    }
+
+    body.sound-on .sound-select-group {
+      display: flex;
+    }
+
+    .sound-sub-item {
+      font-size: clamp(12px, 2vh, 14px);
+      font-weight: 300;
+      letter-spacing: 1px;
+      color: var(--ui-color);
+      cursor: pointer;
+      padding: 2px 0;
+      transition: color 0.3s ease;
+      text-align: left;
+      border-bottom: 1px solid transparent;
+    }
+
+    .sound-sub-item:hover {
+      color: var(--text-color);
+    }
+
+    .sound-sub-item.active {
+      color: var(--ui-active);
+      border-bottom-color: var(--text-color);
+      font-weight: 500;
+    }
+
+    /* =========================================
+       🎨 テーマ選択サブビュー
+       ========================================= */
     .theme-subview {
       position: absolute;
       inset: 0;
@@ -519,7 +564,7 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      padding: 20px;
+      padding: 20px 10px;
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.3s ease;
@@ -530,15 +575,35 @@
       pointer-events: auto;
     }
 
-    .theme-grid-container {
+    .theme-categories-container {
       width: 100%;
       max-width: 340px;
-      max-height: 75vh;
+      max-height: 85vh;
       overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      padding: 10px 4px;
+    }
+
+    .theme-category-title {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 3px;
+      color: var(--ui-color);
+      margin-bottom: 6px;
+      text-align: left;
+      width: 100%;
+      padding-left: 2px;
+      border-bottom: 1px solid var(--keypad-border);
+      padding-bottom: 4px;
+    }
+
+    .theme-grid-container {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 8px;
-      padding: 10px 4px;
+      width: 100%;
     }
 
     .theme-grid-item {
@@ -547,7 +612,7 @@
       letter-spacing: 1px;
       color: var(--ui-color);
       cursor: pointer;
-      padding: 12px 6px;
+      padding: 10px 4px;
       text-align: center;
       border: 1px solid var(--keypad-border);
       border-radius: 10px;
@@ -564,42 +629,6 @@
       border-color: var(--display-border);
       background: var(--display-border);
       font-weight: 700;
-    }
-
-    /* サウンド選択のサブメニュー */
-    .sound-select-group {
-      display: none;
-      flex-direction: row;
-      justify-content: center;
-      gap: 2vw;
-      width: 100%;
-    }
-
-    body.sound-on .sound-select-group {
-      display: flex;
-    }
-
-    .sound-sub-item {
-      font-size: clamp(11px, 1.8vh, 13px);
-      font-weight: 300;
-      letter-spacing: 1px;
-      color: var(--ui-color);
-      cursor: pointer;
-      padding: 4px 10px;
-      transition: color 0.3s ease;
-      text-align: center;
-      border: 1px solid transparent;
-      border-radius: 12px;
-    }
-
-    .sound-sub-item:hover {
-      color: var(--text-color);
-    }
-
-    .sound-sub-item.active {
-      color: var(--ui-active);
-      border-color: var(--display-border);
-      background: var(--keypad-bg);
     }
 
     /* =========================================
@@ -739,48 +768,65 @@
 
     </div>
 
-    <!-- 💡 テーマ選択専用サブビュー（背景タップで時計画面へ直行） -->
+    <!-- テーマ選択サブビュー -->
     <div class="theme-subview" onclick="closeOption(event)">
-      <div class="theme-grid-container" onclick="event.stopPropagation()">
-        <div id="t-dark" class="theme-grid-item" onclick="setTheme('dark', event)">DARK</div>
-        <div id="t-midnight" class="theme-grid-item" onclick="setTheme('midnight', event)">MIDNIGHT</div>
-        <div id="t-charcoal" class="theme-grid-item" onclick="setTheme('charcoal', event)">CHARCOAL</div>
-        <div id="t-sepia" class="theme-grid-item" onclick="setTheme('sepia', event)">SEPIA</div>
-        <div id="t-clean_white" class="theme-grid-item" onclick="setTheme('clean_white', event)">CLEAN W.</div>
-        <div id="t-cream" class="theme-grid-item" onclick="setTheme('cream', event)">CREAM</div>
-        <div id="t-soft_mint" class="theme-grid-item" onclick="setTheme('soft_mint', event)">MINT</div>
-        <div id="t-sunny_yellow" class="theme-grid-item" onclick="setTheme('sunny_yellow', event)">SUNNY</div>
-        <div id="t-peach" class="theme-grid-item" onclick="setTheme('peach', event)">PEACH</div>
-        <div id="t-sky_blue" class="theme-grid-item" onclick="setTheme('sky_blue', event)">SKY BLUE</div>
-        <div id="t-lilac" class="theme-grid-item" onclick="setTheme('lilac', event)">LILAC</div>
-        <div id="t-rose_quartz" class="theme-grid-item" onclick="setTheme('rose_quartz', event)">ROSE Q.</div>
-        <div id="t-cyber_light" class="theme-grid-item" onclick="setTheme('cyber_light', event)">CYBER L.</div>
-        <div id="t-retro_orange" class="theme-grid-item" onclick="setTheme('retro_orange', event)">RETRO O.</div>
-        <div id="t-coffee_latte" class="theme-grid-item" onclick="setTheme('coffee_latte', event)">LATTE</div>
-        <div id="t-paper_mono" class="theme-grid-item" onclick="setTheme('paper_mono', event)">PAPER</div>
-        <div id="t-cyberpunk" class="theme-grid-item" onclick="setTheme('cyberpunk', event)">CYBER</div>
-        <div id="t-neon_lime" class="theme-grid-item" onclick="setTheme('neon_lime', event)">NEON LIME</div>
-        <div id="t-laser_purple" class="theme-grid-item" onclick="setTheme('laser_purple', event)">LASER</div>
-        <div id="t-electric_blue" class="theme-grid-item" onclick="setTheme('electric_blue', event)">ELECTRIC</div>
-        <div id="t-sunset_glow" class="theme-grid-item" onclick="setTheme('sunset_glow', event)">GLOW</div>
-        <div id="t-matrix" class="theme-grid-item" onclick="setTheme('matrix', event)">MATRIX</div>
-        <div id="t-bubblegum" class="theme-grid-item" onclick="setTheme('bubblegum', event)">BUBBL.</div>
-        <div id="t-deep_space" class="theme-grid-item" onclick="setTheme('deep_space', event)">DEEP SP.</div>
-        <div id="t-gold_rush" class="theme-grid-item" onclick="setTheme('gold_rush', event)">GOLD R.</div>
-        <div id="t-matcha" class="theme-grid-item" onclick="setTheme('matcha', event)">MATCHA</div>
-        <div id="t-lavender" class="theme-grid-item" onclick="setTheme('lavender', event)">LAVEND.</div>
-        <div id="t-terracotta" class="theme-grid-item" onclick="setTheme('terracotta', event)">TERRA</div>
-        <div id="t-nordic" class="theme-grid-item" onclick="setTheme('nordic', event)">NORDIC</div>
-        <div id="t-tokyo_night" class="theme-grid-item" onclick="setTheme('tokyo_night', event)">TOKYO</div>
-        <div id="t-emerald" class="theme-grid-item" onclick="setTheme('emerald', event)">EMERALD</div>
-        <div id="t-rose_gold" class="theme-grid-item" onclick="setTheme('rose_gold', event)">ROSE</div>
-        <div id="t-sunset" class="theme-grid-item" onclick="setTheme('sunset', event)">SUNSET</div>
-        <div id="t-forest" class="theme-grid-item" onclick="setTheme('forest', event)">FOREST</div>
-        <div id="t-mocha" class="theme-grid-item" onclick="setTheme('mocha', event)">MOCHA</div>
-        <div id="t-steel_blue" class="theme-grid-item" onclick="setTheme('steel_blue', event)">STEEL</div>
-        <div id="t-burgundy" class="theme-grid-item" onclick="setTheme('burgundy', event)">BURGUND.</div>
-        <div id="t-arctic" class="theme-grid-item" onclick="setTheme('arctic', event)">ARCTIC</div>
-        <div id="t-cherry_blossom" class="theme-grid-item" onclick="setTheme('cherry_blossom', event)">CHERRY</div>
+      <div class="theme-categories-container" onclick="event.stopPropagation()">
+        
+        <!-- 1. DARK & VINTAGE -->
+        <div class="theme-category-title">DARK & VINTAGE</div>
+        <div class="theme-grid-container">
+          <div id="t-dark" class="theme-grid-item" onclick="setTheme('dark', event)">DARK</div>
+          <div id="t-midnight" class="theme-grid-item" onclick="setTheme('midnight', event)">MIDNIGHT</div>
+          <div id="t-charcoal" class="theme-grid-item" onclick="setTheme('charcoal', event)">CHARCOAL</div>
+          <div id="t-sepia" class="theme-grid-item" onclick="setTheme('sepia', event)">SEPIA</div>
+          <div id="t-nordic" class="theme-grid-item" onclick="setTheme('nordic', event)">NORDIC</div>
+          <div id="t-emerald" class="theme-grid-item" onclick="setTheme('emerald', event)">EMERALD</div>
+          <div id="t-forest" class="theme-grid-item" onclick="setTheme('forest', event)">FOREST</div>
+          <div id="t-mocha" class="theme-grid-item" onclick="setTheme('mocha', event)">MOCHA</div>
+          <div id="t-steel_blue" class="theme-grid-item" onclick="setTheme('steel_blue', event)">STEEL</div>
+          <div id="t-arctic" class="theme-grid-item" onclick="setTheme('arctic', event)">ARCTIC</div>
+          <div id="t-deep_space" class="theme-grid-item" onclick="setTheme('deep_space', event)">DEEP SP.</div>
+        </div>
+
+        <!-- 2. DARK & POP -->
+        <div class="theme-category-title" style="margin-top: 6px;">DARK & POP</div>
+        <div class="theme-grid-container">
+          <div id="t-dp_clean" class="theme-grid-item" onclick="setTheme('dp_clean', event)">DP CLEAN</div>
+          <div id="t-dp_mint" class="theme-grid-item" onclick="setTheme('dp_mint', event)">DP MINT</div>
+          <div id="t-dp_sunny" class="theme-grid-item" onclick="setTheme('dp_sunny', event)">DP SUNNY</div>
+          <div id="t-dp_peach" class="theme-grid-item" onclick="setTheme('dp_peach', event)">DP PEACH</div>
+          <div id="t-dp_sky" class="theme-grid-item" onclick="setTheme('dp_sky', event)">DP SKY</div>
+          <div id="t-dp_lilac" class="theme-grid-item" onclick="setTheme('dp_lilac', event)">DP LILAC</div>
+          <div id="t-dp_rose" class="theme-grid-item" onclick="setTheme('dp_rose', event)">DP ROSE</div>
+        </div>
+
+        <!-- 3. CYBER & NEON -->
+        <div class="theme-category-title" style="margin-top: 6px;">CYBER & NEON</div>
+        <div class="theme-grid-container">
+          <div id="t-cyberpunk" class="theme-grid-item" onclick="setTheme('cyberpunk', event)">CYBER</div>
+          <div id="t-neon_lime" class="theme-grid-item" onclick="setTheme('neon_lime', event)">NEON LIME</div>
+          <div id="t-laser_purple" class="theme-grid-item" onclick="setTheme('laser_purple', event)">LASER</div>
+          <div id="t-electric_blue" class="theme-grid-item" onclick="setTheme('electric_blue', event)">ELECTRIC</div>
+          <div id="t-matrix" class="theme-grid-item" onclick="setTheme('matrix', event)">MATRIX</div>
+        </div>
+
+        <!-- 4. LIGHT & POP -->
+        <div class="theme-category-title" style="margin-top: 6px;">LIGHT & POP</div>
+        <div class="theme-grid-container">
+          <div id="t-clean_white" class="theme-grid-item" onclick="setTheme('clean_white', event)">CLEAN W.</div>
+          <div id="t-cream" class="theme-grid-item" onclick="setTheme('cream', event)">CREAM</div>
+          <div id="t-soft_mint" class="theme-grid-item" onclick="setTheme('soft_mint', event)">MINT</div>
+          <div id="t-sunny_yellow" class="theme-grid-item" onclick="setTheme('sunny_yellow', event)">SUNNY</div>
+          <div id="t-peach" class="theme-grid-item" onclick="setTheme('peach', event)">PEACH</div>
+          <div id="t-sky_blue" class="theme-grid-item" onclick="setTheme('sky_blue', event)">SKY BLUE</div>
+          <div id="t-lilac" class="theme-grid-item" onclick="setTheme('lilac', event)">LILAC</div>
+          <div id="t-rose_quartz" class="theme-grid-item" onclick="setTheme('rose_quartz', event)">ROSE Q.</div>
+          <div id="t-cyber_light" class="theme-grid-item" onclick="setTheme('cyber_light', event)">CYBER L.</div>
+          <div id="t-retro_orange" class="theme-grid-item" onclick="setTheme('retro_orange', event)">RETRO O.</div>
+          <div id="t-coffee_latte" class="theme-grid-item" onclick="setTheme('coffee_latte', event)">LATTE</div>
+          <div id="t-paper_mono" class="theme-grid-item" onclick="setTheme('paper_mono', event)">PAPER</div>
+        </div>
+
       </div>
     </div>
   </div>
@@ -833,6 +879,9 @@
     const btnReset = document.getElementById('btn-reset');
     const customDisplayEl = document.getElementById('custom-display');
     const modeToggleLink = document.getElementById('mode-toggle-link');
+
+    // LIGHT & POP系のみ影を弱くする対象
+    const lightThemes = ['clean_white', 'cream', 'soft_mint', 'sunny_yellow', 'peach', 'sky_blue', 'lilac', 'rose_quartz', 'cyber_light', 'retro_orange', 'coffee_latte', 'paper_mono'];
 
     async function requestWakeLock() {
       if (!isKeepAwakeEnabled || !('wakeLock' in navigator)) return;
@@ -912,6 +961,13 @@
     function setThemeUI(themeName) {
       bodyEl.className = bodyEl.className.replace(/theme-\S+/g, '');
       bodyEl.classList.add(`theme-${themeName}`);
+
+      if (lightThemes.includes(themeName)) {
+        bodyEl.classList.add('is-light-theme');
+      } else {
+        bodyEl.classList.remove('is-light-theme');
+      }
+
       if (isRunning) bodyEl.classList.add('running');
       else bodyEl.classList.add('paused');
       if (isSoundEnabled) bodyEl.classList.add('sound-on');
@@ -925,13 +981,12 @@
       }
     }
 
-    // 💡 テーマを選んだ瞬間、テーマを保存して時計画面（すべてのオーバーレイを閉じる）に戻る
     function setTheme(themeName, event) {
       if (event) event.stopPropagation();
       currentTheme = themeName;
       setThemeUI(themeName);
       localStorage.setItem('currentTheme', currentTheme);
-      closeOption(); // 時計画面に戻る
+      closeOption(); 
     }
 
     function openThemeView(event) {
