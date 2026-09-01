@@ -16,69 +16,68 @@
     :root {
       --app-height: 100vh;
       --bg-color: #000000;
-      --text-color: #e0e0e0;
+      --text-color: #ffffff;
       --flip-bg: #1a1a1a;
-      --flip-text: #f5f5f5;
+      --flip-text: #ffffff;
       --colon-color: #1a1a1a;
-      --ui-color: #777777;
-      --ui-hover: #bbbbbb;
-      --ui-active: #e0e0e0;
-      --overlay-bg: rgba(0, 0, 0, 0.90);
-      --keypad-bg: rgba(255, 255, 255, 0.05);
-      --keypad-border: rgba(255, 255, 255, 0.1);
-      --display-border: #444444;
-      --set-btn-bg: #e0e0e0;
+      --ui-color: #999999;
+      --ui-hover: #ffffff;
+      --ui-active: #ffffff;
+      --overlay-bg: rgba(0, 0, 0, 0.92);
+      --keypad-bg: rgba(255, 255, 255, 0.08);
+      --keypad-border: rgba(255, 255, 255, 0.2);
+      --display-border: #555555;
+      --set-btn-bg: #ffffff;
       --set-btn-text: #000000;
       --flip-shadow: linear-gradient(to bottom, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0) 100%);
     }
 
-    /* 💡 LIGHT & POP系のみ影をほとんどゼロにしてクリーンに保つ */
     body.is-light-theme {
       --flip-shadow: linear-gradient(to bottom, rgba(0,0,0,0.01) 0%, rgba(0,0,0,0) 100%);
     }
 
-    /* 52種類のカラーテーマ定義 */
-    body.theme-dark { --bg-color: #000000; --text-color: #e0e0e0; --flip-bg: #1a1a1a; --flip-text: #f5f5f5; --colon-color: #1a1a1a; --ui-color: #777777; --ui-hover: #bbbbbb; --ui-active: #e0e0e0; --overlay-bg: rgba(0, 0, 0, 0.90); --keypad-bg: rgba(255, 255, 255, 0.05); --keypad-border: rgba(255, 255, 255, 0.1); --display-border: #444444; --set-btn-bg: #e0e0e0; --set-btn-text: #000000; }
-    body.theme-midnight { --bg-color: #0b0f19; --text-color: #cbd5e1; --flip-bg: #1e293b; --flip-text: #f8fafc; --colon-color: #1e293b; --ui-color: #64748b; --ui-hover: #94a3b8; --ui-active: #f8fafc; --overlay-bg: rgba(11, 15, 25, 0.90); --keypad-bg: rgba(255, 255, 255, 0.04); --keypad-border: rgba(255, 255, 255, 0.08); --display-border: #334155; --set-btn-bg: #38bdf8; --set-btn-text: #0f172a; }
-    body.theme-charcoal { --bg-color: #121212; --text-color: #d4d4d4; --flip-bg: #222222; --flip-text: #ffffff; --colon-color: #222222; --ui-color: #737373; --ui-hover: #a3a3a3; --ui-active: #ffffff; --overlay-bg: rgba(18, 18, 18, 0.90); --keypad-bg: rgba(255, 255, 255, 0.05); --keypad-border: rgba(255, 255, 255, 0.1); --display-border: #404040; --set-btn-bg: #a3a3a3; --set-btn-text: #121212; }
-    body.theme-sepia { --bg-color: #161412; --text-color: #dcd6cd; --flip-bg: #26221e; --flip-text: #f3efe6; --colon-color: #26221e; --ui-color: #8c8275; --ui-hover: #c2b8a8; --ui-active: #f3efe6; --overlay-bg: rgba(22, 20, 18, 0.90); --keypad-bg: rgba(255, 255, 255, 0.04); --keypad-border: rgba(255, 255, 255, 0.08); --display-border: #4a4238; --set-btn-bg: #d4b595; --set-btn-text: #161412; }
-    body.theme-nordic { --bg-color: #0f172a; --text-color: #94a3b8; --flip-bg: #1e293b; --flip-text: #e2e8f0; --colon-color: #1e293b; --ui-color: #475569; --ui-hover: #cbd5e1; --ui-active: #ffffff; --overlay-bg: rgba(15, 23, 42, 0.90); --keypad-bg: rgba(255, 255, 255, 0.04); --keypad-border: rgba(255, 255, 255, 0.08); --display-border: #334155; --set-btn-bg: #94a3b8; --set-btn-text: #0f172a; }
-    body.theme-emerald { --bg-color: #061a14; --text-color: #a7f3d0; --flip-bg: #0d3b2c; --flip-text: #ecfdf5; --colon-color: #0d3b2c; --ui-color: #059669; --ui-hover: #34d399; --ui-active: #ecfdf5; --overlay-bg: rgba(6, 26, 20, 0.90); --keypad-bg: rgba(52, 211, 153, 0.04); --keypad-border: rgba(52, 211, 153, 0.1); --display-border: #047857; --set-btn-bg: #10b981; --set-btn-text: #061a14; }
-    body.theme-forest { --bg-color: #0c1410; --text-color: #a3e635; --flip-bg: #16251b; --flip-text: #ecfccb; --colon-color: #16251b; --ui-color: #4d7c0f; --ui-hover: #bef264; --ui-active: #ecfccb; --overlay-bg: rgba(12, 20, 16, 0.90); --keypad-bg: rgba(255, 255, 255, 0.04); --keypad-border: rgba(255, 255, 255, 0.08); --display-border: #3f6212; --set-btn-bg: #a3e635; --set-btn-text: #0c1410; }
-    body.theme-mocha { --bg-color: #191412; --text-color: #d7ccc8; --flip-bg: #2d2421; --flip-text: #efebe9; --colon-color: #2d2421; --ui-color: #8d6e63; --ui-hover: #bcaaa4; --ui-active: #efebe9; --overlay-bg: rgba(25, 20, 18, 0.90); --keypad-bg: rgba(255, 255, 255, 0.04); --keypad-border: rgba(255, 255, 255, 0.08); --display-border: #5d4037; --set-btn-bg: #d7ccc8; --set-btn-text: #191412; }
-    body.theme-steel_blue { --bg-color: #101722; --text-color: #93c5fd; --flip-bg: #1d2c40; --flip-text: #eff6ff; --colon-color: #1d2c40; --ui-color: #3b82f6; --ui-hover: #60a5fa; --ui-active: #eff6ff; --overlay-bg: rgba(16, 23, 34, 0.90); --keypad-bg: rgba(255, 255, 255, 0.04); --keypad-border: rgba(255, 255, 255, 0.08); --display-border: #1e40af; --set-btn-bg: #60a5fa; --set-btn-text: #101722; }
-    body.theme-arctic { --bg-color: #08121a; --text-color: #a5f3fc; --flip-bg: #132a38; --flip-text: #ecfeff; --colon-color: #132a38; --ui-color: #0891b2; --ui-hover: #22d3ee; --ui-active: #ecfeff; --overlay-bg: rgba(8, 18, 26, 0.90); --keypad-bg: rgba(255, 255, 255, 0.04); --keypad-border: rgba(255, 255, 255, 0.08); --display-border: #0e7490; --set-btn-bg: #38bdf8; --set-btn-text: #08121a; }
-    body.theme-deep_space { --bg-color: #030712; --text-color: #e2e8f0; --flip-bg: #111827; --flip-text: #ffffff; --colon-color: #1f2937; --ui-color: #6b7280; --ui-hover: #38bdf8; --ui-active: #ffffff; --overlay-bg: rgba(3, 7, 18, 0.92); --keypad-bg: rgba(255, 255, 255, 0.04); --keypad-border: rgba(255, 255, 255, 0.1); --display-border: #374151; --set-btn-bg: #38bdf8; --set-btn-text: #030712; }
+    /* 52種類のカラーテーマ定義（視認性を高めた見やすい配色設定） */
+    body.theme-dark { --bg-color: #000000; --text-color: #ffffff; --flip-bg: #1a1a1a; --flip-text: #ffffff; --colon-color: #1a1a1a; --ui-color: #aaaaaa; --ui-hover: #ffffff; --ui-active: #ffffff; --overlay-bg: rgba(0, 0, 0, 0.92); --keypad-bg: rgba(255, 255, 255, 0.08); --keypad-border: rgba(255, 255, 255, 0.2); --display-border: #555555; --set-btn-bg: #ffffff; --set-btn-text: #000000; }
+    body.theme-midnight { --bg-color: #0b0f19; --text-color: #f8fafc; --flip-bg: #1e293b; --flip-text: #ffffff; --colon-color: #1e293b; --ui-color: #94a3b8; --ui-hover: #ffffff; --ui-active: #ffffff; --overlay-bg: rgba(11, 15, 25, 0.92); --keypad-bg: rgba(255, 255, 255, 0.08); --keypad-border: rgba(255, 255, 255, 0.15); --display-border: #475569; --set-btn-bg: #38bdf8; --set-btn-text: #0f172a; }
+    body.theme-charcoal { --bg-color: #121212; --text-color: #ffffff; --flip-bg: #262626; --flip-text: #ffffff; --colon-color: #262626; --ui-color: #a3a3a3; --ui-hover: #ffffff; --ui-active: #ffffff; --overlay-bg: rgba(18, 18, 18, 0.92); --keypad-bg: rgba(255, 255, 255, 0.08); --keypad-border: rgba(255, 255, 255, 0.15); --display-border: #525252; --set-btn-bg: #ffffff; --set-btn-text: #121212; }
+    body.theme-sepia { --bg-color: #161412; --text-color: #f3efe6; --flip-bg: #2c2722; --flip-text: #ffffff; --colon-color: #2c2722; --ui-color: #c2b8a8; --ui-hover: #ffffff; --ui-active: #ffffff; --overlay-bg: rgba(22, 20, 18, 0.92); --keypad-bg: rgba(255, 255, 255, 0.08); --keypad-border: rgba(255, 255, 255, 0.15); --display-border: #5c5244; --set-btn-bg: #d4b595; --set-btn-text: #161412; }
+    body.theme-nordic { --bg-color: #0f172a; --text-color: #f1f5f9; --flip-bg: #1e293b; --flip-text: #ffffff; --colon-color: #1e293b; --ui-color: #94a3b8; --ui-hover: #ffffff; --ui-active: #ffffff; --overlay-bg: rgba(15, 23, 42, 0.92); --keypad-bg: rgba(255, 255, 255, 0.08); --keypad-border: rgba(255, 255, 255, 0.15); --display-border: #475569; --set-btn-bg: #94a3b8; --set-btn-text: #0f172a; }
+    body.theme-emerald { --bg-color: #061a14; --text-color: #ecfdf5; --flip-bg: #0d3b2c; --flip-text: #ffffff; --colon-color: #0d3b2c; --ui-color: #34d399; --ui-hover: #ffffff; --ui-active: #ffffff; --overlay-bg: rgba(6, 26, 20, 0.92); --keypad-bg: rgba(255, 255, 255, 0.08); --keypad-border: rgba(255, 255, 255, 0.15); --display-border: #059669; --set-btn-bg: #34d399; --set-btn-text: #061a14; }
+    body.theme-forest { --bg-color: #0c1410; --text-color: #ecfccb; --flip-bg: #16251b; --flip-text: #ffffff; --colon-color: #16251b; --ui-color: #bef264; --ui-hover: #ffffff; --ui-active: #ffffff; --overlay-bg: rgba(12, 20, 16, 0.92); --keypad-bg: rgba(255, 255, 255, 0.08); --keypad-border: rgba(255, 255, 255, 0.15); --display-border: #4d7c0f; --set-btn-bg: #bef264; --set-btn-text: #0c1410; }
+    body.theme-mocha { --bg-color: #191412; --text-color: #efebe9; --flip-bg: #2d2421; --flip-text: #ffffff; --colon-color: #2d2421; --ui-color: #bcaaa4; --ui-hover: #ffffff; --ui-active: #ffffff; --overlay-bg: rgba(25, 20, 18, 0.92); --keypad-bg: rgba(255, 255, 255, 0.08); --keypad-border: rgba(255, 255, 255, 0.15); --display-border: #8d6e63; --set-btn-bg: #d7ccc8; --set-btn-text: #191412; }
+    body.theme-steel_blue { --bg-color: #101722; --text-color: #eff6ff; --flip-bg: #1d2c40; --flip-text: #ffffff; --colon-color: #1d2c40; --ui-color: #60a5fa; --ui-hover: #ffffff; --ui-active: #ffffff; --overlay-bg: rgba(16, 23, 34, 0.92); --keypad-bg: rgba(255, 255, 255, 0.08); --keypad-border: rgba(255, 255, 255, 0.15); --display-border: #3b82f6; --set-btn-bg: #60a5fa; --set-btn-text: #101722; }
+    body.theme-arctic { --bg-color: #08121a; --text-color: #ecfeff; --flip-bg: #132a38; --flip-text: #ffffff; --colon-color: #132a38; --ui-color: #22d3ee; --ui-hover: #ffffff; --ui-active: #ffffff; --overlay-bg: rgba(8, 18, 26, 0.92); --keypad-bg: rgba(255, 255, 255, 0.08); --keypad-border: rgba(255, 255, 255, 0.15); --display-border: #0891b2; --set-btn-bg: #38bdf8; --set-btn-text: #08121a; }
+    body.theme-deep_space { --bg-color: #030712; --text-color: #ffffff; --flip-bg: #111827; --flip-text: #ffffff; --colon-color: #1f2937; --ui-color: #9ca3af; --ui-hover: #ffffff; --ui-active: #ffffff; --overlay-bg: rgba(3, 7, 18, 0.92); --keypad-bg: rgba(255, 255, 255, 0.08); --keypad-border: rgba(255, 255, 255, 0.15); --display-border: #4b5563; --set-btn-bg: #38bdf8; --set-btn-text: #030712; }
 
-    /* DARK & POP（背景黒め × ポップなフリップ ＆ 影あり） */
-    body.theme-dp_clean { --bg-color: #080808; --text-color: #888888; --flip-bg: #ffffff; --flip-text: #111111; --colon-color: #1c1c1c; --ui-color: #666666; --ui-hover: #ffffff; --ui-active: #ffffff; --overlay-bg: rgba(8, 8, 8, 0.92); --keypad-bg: rgba(255, 255, 255, 0.05); --keypad-border: rgba(255, 255, 255, 0.1); --display-border: #333333; --set-btn-bg: #ffffff; --set-btn-text: #080808; }
-    body.theme-dp_mint { --bg-color: #04120a; --text-color: #4ade80; --flip-bg: #dcfce7; --flip-text: #14532d; --colon-color: #0a2614; --ui-color: #22c55e; --ui-hover: #86efac; --ui-active: #86efac; --overlay-bg: rgba(4, 18, 10, 0.92); --keypad-bg: rgba(74, 222, 128, 0.05); --keypad-border: rgba(74, 222, 128, 0.1); --display-border: #14532d; --set-btn-bg: #4ade80; --set-btn-text: #04120a; }
-    body.theme-dp_sunny { --bg-color: #141004; --text-color: #fde047; --flip-bg: #fef9c3; --flip-text: #713f12; --colon-color: #261f08; --ui-color: #eab308; --ui-hover: #fef08a; --ui-active: #fef08a; --overlay-bg: rgba(20, 16, 4, 0.92); --keypad-bg: rgba(253, 224, 71, 0.05); --keypad-border: rgba(253, 224, 71, 0.1); --display-border: #713f12; --set-btn-bg: #fde047; --set-btn-text: #141004; }
-    body.theme-dp_peach { --bg-color: #160c04; --text-color: #fb923c; --flip-bg: #ffedd5; --flip-text: #7c2d12; --colon-color: #2c1809; --ui-color: #f97316; --ui-hover: #fed7aa; --ui-active: #fed7aa; --overlay-bg: rgba(22, 12, 4, 0.92); --keypad-bg: rgba(251, 146, 60, 0.05); --keypad-border: rgba(251, 146, 60, 0.1); --display-border: #7c2d12; --set-btn-bg: #fb923c; --set-btn-text: #160c04; }
-    body.theme-dp_sky { --bg-color: #04101a; --text-color: #38bdf8; --flip-bg: #e0f2fe; --flip-text: #075985; --colon-color: #0a2233; --ui-color: #0ea5e9; --ui-hover: #7dd3fc; --ui-active: #7dd3fc; --overlay-bg: rgba(4, 16, 26, 0.92); --keypad-bg: rgba(56, 189, 248, 0.05); --keypad-border: rgba(56, 189, 248, 0.1); --display-border: #075985; --set-btn-bg: #38bdf8; --set-btn-text: #04101a; }
-    body.theme-dp_lilac { --bg-color: #10061c; --text-color: #c084fc; --flip-bg: #f3e8ff; --flip-text: #581c87; --colon-color: #201036; --ui-color: #a855f7; --ui-hover: #d8b4fe; --ui-active: #d8b4fe; --overlay-bg: rgba(16, 6, 28, 0.92); --keypad-bg: rgba(192, 132, 252, 0.05); --keypad-border: rgba(192, 132, 252, 0.1); --display-border: #581c87; --set-btn-bg: #c084fc; --set-btn-text: #10061c; }
-    body.theme-dp_rose { --bg-color: #1c060c; --text-color: #fb7185; --flip-bg: #ffe4e6; --flip-text: #881337; --colon-color: #330f19; --ui-color: #f43f5e; --ui-hover: #fda4af; --ui-active: #fda4af; --overlay-bg: rgba(28, 6, 12, 0.92); --keypad-bg: rgba(251, 113, 133, 0.05); --keypad-border: rgba(251, 113, 133, 0.1); --display-border: #881337; --set-btn-bg: #fb7185; --set-btn-text: #1c060c; }
+    /* DARK & POP */
+    body.theme-dp_clean { --bg-color: #080808; --text-color: #ffffff; --flip-bg: #1c1c1c; --flip-text: #ffffff; --colon-color: #262626; --ui-color: #aaaaaa; --ui-hover: #ffffff; --ui-active: #ffffff; --overlay-bg: rgba(8, 8, 8, 0.92); --keypad-bg: rgba(255, 255, 255, 0.08); --keypad-border: rgba(255, 255, 255, 0.15); --display-border: #444444; --set-btn-bg: #ffffff; --set-btn-text: #080808; }
+    body.theme-dp_mint { --bg-color: #04120a; --text-color: #bbf7d0; --flip-bg: #0d2e1b; --flip-text: #ffffff; --colon-color: #133e24; --ui-color: #4ade80; --ui-hover: #ffffff; --ui-active: #ffffff; --overlay-bg: rgba(4, 18, 10, 0.92); --keypad-bg: rgba(255, 255, 255, 0.08); --keypad-border: rgba(255, 255, 255, 0.15); --display-border: #166534; --set-btn-bg: #4ade80; --set-btn-text: #04120a; }
+    body.theme-dp_sunny { --bg-color: #141004; --text-color: #fef08a; --flip-bg: #2e260d; --flip-text: #ffffff; --colon-color: #3f3412; --ui-color: #fde047; --ui-hover: #ffffff; --ui-active: #ffffff; --overlay-bg: rgba(20, 16, 4, 0.92); --keypad-bg: rgba(255, 255, 255, 0.08); --keypad-border: rgba(255, 255, 255, 0.15); --display-border: #854d0e; --set-btn-bg: #fde047; --set-btn-text: #141004; }
+    body.theme-dp_peach { --bg-color: #160c04; --text-color: #fed7aa; --flip-bg: #331d0d; --flip-text: #ffffff; --colon-color: #472813; --ui-color: #fb923c; --ui-hover: #ffffff; --ui-active: #ffffff; --overlay-bg: rgba(22, 12, 4, 0.92); --keypad-bg: rgba(255, 255, 255, 0.08); --keypad-border: rgba(255, 255, 255, 0.15); --display-border: #9a3412; --set-btn-bg: #fb923c; --set-btn-text: #160c04; }
+    body.theme-dp_sky { --bg-color: #04101a; --text-color: #bae6fd; --flip-bg: #0f2538; --flip-text: #ffffff; --colon-color: #16364e; --ui-color: #38bdf8; --ui-hover: #ffffff; --ui-active: #ffffff; --overlay-bg: rgba(4, 16, 26, 0.92); --keypad-bg: rgba(255, 255, 255, 0.08); --keypad-border: rgba(255, 255, 255, 0.15); --display-border: #0369a1; --set-btn-bg: #38bdf8; --set-btn-text: #04101a; }
+    body.theme-dp_lilac { --bg-color: #10061c; --text-color: #e9d5ff; --flip-bg: #221237; --flip-text: #ffffff; --colon-color: #30194d; --ui-color: #c084fc; --ui-hover: #ffffff; --ui-active: #ffffff; --overlay-bg: rgba(16, 6, 28, 0.92); --keypad-bg: rgba(255, 255, 255, 0.08); --keypad-border: rgba(255, 255, 255, 0.15); --display-border: #6b21a8; --set-btn-bg: #c084fc; --set-btn-text: #10061c; }
+    body.theme-dp_rose { --bg-color: #1c060c; --text-color: #fecdd3; --flip-bg: #38121d; --flip-text: #ffffff; --colon-color: #4e1928; --ui-color: #fb7185; --ui-hover: #ffffff; --ui-active: #ffffff; --overlay-bg: rgba(28, 6, 12, 0.92); --keypad-bg: rgba(255, 255, 255, 0.08); --keypad-border: rgba(255, 255, 255, 0.15); --display-border: #9f1239; --set-btn-bg: #fb7185; --set-btn-text: #1c060c; }
 
     /* CYBER & NEON */
-    body.theme-cyberpunk { --bg-color: #05050a; --text-color: #00ffcc; --flip-bg: #120d26; --flip-text: #ff007f; --colon-color: #120d26; --ui-color: #7b2cbf; --ui-hover: #00ffcc; --ui-active: #ff007f; --overlay-bg: rgba(5, 5, 10, 0.92); --keypad-bg: rgba(0, 255, 204, 0.05); --keypad-border: rgba(255, 0, 127, 0.2); --display-border: #7b2cbf; --set-btn-bg: #00ffcc; --set-btn-text: #05050a; }
-    body.theme-neon_lime { --bg-color: #0f172a; --text-color: #ccff00; --flip-bg: #1e293b; --flip-text: #ccff00; --colon-color: #334155; --ui-color: #64748b; --ui-hover: #ccff00; --ui-active: #ccff00; --overlay-bg: rgba(15, 23, 42, 0.92); --keypad-bg: rgba(204, 255, 0, 0.05); --keypad-border: rgba(204, 255, 0, 0.2); --display-border: #ccff00; --set-btn-bg: #ccff00; --set-btn-text: #0f172a; }
-    body.theme-laser_purple { --bg-color: #2e0854; --text-color: #f3e8ff; --flip-bg: #4c1d95; --flip-text: #ff00ff; --colon-color: #4c1d95; --ui-color: #c084fc; --ui-hover: #ffffff; --ui-active: #ff00ff; --overlay-bg: rgba(46, 8, 84, 0.92); --keypad-bg: rgba(255, 255, 255, 0.05); --keypad-border: rgba(255, 0, 255, 0.2); --display-border: #d8b4fe; --set-btn-bg: #ff00ff; --set-btn-text: #2e0854; }
-    body.theme-electric_blue { --bg-color: #020617; --text-color: #38bdf8; --flip-bg: #0f172a; --flip-text: #00ffff; --colon-color: #0f172a; --ui-color: #0284c7; --ui-hover: #38bdf8; --ui-active: #00ffff; --overlay-bg: rgba(2, 6, 23, 0.92); --keypad-bg: rgba(56, 189, 248, 0.05); --keypad-border: rgba(0, 255, 255, 0.2); --display-border: #0284c7; --set-btn-bg: #00ffff; --set-btn-text: #020617; }
-    body.theme-matrix { --bg-color: #02230a; --text-color: #4ade80; --flip-bg: #052e16; --flip-text: #22c55e; --colon-color: #052e16; --ui-color: #15803d; --ui-hover: #4ade80; --ui-active: #22c55e; --overlay-bg: rgba(2, 35, 10, 0.92); --keypad-bg: rgba(74, 222, 128, 0.05); --keypad-border: rgba(74, 222, 128, 0.2); --display-border: #166534; --set-btn-bg: #4ade80; --set-btn-text: #02230a; }
+    body.theme-cyberpunk { --bg-color: #05050a; --text-color: #00ffcc; --flip-bg: #120d26; --flip-text: #ffffff; --colon-color: #120d26; --ui-color: #00ffcc; --ui-hover: #ffffff; --ui-active: #ffffff; --overlay-bg: rgba(5, 5, 10, 0.92); --keypad-bg: rgba(0, 255, 204, 0.08); --keypad-border: rgba(0, 255, 204, 0.2); --display-border: #7b2cbf; --set-btn-bg: #00ffcc; --set-btn-text: #05050a; }
+    body.theme-neon_lime { --bg-color: #0f172a; --text-color: #ccff00; --flip-bg: #1e293b; --flip-text: #ffffff; --colon-color: #334155; --ui-color: #ccff00; --ui-hover: #ffffff; --ui-active: #ffffff; --overlay-bg: rgba(15, 23, 42, 0.92); --keypad-bg: rgba(204, 255, 0, 0.08); --keypad-border: rgba(204, 255, 0, 0.2); --display-border: #475569; --set-btn-bg: #ccff00; --set-btn-text: #0f172a; }
+    body.theme-laser_purple { --bg-color: #2e0854; --text-color: #ff00ff; --flip-bg: #4c1d95; --flip-text: #ffffff; --colon-color: #4c1d95; --ui-color: #ff00ff; --ui-hover: #ffffff; --ui-active: #ffffff; --overlay-bg: rgba(46, 8, 84, 0.92); --keypad-bg: rgba(255, 0, 255, 0.08); --keypad-border: rgba(255, 0, 255, 0.2); --display-border: #7c3aed; --set-btn-bg: #ff00ff; --set-btn-text: #2e0854; }
+    body.theme-electric_blue { --bg-color: #020617; --text-color: #00ffff; --flip-bg: #0f172a; --flip-text: #ffffff; --colon-color: #0f172a; --ui-color: #00ffff; --ui-hover: #ffffff; --ui-active: #ffffff; --overlay-bg: rgba(2, 6, 23, 0.92); --keypad-bg: rgba(0, 255, 255, 0.08); --keypad-border: rgba(0, 255, 255, 0.2); --display-border: #0284c7; --set-btn-bg: #00ffff; --set-btn-text: #020617; }
+    body.theme-matrix { --bg-color: #02230a; --text-color: #4ade80; --flip-bg: #052e16; --flip-text: #ffffff; --colon-color: #052e16; --ui-color: #4ade80; --ui-hover: #ffffff; --ui-active: #ffffff; --overlay-bg: rgba(2, 35, 10, 0.92); --keypad-bg: rgba(74, 222, 128, 0.08); --keypad-border: rgba(74, 222, 128, 0.2); --display-border: #166534; --set-btn-bg: #4ade80; --set-btn-text: #02230a; }
 
     /* LIGHT & POP (影なし・クリーン) */
-    body.theme-clean_white { --bg-color: #ffffff; --text-color: #111111; --flip-bg: #f1f1f1; --flip-text: #111111; --colon-color: #e5e5e5; --ui-color: #777777; --ui-hover: #111111; --ui-active: #111111; --overlay-bg: rgba(255, 255, 255, 0.92); --keypad-bg: rgba(0, 0, 0, 0.04); --keypad-border: rgba(0, 0, 0, 0.08); --display-border: #cccccc; --set-btn-bg: #111111; --set-btn-text: #ffffff; }
-    body.theme-cream { --bg-color: #fcfbf7; --text-color: #4a453f; --flip-bg: #f3efe6; --flip-text: #2c2824; --colon-color: #e6dfd1; --ui-color: #9e9589; --ui-hover: #4a453f; --ui-active: #2c2824; --overlay-bg: rgba(252, 251, 247, 0.92); --keypad-bg: rgba(0, 0, 0, 0.03); --keypad-border: rgba(0, 0, 0, 0.06); --display-border: #dcd4c5; --set-btn-bg: #4a453f; --set-btn-text: #fcfbf7; }
-    body.theme-soft_mint { --bg-color: #f0fdf4; --text-color: #166534; --flip-bg: #dcfce7; --flip-text: #14532d; --colon-color: #bbf7d0; --ui-color: #22c55e; --ui-hover: #166534; --ui-active: #14532d; --overlay-bg: rgba(240, 253, 244, 0.92); --keypad-bg: rgba(22, 101, 52, 0.04); --keypad-border: rgba(22, 101, 52, 0.08); --display-border: #86efac; --set-btn-bg: #166534; --set-btn-text: #f0fdf4; }
-    body.theme-sunny_yellow { --bg-color: #fefce8; --text-color: #854d0e; --flip-bg: #fef9c3; --flip-text: #713f12; --colon-color: #fef08a; --ui-color: #eab308; --ui-hover: #854d0e; --ui-active: #713f12; --overlay-bg: rgba(254, 252, 232, 0.92); --keypad-bg: rgba(133, 77, 14, 0.04); --keypad-border: rgba(133, 77, 14, 0.08); --display-border: #fde047; --set-btn-bg: #854d0e; --set-btn-text: #fefce8; }
-    body.theme-peach { --bg-color: #fff7ed; --text-color: #9a3412; --flip-bg: #ffedd5; --flip-text: #7c2d12; --colon-color: #fed7aa; --ui-color: #f97316; --ui-hover: #9a3412; --ui-active: #7c2d12; --overlay-bg: rgba(255, 247, 237, 0.92); --keypad-bg: rgba(154, 52, 18, 0.04); --keypad-border: rgba(154, 52, 18, 0.08); --display-border: #fdba74; --set-btn-bg: #9a3412; --set-btn-text: #fff7ed; }
-    body.theme-sky_blue { --bg-color: #f0f9ff; --text-color: #0369a1; --flip-bg: #e0f2fe; --flip-text: #075985; --colon-color: #bae6fd; --ui-color: #0ea5e9; --ui-hover: #0369a1; --ui-active: #075985; --overlay-bg: rgba(240, 249, 255, 0.92); --keypad-bg: rgba(3, 105, 161, 0.04); --keypad-border: rgba(3, 105, 161, 0.08); --display-border: #7dd3fc; --set-btn-bg: #0369a1; --set-btn-text: #f0f9ff; }
-    body.theme-lilac { --bg-color: #faf5ff; --text-color: #6b21a8; --flip-bg: #f3e8ff; --flip-text: #581c87; --colon-color: #e9d5ff; --ui-color: #a855f7; --ui-hover: #6b21a8; --ui-active: #581c87; --overlay-bg: rgba(250, 245, 255, 0.92); --keypad-bg: rgba(107, 33, 168, 0.04); --keypad-border: rgba(107, 33, 168, 0.08); --display-border: #d8b4fe; --set-btn-bg: #6b21a8; --set-btn-text: #faf5ff; }
-    body.theme-rose_quartz { --bg-color: #fff1f2; --text-color: #9f1239; --flip-bg: #ffe4e6; --flip-text: #881337; --colon-color: #fecdd3; --ui-color: #f43f5e; --ui-hover: #9f1239; --ui-active: #881337; --overlay-bg: rgba(255, 241, 242, 0.92); --keypad-bg: rgba(159, 18, 57, 0.04); --keypad-border: rgba(159, 18, 57, 0.08); --display-border: #fda4af; --set-btn-bg: #9f1239; --set-btn-text: #fff1f2; }
-    body.theme-cyber_light { --bg-color: #f8fafc; --text-color: #0f172a; --flip-bg: #e2e8f0; --flip-text: #0f172a; --colon-color: #cbd5e1; --ui-color: #64748b; --ui-hover: #0f172a; --ui-active: #0f172a; --overlay-bg: rgba(248, 250, 252, 0.92); --keypad-bg: rgba(15, 23, 42, 0.04); --keypad-border: rgba(15, 23, 42, 0.08); --display-border: #94a3b8; --set-btn-bg: #0f172a; --set-btn-text: #ffffff; }
-    body.theme-retro_orange { --bg-color: #fff7ed; --text-color: #c2410c; --flip-bg: #ffedd5; --flip-text: #9a3412; --colon-color: #fed7aa; --ui-color: #ea580c; --ui-hover: #c2410c; --ui-active: #9a3412; --overlay-bg: rgba(255, 247, 237, 0.92); --keypad-bg: rgba(194, 65, 12, 0.04); --keypad-border: rgba(194, 65, 12, 0.08); --display-border: #fdba74; --set-btn-bg: #c2410c; --set-btn-text: #fff7ed; }
-    body.theme-coffee_latte { --bg-color: #fdf8f6; --text-color: #78350f; --flip-bg: #fef3c7; --flip-text: #451a03; --colon-color: #fde68a; --ui-color: #d97706; --ui-hover: #78350f; --ui-active: #451a03; --overlay-bg: rgba(253, 248, 246, 0.92); --keypad-bg: rgba(120, 53, 15, 0.04); --keypad-border: rgba(120, 53, 15, 0.08); --display-border: #fcd34d; --set-btn-bg: #78350f; --set-btn-text: #fdf8f6; }
-    body.theme-paper_mono { --bg-color: #f5f5f5; --text-color: #262626; --flip-bg: #e5e5e5; --flip-text: #171717; --colon-color: #d4d4d4; --ui-color: #737373; --ui-hover: #171717; --ui-active: #171717; --overlay-bg: rgba(245, 245, 245, 0.92); --keypad-bg: rgba(0, 0, 0, 0.04); --keypad-border: rgba(0, 0, 0, 0.08); --display-border: #d4d4d4; --set-btn-bg: #171717; --set-btn-text: #f5f5f5; }
+    body.theme-clean_white { --bg-color: #ffffff; --text-color: #111111; --flip-bg: #f1f1f1; --flip-text: #111111; --colon-color: #e5e5e5; --ui-color: #555555; --ui-hover: #111111; --ui-active: #111111; --overlay-bg: rgba(255, 255, 255, 0.92); --keypad-bg: rgba(0, 0, 0, 0.06); --keypad-border: rgba(0, 0, 0, 0.12); --display-border: #cccccc; --set-btn-bg: #111111; --set-btn-text: #ffffff; }
+    body.theme-cream { --bg-color: #fcfbf7; --text-color: #2c2824; --flip-bg: #f3efe6; --flip-text: #1c1a17; --colon-color: #e6dfd1; --ui-color: #6e6559; --ui-hover: #2c2824; --ui-active: #2c2824; --overlay-bg: rgba(252, 251, 247, 0.92); --keypad-bg: rgba(0, 0, 0, 0.05); --keypad-border: rgba(0, 0, 0, 0.1); --display-border: #dcd4c5; --set-btn-bg: #4a453f; --set-btn-text: #fcfbf7; }
+    body.theme-soft_mint { --bg-color: #f0fdf4; --text-color: #14532d; --flip-bg: #dcfce7; --flip-text: #052e16; --colon-color: #bbf7d0; --ui-color: #166534; --ui-hover: #14532d; --ui-active: #14532d; --overlay-bg: rgba(240, 253, 244, 0.92); --keypad-bg: rgba(22, 101, 52, 0.06); --keypad-border: rgba(22, 101, 52, 0.12); --display-border: #86efac; --set-btn-bg: #166534; --set-btn-text: #f0fdf4; }
+    body.theme-sunny_yellow { --bg-color: #fefce8; --text-color: #713f12; --flip-bg: #fef9c3; --flip-text: #422006; --colon-color: #fef08a; --ui-color: #854d0e; --ui-hover: #713f12; --ui-active: #713f12; --overlay-bg: rgba(254, 252, 232, 0.92); --keypad-bg: rgba(133, 77, 14, 0.06); --keypad-border: rgba(133, 77, 14, 0.12); --display-border: #fde047; --set-btn-bg: #854d0e; --set-btn-text: #fefce8; }
+    body.theme-peach { --bg-color: #fff7ed; --text-color: #7c2d12; --flip-bg: #ffedd5; --flip-text: #431407; --colon-color: #fed7aa; --ui-color: #9a3412; --ui-hover: #7c2d12; --ui-active: #7c2d12; --overlay-bg: rgba(255, 247, 237, 0.92); --keypad-bg: rgba(154, 52, 18, 0.06); --keypad-border: rgba(154, 52, 18, 0.12); --display-border: #fdba74; --set-btn-bg: #9a3412; --set-btn-text: #fff7ed; }
+    body.theme-sky_blue { --bg-color: #f0f9ff; --text-color: #075985; --flip-bg: #e0f2fe; --flip-text: #0c4a6e; --colon-color: #bae6fd; --ui-color: #0369a1; --ui-hover: #075985; --ui-active: #075985; --overlay-bg: rgba(240, 249, 255, 0.92); --keypad-bg: rgba(3, 105, 161, 0.06); --keypad-border: rgba(3, 105, 161, 0.12); --display-border: #7dd3fc; --set-btn-bg: #0369a1; --set-btn-text: #f0f9ff; }
+    body.theme-lilac { --bg-color: #faf5ff; --text-color: #581c87; --flip-bg: #f3e8ff; --flip-text: #3b0764; --colon-color: #e9d5ff; --ui-color: #6b21a8; --ui-hover: #581c87; --ui-active: #581c87; --overlay-bg: rgba(250, 245, 255, 0.92); --keypad-bg: rgba(107, 33, 168, 0.06); --keypad-border: rgba(107, 33, 168, 0.12); --display-border: #d8b4fe; --set-btn-bg: #6b21a8; --set-btn-text: #faf5ff; }
+    body.theme-rose_quartz { --bg-color: #fff1f2; --text-color: #881337; --flip-bg: #ffe4e6; --flip-text: #4c0519; --colon-color: #fecdd3; --ui-color: #9f1239; --ui-hover: #881337; --ui-active: #881337; --overlay-bg: rgba(255, 241, 242, 0.92); --keypad-bg: rgba(159, 18, 57, 0.06); --keypad-border: rgba(159, 18, 57, 0.12); --display-border: #fda4af; --set-btn-bg: #9f1239; --set-btn-text: #fff1f2; }
+    body.theme-cyber_light { --bg-color: #f8fafc; --text-color: #0f172a; --flip-bg: #e2e8f0; --flip-text: #020617; --colon-color: #cbd5e1; --ui-color: #475569; --ui-hover: #0f172a; --ui-active: #0f172a; --overlay-bg: rgba(248, 250, 252, 0.92); --keypad-bg: rgba(15, 23, 42, 0.06); --keypad-border: rgba(15, 23, 42, 0.12); --display-border: #94a3b8; --set-btn-bg: #0f172a; --set-btn-text: #ffffff; }
+    body.theme-retro_orange { --bg-color: #fff7ed; --text-color: #9a3412; --flip-bg: #ffedd5; --flip-text: #7c2d12; --colon-color: #fed7aa; --ui-color: #c2410c; --ui-hover: #9a3412; --ui-active: #9a3412; --overlay-bg: rgba(255, 247, 237, 0.92); --keypad-bg: rgba(194, 65, 12, 0.06); --keypad-border: rgba(194, 65, 12, 0.12); --display-border: #fdba74; --set-btn-bg: #c2410c; --set-btn-text: #fff7ed; }
+    body.theme-coffee_latte { --bg-color: #fdf8f6; --text-color: #451a03; --flip-bg: #fef3c7; --flip-text: #291102; --colon-color: #fde68a; --ui-color: #78350f; --ui-hover: #451a03; --ui-active: #451a03; --overlay-bg: rgba(253, 248, 246, 0.92); --keypad-bg: rgba(120, 53, 15, 0.06); --keypad-border: rgba(120, 53, 15, 0.12); --display-border: #fcd34d; --set-btn-bg: #78350f; --set-btn-text: #fdf8f6; }
+    body.theme-paper_mono { --bg-color: #f5f5f5; --text-color: #171717; --flip-bg: #e5e5e5; --flip-text: #0a0a0a; --colon-color: #d4d4d4; --ui-color: #525252; --ui-hover: #171717; --ui-active: #171717; --overlay-bg: rgba(245, 245, 245, 0.92); --keypad-bg: rgba(0, 0, 0, 0.06); --keypad-border: rgba(0, 0, 0, 0.12); --display-border: #d4d4d4; --set-btn-bg: #171717; --set-btn-text: #f5f5f5; }
 
     /* 全体のリセットと背景設定 */
     * {
@@ -551,14 +550,14 @@
     }
 
     /* =========================================
-       🎨 テーマ選択サブビュー
+       🎨 テーマ選択サブビュー（文字がくっきり見えるよう調整）
        ========================================= */
     .theme-subview {
       position: absolute;
       inset: 0;
-      background: var(--overlay-bg);
-      backdrop-filter: blur(15px);
-      -webkit-backdrop-filter: blur(15px);
+      background: rgba(0, 0, 0, 0.95);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
       z-index: 60;
       display: flex;
       flex-direction: column;
@@ -587,15 +586,15 @@
     }
 
     .theme-category-title {
-      font-size: 10px;
-      font-weight: 500;
+      font-size: 11px;
+      font-weight: 600;
       letter-spacing: 3px;
-      color: var(--ui-color);
+      color: #aaaaaa;
       margin-bottom: 6px;
       text-align: left;
       width: 100%;
       padding-left: 2px;
-      border-bottom: 1px solid var(--keypad-border);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
       padding-bottom: 4px;
     }
 
@@ -607,27 +606,28 @@
     }
 
     .theme-grid-item {
-      font-size: clamp(10px, 1.8vh, 12px);
-      font-weight: 300;
+      font-size: clamp(11px, 1.8vh, 13px);
+      font-weight: 400;
       letter-spacing: 1px;
-      color: var(--ui-color);
+      color: #dddddd;
       cursor: pointer;
       padding: 10px 4px;
       text-align: center;
-      border: 1px solid var(--keypad-border);
+      border: 1px solid rgba(255, 255, 255, 0.15);
       border-radius: 10px;
-      background: var(--keypad-bg);
+      background: rgba(255, 255, 255, 0.08);
       transition: all 0.2s ease;
     }
 
     .theme-grid-item:hover {
-      color: var(--text-color);
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.15);
     }
 
     .theme-grid-item.active {
-      color: var(--ui-active);
-      border-color: var(--display-border);
-      background: var(--display-border);
+      color: #ffffff;
+      border-color: #ffffff;
+      background: rgba(255, 255, 255, 0.25);
       font-weight: 700;
     }
 
@@ -768,7 +768,7 @@
 
     </div>
 
-    <!-- テーマ選択サブビュー -->
+    <!-- テーマ選択サブビュー（見やすい高コントラストなテキストと暗めのオーバーレイ背景） -->
     <div class="theme-subview" onclick="closeOption(event)">
       <div class="theme-categories-container" onclick="event.stopPropagation()">
         
@@ -880,7 +880,6 @@
     const customDisplayEl = document.getElementById('custom-display');
     const modeToggleLink = document.getElementById('mode-toggle-link');
 
-    // LIGHT & POP系のみ影を弱くする対象
     const lightThemes = ['clean_white', 'cream', 'soft_mint', 'sunny_yellow', 'peach', 'sky_blue', 'lilac', 'rose_quartz', 'cyber_light', 'retro_orange', 'coffee_latte', 'paper_mono'];
 
     async function requestWakeLock() {
